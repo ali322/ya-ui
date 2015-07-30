@@ -7,8 +7,8 @@ var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
 module.exports = {
     entry: {
-        'vendor': ['react', 'reflux', 'lodash'],
-        'yaui': './src/index.js'
+        'yaui': './src/index.js',
+        'vendor': ['react', 'react/addons', 'reflux', 'lodash']
     },
     module: {
         loaders: [{
@@ -43,8 +43,11 @@ module.exports = {
         chunkFilename: "[id].chunk.js",
     },
     plugins: [
-        // new webpack.HotModuleReplacementPlugin(),
-        // new webpack.NoErrorsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
         new webpack.optimize.CommonsChunkPlugin('vendor', './vendor.js'),
         new ExtractTextPlugin("./[name].css")
     ]
