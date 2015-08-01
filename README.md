@@ -3,8 +3,8 @@ Ya-UI
 
 web components build with React and Reflux
 
-Directory structure
-===
+###Directory structure
+
 
 ```
 |- dist/     #build directory
@@ -17,8 +17,8 @@ Directory structure
 |- package.json
 ```
 
-Get Started
-===
+###Get Started
+
 1. install via npm
 
     ```shell
