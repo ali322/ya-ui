@@ -1,8 +1,8 @@
 {
   "name": "ya-ui",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "description": "web components build with React and Reflux",
-  "main": "dist/index.js",
+  "main": "dist/yaui.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config ./webpack.config.js --display-error-details"
