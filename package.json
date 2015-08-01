@@ -1,6 +1,6 @@
 {
   "name": "ya-ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "web components build with React and Reflux",
   "main": "dist/yaui.js",
   "scripts": {
