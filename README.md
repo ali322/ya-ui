@@ -46,17 +46,23 @@ web components build with React and Reflux
     npm run example-build
     npm run develop-example
     ```
+
   - reqired work finished,start develop server
+
     ```shell
     npm run develop
     ```
+
 2. release you own example
   - like develop workflow,build and inject work need to be done
+
     ```shell
     npm run example-prod
     npm run deploy-example
     ```
+
   - then start to preview
+  
     ```shell
     npm start
     ```
