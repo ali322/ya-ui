@@ -1,0 +1,7 @@
+{
+    "selected": {
+        "html": ["./example/selected/selected.html"],
+        "path": "./example/selected/",
+        "entyJs": "./example/selected/selected.jsx"
+    }
+}
