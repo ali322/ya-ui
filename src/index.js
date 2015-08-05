@@ -9,6 +9,9 @@ let loadingAction = require("./action/loading"),
     dialogAction = require("./action/dialog"),
     messagerAction = require("./action/messager");
 
+require("normalize.css");
+require("font-awesome/css/font-awesome.css");
+require("./theme/index.scss");
 
 module.exports = {
     component:{

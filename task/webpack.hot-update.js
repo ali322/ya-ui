@@ -4,7 +4,7 @@ var webpack = require('webpack'),
 
 var entries = {},
     examples = require("./example.json");
-_.each(examples, function(obj,name) {
+_.each(examples, function(obj, name) {
     var entry = {};
     entry[name] = [
         'webpack-dev-server/client?http://localhost:9527',
@@ -19,7 +19,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
 module.exports = {
-    entry:entries,
+    entry: entries,
     module: {
         loaders: [{
             test: /\.json/,
@@ -40,8 +40,23 @@ module.exports = {
                 // loader: ExtractTextPlugin.extract('style', 'css!sass!autoprefixer')
         }, {
             test: /\.css/,
-            exclude: [node_modules_dir],
+            // exclude: [node_modules_dir],
             loader: 'style!css'
+        }, {
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=application/font-woff"
+        }, {
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=application/font-woff"
+        }, {
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=application/octet-stream"
+        }, {
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file"
+        }, {
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=image/svg+xml"
         }, {
             test: /\.(png|jpg)$/,
             exclude: [node_modules_dir],

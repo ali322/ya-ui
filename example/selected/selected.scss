@@ -1,0 +1,12 @@
+.form-row{
+    padding:1rem 0.5rem;
+    clear:both;
+    overflow:hidden;
+    &>label{
+        float:left;
+    }
+    &>.yaui-selected{
+        float:left;
+        padding:0 0 0 0.5rem;
+    }
+}

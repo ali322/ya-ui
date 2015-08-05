@@ -46,7 +46,7 @@ module.exports = {
             // loader: ExtractTextPlugin.extract('style', 'css!sass!autoprefixer')
         }, {
             test: /\.css/,
-            exclude: [node_modules_dir],
+            // exclude: [node_modules_dir],
             loader: 'style!css'
             // loader: ExtractTextPlugin.extract('style', 'css')
         }, {

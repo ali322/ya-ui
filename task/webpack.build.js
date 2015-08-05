@@ -27,7 +27,13 @@ module.exports = {
         }, {
             test: /\.scss/,
             exclude: [node_modules_dir],
-            loader: ExtractTextPlugin.extract('style', 'css!sass')
+            loader: 'style!css!sass!autoprefixer'
+            // loader: ExtractTextPlugin.extract('style', 'css!sass')
+        }, {
+            test: /\.css/,
+            // exclude: [node_modules_dir],
+            loader: 'style!css'
+                // loader: ExtractTextPlugin.extract('style', 'css')
         }, {
             test: /\.(png|jpg)$/,
             exclude: [node_modules_dir],
@@ -39,14 +45,14 @@ module.exports = {
     },
     output: {
         path: "./dist",
-        libraryTarget:"commonjs",
+        libraryTarget: "commonjs",
         filename: "[name].js",
         chunkFilename: "[id].chunk.js",
     },
-    externals:{
-        "react/addons":"react/addons",
-        "reflux":"reflux",
-        "lodash":"lodash"
+    externals: {
+        "react/addons": "react/addons",
+        "reflux": "reflux",
+        "lodash": "lodash"
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
@@ -55,6 +61,6 @@ module.exports = {
             }
         }),
         // new webpack.optimize.CommonsChunkPlugin('vendor', './vendor.js'),
-        new ExtractTextPlugin("./[name].css")
+        // new ExtractTextPlugin("./[name].css")
     ]
 }

@@ -23,9 +23,9 @@ let Selected = React.createClass({
         }
         var selectedValue = this.state.selectedValue ? this.state.selectedValue : "点击选择..";
         return (
-            <div className="selected">
+            <div className="yaui-selected">
                 <input type="hidden" valueLink={this.state.selectedValue}/>
-                <button>{selectedValue}</button>
+                <button>{selectedValue}<i className="fa fa-home fa-fw"></i></button>
                 <ul>
                     {options}
                 </ul>

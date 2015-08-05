@@ -1,5 +1,6 @@
 'use strict'
 var React = require("react");
+require("./selected.scss");
 
 import {component} from "../../src/index";
 let {Selected} = component;
