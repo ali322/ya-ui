@@ -1,5 +1,6 @@
 'use strict'
 import React from 'react';
+import Icon from "./icon.jsx";
 
 let Selected = React.createClass({
     getInitialState(){
@@ -25,7 +26,7 @@ let Selected = React.createClass({
         return (
             <div className="yaui-selected">
                 <input type="hidden" valueLink={this.state.selectedValue}/>
-                <button>{selectedValue}<i className="fa fa-home fa-fw"></i></button>
+                <button>{selectedValue}<Icon className="fa fa-home fa-fw" /></button>
                 <ul>
                     {options}
                 </ul>
