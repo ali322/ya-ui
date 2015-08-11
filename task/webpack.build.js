@@ -28,12 +28,27 @@ module.exports = {
             test: /\.scss/,
             exclude: [node_modules_dir],
             loader: 'style!css!sass!autoprefixer'
-            // loader: ExtractTextPlugin.extract('style', 'css!sass')
+                // loader: ExtractTextPlugin.extract('style', 'css!sass')
         }, {
             test: /\.css/,
             // exclude: [node_modules_dir],
             loader: 'style!css'
                 // loader: ExtractTextPlugin.extract('style', 'css')
+        }, {
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=application/font-woff"
+        }, {
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=application/font-woff"
+        }, {
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=application/octet-stream"
+        }, {
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file"
+        }, {
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url?limit=8192&mimetype=image/svg+xml"
         }, {
             test: /\.(png|jpg)$/,
             exclude: [node_modules_dir],
