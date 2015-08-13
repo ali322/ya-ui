@@ -10,7 +10,7 @@ let loadingAction = require("./action/loading"),
     messagerAction = require("./action/messager");
 
 require("normalize.css");
-require("font-awesome/css/font-awesome.css");
+// require("font-awesome/css/font-awesome.css");
 require("./theme/index.scss");
 
 module.exports = {
