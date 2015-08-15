@@ -1,6 +1,7 @@
 Ya-UI
 ===
 
+[![Circle CI](https://circleci.com/gh/ali322/ya-ui/tree/master.svg?style=svg)](https://circleci.com/gh/ali322/ya-ui/tree/master)
 web components build with React and Reflux
 
 ###Directory structure
