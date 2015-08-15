@@ -3,6 +3,7 @@ Ya-UI
 
 [![Circle CI](https://circleci.com/gh/ali322/ya-ui/tree/master.svg?style=svg)](https://circleci.com/gh/ali322/ya-ui/tree/master)
 [![Dependency Status](https://gemnasium.com/ali322/ya-ui.svg)](https://gemnasium.com/ali322/ya-ui)
+[![Test Coverage](https://codeclimate.com/github/ali322/ya-ui/badges/coverage.svg)](https://codeclimate.com/github/ali322/ya-ui/coverage)
 
 web components build with React and Reflux
 

@@ -15,7 +15,7 @@ module.exports = function(config) {
             'action/*.js': ['webpack', 'sourcemap'],
             'store/*.js': ['webpack', 'sourcemap'],
             '__tests__/*.js': ['webpack', 'sourcemap'],
-            'component/*.jsx': ['webpack', 'sourcemap'],
+            'component/*.jsx': ['webpack', 'coverage', 'sourcemap'],
         },
         webpack: {
             resolve: webpackConfig.resolve,
@@ -24,7 +24,11 @@ module.exports = function(config) {
         webpackServer: {
             noInfo: true
         },
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
+        coverageReporter: {
+            type: 'lcov',
+            dir: '__coverage__/'
+        },
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
