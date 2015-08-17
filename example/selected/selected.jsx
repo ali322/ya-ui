@@ -22,4 +22,6 @@ let SelectedForm = React.createClass({
     }
 });
 
-React.render(<SelectedForm />,document.getElementById('selected'));
+document.addEventListener('DOMContentLoaded',()=>{
+    React.render(<SelectedForm />,document.getElementById('selected'));
+})

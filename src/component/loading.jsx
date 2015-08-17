@@ -1,27 +1,22 @@
-let React = require("react/addons"),
-    Reflux = require('reflux');
+'use strict'
+import React from "react";
+import classNames from "classnames";
 
-let loadingStore = require('../store/loading.js');
-let loadingAction = require('../action/loading.js');
-
-let Loading = React.createClass({
-    mixins:[Reflux.connect(loadingStore)],
-    getInitialState(){
-        return {
-            active:false
-        };
-    },
+class Loading extends React.Component {
+    constructor(props){
+        super(props);
+    }
     render(){
-        var classes = React.addons.classSet({
+        const classes = classNames({
             ['loading-wrap']:true,
-            ['active']:this.state.active
+            ['active']:this.props.active
         });
         return (
             <div className={classes}>
                 <div className="loading-content"><span className="icon iconfont icon-loading"></span><div className="loading-hint">{this.state.hint}</div></div>
             </div>
-        );
+        )
     }
-});
+}
 
-module.exports = Loading;
+export default Loading;

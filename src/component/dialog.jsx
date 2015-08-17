@@ -1,34 +1,32 @@
-let React = require("react/addons"),
-    Reflux = require('reflux');
+'use strict'
+import React from "react";
+import classNames from "classnames";
 
-let dialogStore = require('../store/dialog.js');
-let dialogAction = require('../action/dialog.js');
-
-let Dialog = React.createClass({
-    mixins:[Reflux.connect(dialogStore)],
-    getInitialState(){
-        return {
-            active:false
-        };
-    },
+class Dialog extends React.Component{
+    constructor(props){
+        super(props);
+    }
     render(){
-        var classes = React.addons.classSet({
+        const classes = classNames({
             ['dialog-wrap']:true,
-            ['active']:this.state.active
+            ['active']:this.props.active
         });
+
+        const {title,content,
+            handleCancel,handleConfirm,cancelText,confirmText} = this.props;
         return (
             <div className={classes}>
             <div className="dialog">
-            {this.state.title && <h3>{this.state.title}</h3>}
-            <div className="dialog-content">{this.state.content}</div>
+            {title && <h3>{title}</h3>}
+            <div className="dialog-content">{content}</div>
             <div className="dialog-btns">
-            {this.state.cancelBtn && <button onClick={dialogAction.cancel}>{this.state.cancelBtn}</button>}
-            {this.state.confirmBtn && <button onClick={dialogAction.confirm}>{this.state.confirmBtn}</button>}
+            {cancelText && <button onClick={handleCancel}>{cancelText}</button>}
+            {confirmText && <button onClick={handleConfirm}>{confirmText}</button>}
             </div>
             </div>
             </div>
         );
     }
-});
+}
 
-module.exports = Dialog;
+export default Dialog;

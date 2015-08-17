@@ -13,7 +13,7 @@ _.each(examples, function(obj, name) {
     ];
     _.extend(entries, entry);
 });
-console.log(entries);
+// console.log(entries);
 // var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var node_modules_dir = path.resolve(__dirname, '../node_modules');

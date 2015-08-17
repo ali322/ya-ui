@@ -5,7 +5,7 @@ Ya-UI
 [![Dependency Status](https://gemnasium.com/ali322/ya-ui.svg)](https://gemnasium.com/ali322/ya-ui)
 [![Test Coverage](https://codeclimate.com/github/ali322/ya-ui/badges/coverage.svg)](https://codeclimate.com/github/ali322/ya-ui/coverage)
 
-web components build with React and Reflux
+web components build with React
 
 ###Directory structure
 
@@ -13,9 +13,7 @@ web components build with React and Reflux
 ```
 |- dist/     #build directory
 |- src/      #source directory
-  |- action/ # action of flux
   |- component/ # web component
-  |- store/  #store of flux
   |- util/
   |- index.js # entry point
 |- package.json

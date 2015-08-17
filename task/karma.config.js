@@ -6,9 +6,6 @@ module.exports = function(config) {
         frameworks: ['mocha'],
         files: [
             '../node_modules/phantomjs-polyfill/bind-polyfill.js',
-            // '../node_modules/**/*.js',
-            // 'component/*.jsx',
-            // '__tests__/*.js'
             '__tests__/*.js'
         ],
         preprocessors: {
