@@ -2,17 +2,18 @@
 import React from 'react';
 import Icon from "./icon.jsx";
 
-let Selected = React.createClass({
-    getInitialState(){
-        return {
-            selectedValue:this.props.val
+class Selected extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            selectedValue:props.val
         };
-    },
+    }
     handleChange(optionValue){
         this.setState({
             selectedValue:optionValue
         });
-    },
+    }
     render(){
         var options = "";
         if(this.props.options.length > 0){
@@ -33,6 +34,6 @@ let Selected = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default Selected;

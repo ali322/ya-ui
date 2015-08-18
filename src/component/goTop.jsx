@@ -1,15 +1,13 @@
 'use strict'
-let React = require('react/addons'),
-    Event = require('../util/event'),
-    Dom = require("../util/dom"),
-    _ = require('lodash');
+import React from "react";
+import classNames from "classnames";
+import Dom from "../util/dom";
 
-let GoTop = React.createClass({
-    getInitialState(){
-        return {
-            active:false
-        }
-    },
+class GoTop extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {active:false};
+    }
     updateVisible(){
         var scrollTop = Dom.scrollTop(window);
         if(scrollTop > 50){
@@ -17,13 +15,13 @@ let GoTop = React.createClass({
         }else{
             this.setState({active:false});
         }
-    },
+    }
     componentDidMount(){
         Event.bind(window,'scroll',_.debounce(this.updateVisible,100));
-    },
+    }
     componentWillUnmount(){
         Event.unbind(window,'scroll',_.debounce(this.updateVisible,100));
-    },
+    }
     backToTop(){
         var smoothScroll = function(){
             var scrollTop = Dom.scrollTop(window);
@@ -34,7 +32,7 @@ let GoTop = React.createClass({
         }
         var tickTock = setInterval(smoothScroll,10)
         // console.log(scrollFunc);
-    },
+    }
     render(){
         var classes = React.addons.classSet({
             "back-to-top":true,
@@ -46,6 +44,6 @@ let GoTop = React.createClass({
             </div>
         );
     }
-});
+}
 
-module.exports = GoTop;
+export default GoTop;
