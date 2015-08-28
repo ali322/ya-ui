@@ -17,10 +17,10 @@ class GoTop extends React.Component{
         }
     }
     componentDidMount(){
-        Event.bindEvent(window,'scroll',_.debounce(this.updateVisible,100));
+        Event.bindEvent(window,'scroll',_.debounce(this.updateVisible.bind(this),100));
     }
     componentWillUnmount(){
-        Event.unbindEvent(window,'scroll',_.debounce(this.updateVisible,100));
+        Event.unbindEvent(window,'scroll',_.debounce(this.updateVisible.bind(this),100));
     }
     backToTop(){
         var smoothScroll = function(){
