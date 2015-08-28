@@ -1,14 +1,21 @@
 'use strict'
-let bindListener = window.addEventListener ? 'addEventListener' : 'attachEvent';
-let unbindListener = window.removeEventListener ? 'removeEventListener' : 'detachEvent';
-let eventNamePrefix = bindListener === 'addEventListener' ? '' : 'on';
 
 let Event = {
-    bind: function(domNode, eventName, eventListener, capture = false) {
-        domNode[bindListener](eventNamePrefix + eventName, eventListener);
+    bindEvent(el,event,listener){
+        if(el.addEventListener){
+            el.addEventListener(event,listener,false);
+        }else if(el.attachEvent){
+            el.attachEvent("on${event}",(e)=>{
+                listener.call(el,e||window.event);
+            });
+        }
     },
-    unbind: function(domNode, eventName, eventListener, capture = false) {
-        domNode[unbindListener](eventNamePrefix + eventName, eventListener, capture);
+    unbindEvent(el,event,listener){
+        if(el.removeEventListener){
+            el.removeEventListener(event,listener);
+        }else if(el.detachEvent){
+            el.detachEvent("on${event}",listener);
+        }
     }
 };
 
