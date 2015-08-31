@@ -4,6 +4,7 @@ import Dialog from "./component/dialog.jsx";
 import Messager from "./component/messager.jsx";
 import Loading from "./component/loading.jsx";
 import Selected from "./component/selected.jsx";
+import LazyLoad from "./component/lazyload.jsx";
 
 require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
@@ -15,7 +16,8 @@ let yaui = {
         Dialog,
         Messager,
         Loading,
-        Selected
+        Selected,
+        LazyLoad
     }
 };
 export default yaui;
