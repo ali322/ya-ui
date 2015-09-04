@@ -5,6 +5,7 @@ import Messager from "./component/messager.jsx";
 import Loading from "./component/loading.jsx";
 import Selected from "./component/selected.jsx";
 import LazyLoad from "./component/lazyload.jsx";
+import Image from "./component/core/image.jsx";
 import Sticky from "./component/sticky.jsx";
 import Popup from "./component/popup.jsx";
 
@@ -21,7 +22,8 @@ let yaui = {
         Selected,
         Sticky,
         Popup,
-        LazyLoad
+        LazyLoad,
+        Image
     }
 };
 export default yaui;
