@@ -13,7 +13,7 @@ require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
 require("./theme/index.scss");
 
-let yaui = {
+const yaui = {
     "component":{
         GoTop,
         Dialog,
