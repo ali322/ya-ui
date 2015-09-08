@@ -1,6 +1,11 @@
 'use strict'
 
 let Event = {
+    dispatchEvent(el,event){
+        var e = document.createEvent('Event');
+        e.initEvent(event,true,true);
+        el.dispatchEvent(e);
+    },
     bindEvent(el,event,listener){
         if(el.addEventListener){
             el.addEventListener(event,listener,false);
