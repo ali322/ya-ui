@@ -30,7 +30,11 @@ module.exports = {
                         isCSS1Compat? document.documentElement.scrollLeft:
                         document.body.scrollLeft;
         if(value !== undefined){
-            window.scrollTo(scrollLeft,value);
+            if(element === window){
+                window.scrollTo(scrollLeft,value);
+            }else{
+                element.scrollTop = value;
+            }
         }
         return scrollTop;
     }
