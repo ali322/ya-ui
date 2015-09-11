@@ -13,9 +13,6 @@ class Selected extends Component{
             filterText:null
         }
     }
-    componentDidMount(){
-        this.setSelectedWidth();
-    }
     getValueArray(){
         return this.state.value ? this.state.value.split(this.props.delimiter):[];
     }
