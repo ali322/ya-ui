@@ -8,6 +8,7 @@ import LazyLoad from "./component/lazyload.jsx";
 import Image from "./component/core/image.jsx";
 import Sticky from "./component/sticky.jsx";
 import Popup from "./component/popup.jsx";
+import Dropdown from "./component/dropdown.jsx";
 
 require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
@@ -20,6 +21,7 @@ const yaui = {
         Messager,
         Loading,
         Selected,
+        Dropdown,
         Sticky,
         Popup,
         LazyLoad,

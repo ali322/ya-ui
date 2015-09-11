@@ -1,0 +1,72 @@
+@import "../core/mixin.scss";
+.dropdown {
+    position: relative;
+    display: inline-block;
+    font-size: .7rem;
+    button {
+        outline: 0 none;
+        background: #FFF;
+        padding: .4rem .5rem;
+        border: 1px solid #E5E5E5;
+        border-radius: .2rem;
+        line-height: 1rem;
+        clear: both;
+        overflow: hidden;
+        .iconfont {
+            float: right;
+            font-size: .65rem;
+            padding-left: .25rem;
+            box-sizing: border-box;
+            width: 20%;
+            color:#888;
+        }
+        .dropdown-status {
+            float: left;
+            width:80%;
+            text-align:left;
+            @include text-overflow;
+        }
+    }
+    &.active button {
+        border-radius: .2rem .2rem 0 0;
+        border: 1px solid #CCC;
+    }
+    &>.dropdown-content {
+        position: absolute;
+        display: inline-block;
+        z-index: 12;
+        background: #FFF;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 0 0 .2rem .2rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: none;
+        opacity: 0;
+        padding: 0 0 .4rem 0;
+        text-align: left;
+        &.active {
+            border: 1px solid #CCC;
+            border-top: 0 none;
+            margin-top: -0.05rem;
+            display: block;
+            opacity: 1;
+            animation: slide-to-top .5s ease-in-out;
+        }
+    }
+}
+
+@keyframes slide-to-top {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.75;
+    }
+    100% {
+        opacity: 1;
+    }
+}
