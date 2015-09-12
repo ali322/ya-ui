@@ -9,6 +9,7 @@ import Image from "./component/core/image.jsx";
 import Sticky from "./component/sticky.jsx";
 import Popup from "./component/popup.jsx";
 import Dropdown from "./component/dropdown.jsx";
+import Checkbox from "./component/checkbox.jsx";
 
 require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
@@ -22,6 +23,7 @@ const yaui = {
         Loading,
         Selected,
         Dropdown,
+        Checkbox,
         Sticky,
         Popup,
         LazyLoad,
