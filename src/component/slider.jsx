@@ -6,12 +6,16 @@ import classNames from "classnames";
 class Slider extends Component{
     constructor(props){
         super(props);
+        const defaultActiveIndex = this.needPseudoNode()?1:0;
         this.state = {
-            activeIndex:this.props.defaultActiveIndex !== undefined ? this.props.defaultActiveIndex : 0,
+            activeIndex:this.props.defaultActiveIndex !== undefined ?this.props.defaultActiveIndex:defaultActiveIndex,
             prevActiveIndex:null,
-            direction:null
+            nextActiveIndex:null,
+            direction:null,
+            slidesStyle:null,
+            slideStyle:null,
+            sliderStyle:null
         }
-        this.slidesStyle = {};
         this.paused = false;
     }
     componentDidMount(){
@@ -19,31 +23,57 @@ class Slider extends Component{
         this.props.autoPlay && this.slideToNext();
     }
     initialize(){
-        if(this.props.animationType === "scrollX"){
-            const pseudoNode = React.cloneElement(this.props.children[0],{
+        const {animationType} = this.props;
+        if(animationType === "scrollX" || animationType === "scrollY"){
+            const count = React.Children.count(this.props.children);
+            const pseudoFirstNode = React.cloneElement(this.props.children[0],{
                 pseudo:true
             });
-            this.props.children.push(pseudoNode);
-
+            const pseudoLastNode = React.cloneElement(this.props.children[count-1],{
+                pseudo:true
+            });
+            this.props.children.push(pseudoFirstNode);
+            this.props.children.unshift(pseudoLastNode);
             const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
             const slidesWidth = slideNode.offsetWidth * React.Children.count(this.props.children);
-            this.slidesStyle = {
-                width:slidesWidth + "px",
+            const slidesHeight = slideNode.offsetHeight * React.Children.count(this.props.children);
+            const transform = this.props.animationType === "scrollX"?
+                "translate3D(-"+slideNode.offsetWidth+"px,0,0)":"translate3D(0,-"+slideNode.offsetHeight+"px,0)";
+            this.setState({slidesStyle:{
+                width:animationType === "scrollX"?slidesWidth + "px":null,
+                height:animationType === "scrollY"?slidesHeight + "px":null,
                 transitionProperty:"transform",
                 transitionTimingFunction:"ease-in-out",
+                transform
                 // transitionDelay:delay+"s"
-            };
-            this.slideStyle = {
-                width:slideNode.offsetWidth
-            };
+            }});
+            this.setState({slideStyle:{
+                width:animationType === "scrollX"?slideNode.offsetWidth:null,
+                height:animationType === "scrollY"?slideNode.offsetHeight:null
+            }});
+            this.setState({sliderStyle:{
+                height:animationType === "scrollY"?slideNode.offsetHeight:null
+            }});
         }
-        this.slidesCount = React.Children.count(this.props.children);
     }
     slideToNext(){
-        this.timeout = setTimeout(this.next.bind(this),this.props.delay);
+        const self = this;
+        this.timeout = setTimeout(function interval(){
+            const prevIndex = self.getActiveIndex();
+            const count = self.slidesCount;
+            self.next();
+            clearTimeout(self.timeout);
+            if(self.needPseudoNode() === true && prevIndex === count - 1 
+                && self.paused === false){
+                self.timeout = setTimeout(interval,10)
+            }else{
+                self.timeout = setTimeout(interval,self.props.delay);
+            }
+        },this.props.delay);
+        // this.timeout = setTimeout(this.next.bind(this),this.props.delay);
     }
     needPseudoNode(){
-        return this.props.animationType === "scrollX";
+        return this.props.animationType === "scrollX" || this.props.animationType === "scrollY";
     }
     play(){
         this.paused = false;
@@ -54,13 +84,13 @@ class Slider extends Component{
         clearTimeout(this.timeout);
     }
     handleMouseOver(){
-        console.log('onMouseOver')
+        // console.log('onMouseOver')
         if (this.props.pauseOnHover) {
           this.pause();
         }
     }
     handleMouseOut(){
-        console.log('onMouseOut')
+        // console.log('onMouseOut')
         if(this.paused === true){
             this.play();
         }
@@ -71,93 +101,154 @@ class Slider extends Component{
         // e.stopProgapation();
         const prevIndex = this.getActiveIndex();
         var nextIndex = prevIndex + 1;
-        const count = this.slidesCount;
+        const count = React.Children.count(this.props.children);
         if(nextIndex > count - 1){
             if(!this.props.loop){
                 return;
             }
             nextIndex = 0;
         }
-        this.handleSelect(nextIndex,"next");
-        clearTimeout(this.timeout);
-        if(this.needPseudoNode() === true && prevIndex === count - 1 
-            && this.paused === false){
-            this.timeout = setTimeout(this.next.bind(this),10)
-        }else{
-            this.timeout = setTimeout(this.next.bind(this),this.props.delay);
-        }
+        this.handleSelect(nextIndex,count,"next");
     }
     prev(e){
         e && e.preventDefault();
         const prevIndex = this.getActiveIndex();
         var nextIndex = prevIndex - 1;
-        const count = this.slidesCount;
+        const count = React.Children.count(this.props.children);
         if(nextIndex < 0){
             if(!this.props.loop){
                 return;
             }
             nextIndex = count;
         }
-        this.handleSelect(nextIndex,'prev')
-        clearTimeout(this.timeout);
-        if(this.needPseudoNode() === true && prevIndex === count - 1 
-            && this.paused === false){
-            this.timeout = setTimeout(this.prev.bind(this),10)
-        }else{
-            this.timeout = setTimeout(this.prev.bind(this),this.props.delay)   
-        }
+        this.handleSelect(nextIndex,count,'prev')
     }
-    handleSelect(index,direction,e){
+    handleSelect(index,count,direction,e){
         e && e.preventDefault();
-        // console.log('handleSelect',index,direction)
-        const prevActiveIndex = this.getActiveIndex();
-        this.setState({
+        var prevActiveIndex,nextActiveIndex;
+        if(direction === "next"){
+            index = (this.needPseudoNode() && index === 0)?1:index;
+            // console.log('index',index)
+            prevActiveIndex = index - 1,nextActiveIndex = index + 1;
+            if(prevActiveIndex < 0){
+                prevActiveIndex = count - 1;
+            }
+            if(nextActiveIndex >= count){
+                nextActiveIndex = 0;
+            }
+        }
+        if(direction === "prev"){
+            prevActiveIndex = index + 1,nextActiveIndex = index -1;
+            if(nextActiveIndex < 0){
+                nextActiveIndex = count - 1;
+            }
+            if(prevActiveIndex >= count){
+                prevActiveIndex = 0;
+            }
+        }
+        const state = {
             activeIndex:index,
             prevActiveIndex,
+            nextActiveIndex,
             direction
-        });
+        };
+        const slidesStyle = this.transitionSlides(state,this.props,direction);
+        console.log(slidesStyle)
+        this.setState(Object.assign({},state,{
+            slidesStyle
+        }))
+    }
+    transitionSlides(state,props,direction){
+        if(state.prevActiveIndex === null){
+            return;
+        }
+        const {animationType} = props;
+        if(animationType === "scrollX" || animationType === "scrollY"){
+            const activeIndex = state.activeIndex;
+            var transform,slidesStyle = this.state.slidesStyle;
+            var symbol = direction === "prev"?"+":"-";
+            // console.log("direction",direction)
+            // console.log('symbol',symbol)
+            console.log('prevActiveIndex',state.prevActiveIndex)
+            console.log('activeIndex',activeIndex)
+            console.log('nextActiveIndex',state.nextActiveIndex)
+            if(activeIndex === 1 && state.prevActiveIndex !== null){
+                transform = animationType === "scrollX"?
+                "translate3D(-"+this.state.slideStyle.width+"px,0,0)":
+                "translate3D(0,-"+this.state.slideStyle.height+"px,0)";
+                slidesStyle = Object.assign({},slidesStyle,{
+                    transform,
+                    transitionDuration:"0s"
+                })
+            }else{
+                const speed = props.speed / 1000;
+                if(animationType === "scrollX"){
+                    const scrollX = this.state.slideStyle.width * activeIndex;
+                    transform = "translate3D("+ symbol + scrollX +"px,0,0)";
+                }else if(animationType === "scrollY"){
+                    const scrollY = this.state.slideStyle.height * activeIndex;
+                    transform = "translate3D(0,"+ symbol + scrollY +"px,0)";
+                }
+                // console.log('transform',transform)
+                slidesStyle = Object.assign({},slidesStyle,{
+                    transform,
+                    transitionDuration:speed+"s"
+                })
+            }
+            // state.activeIndex = (activeIndex === 0)?activeIndex + 1:activeIndex;
+            return slidesStyle;
+        }
     }
     getActiveIndex(){
         return this.props.activeIndex !== undefined ? this.props.activeIndex : this.state.activeIndex;
     }
     renderItem(child,index){
         const activeIndex = this.getActiveIndex();
-        // console.log('render',activeIndex,index)
         const isActive = (index === activeIndex);
         const isPrevActive = this.state.prevActiveIndex !== null && this.state.prevActiveIndex === index;
+        const isNextActive = this.state.nextActiveIndex !== null && this.state.nextActiveIndex === index;
         return React.cloneElement(child,{
             active:isActive,
+            prev:isPrevActive,
+            next:isNextActive,
             key:child.key ? child.key:index,
-            style:this.slideStyle,
+            style:this.state.slideStyle,
             animateOut:isPrevActive,
             animateIn:isActive && this.state.prevActiveIndex !== null,
             direction:this.state.direction
         })
     }
     renderDirectionNav(){
-        return (
-            <div className="direction-nav">
-            <div className="direction-nav-prev" onClick={this.prev.bind(this)}><span className="iconfont icon-left-open"></span></div>
-            <div className="direction-nav-next" onClick={this.next.bind(this)}><span className="iconfont icon-right-open"></span></div>
-            </div>
-        )
+        if(this.props.directionNav === true){
+            return (
+                <div className="direction-nav">
+                <div className="direction-nav-prev" onClick={this.prev.bind(this)}><span className="iconfont icon-left-open"></span></div>
+                <div className="direction-nav-next" onClick={this.next.bind(this)}><span className="iconfont icon-right-open"></span></div>
+                </div>
+            )
+        }
+        return null;
     }
     renderControlNav(){
-        if(this.props.controlNav !== null){
+        if(this.props.controlNav === true){
             var activeIndex = this.getActiveIndex();
-            if(this.needPseudoNode() === true && activeIndex === this.slidesCount - 1){
-                activeIndex = 0;
+            const slidesCount = React.Children.count(this.props.children);
+            if(this.needPseudoNode() === true && activeIndex === slidesCount - 1){
+                activeIndex = 1;
             }
             const children = React.Children.map(this.props.children,(child,i)=>{
-                if(this.needPseudoNode() === true && i === this.slidesCount - 1){
+                if(this.needPseudoNode() === true && i === slidesCount - 1){
                     return;
                 }
-                // console.log('activeIndex',activeIndex,"i",i)
+                if(this.needPseudoNode() === true && i === 0){
+                    return;
+                }
+                console.log('activeIndex',activeIndex,"i",i)
                 const childrenClasses = classNames({
                     active:activeIndex === i
                 })
                 return (
-                    <span onClick={this.handleSelect.bind(this,i,null)} className={childrenClasses}>
+                    <span onClick={this.handleSelect.bind(this,i,null)} className={childrenClasses} key={i}>
                     </span>
                 )
             });
@@ -170,44 +261,17 @@ class Slider extends Component{
         }
         return null
     }
-    transitionSlides(){
-        if(this.state.prevActiveIndex === null){
-            return;
-        }
-        if(this.props.animationType === "scrollX"){
-            const activeIndex = this.getActiveIndex();
-            // const slideNode = this.slideNode;
-            const scrollX = this.slideStyle.width * activeIndex;
-            // const scrollX = 0;
-
-            var transform;
-            if(activeIndex === 0){
-                transform = "translate3D(0,0,0)";
-                this.slidesStyle = Object.assign({},this.slidesStyle,{
-                    transform,
-                    transitionDuration:"0s"
-                });
-            }else{
-                const speed = this.props.speed / 1000;
-                transform = "translate3D(-"+ scrollX +"px,0,0)";
-                this.slidesStyle = Object.assign({},this.slidesStyle,{
-                    transform,
-                    transitionDuration:speed+"s"
-                })
-            }
-        }
-    }
     render(){
         var classes = classNames({
             "slide":true
         });
-        // console.log(this.slidesStyle)
-        this.transitionSlides();
+        console.log('render',this.state.activeIndex)
         return (
             <div className={classes} 
+            style={this.state.sliderStyle}
             onMouseOver={this.handleMouseOver.bind(this)} 
             onMouseOut={this.handleMouseOut.bind(this)}>
-            <div className="slides" style={this.slidesStyle}>
+            <div className="slides" style={this.state.slidesStyle}>
             {React.Children.map(this.props.children,this.renderItem.bind(this))}
             </div>
             {this.renderControlNav()}
@@ -221,7 +285,8 @@ Slider.defaultProps = {
     directionNav:true,
     controlNav:true,
     animationType:"scrollX",
-    autoPlay:true,
+    direction:"next",
+    autoPlay:false,
     loop:true,
     speed:500,
     delay:3000,
