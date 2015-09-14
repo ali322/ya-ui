@@ -127,6 +127,7 @@ class Slider extends Component{
         e && e.preventDefault();
         var prevActiveIndex,nextActiveIndex;
         if(direction === "next"){
+            console.log('index',index)
             index = (this.needPseudoNode() && index === 0)?1:index;
             // console.log('index',index)
             prevActiveIndex = index - 1,nextActiveIndex = index + 1;
@@ -199,6 +200,9 @@ class Slider extends Component{
             return slidesStyle;
         }
     }
+    componentDidUpdate(){
+        console.log('activeIndex',this.state.activeIndex)
+    }
     getActiveIndex(){
         return this.props.activeIndex !== undefined ? this.props.activeIndex : this.state.activeIndex;
     }
@@ -243,7 +247,6 @@ class Slider extends Component{
                 if(this.needPseudoNode() === true && i === 0){
                     return;
                 }
-                console.log('activeIndex',activeIndex,"i",i)
                 const childrenClasses = classNames({
                     active:activeIndex === i
                 })
