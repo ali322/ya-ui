@@ -2,7 +2,7 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
-import Dropdown from "../dropdown/dropdown.jsx";
+import Dropdown from "./dropdown.jsx";
 import Icon from "../core/icon.jsx";
 
 class Selected extends Component{
