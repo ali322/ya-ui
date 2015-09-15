@@ -24,12 +24,14 @@ class Slider extends Component{
     }
     initialize(){
         const {animationType} = this.props;
-        if(animationType === "scrollX" || animationType === "scrollY"){
+        if(this.needPseudoNode() === true){
             const count = React.Children.count(this.props.children);
             const pseudoFirstNode = React.cloneElement(this.props.children[0],{
+                key:"pseudo-first",
                 pseudo:true
             });
             const pseudoLastNode = React.cloneElement(this.props.children[count-1],{
+                key:"pseudo-last",
                 pseudo:true
             });
             this.props.children.push(pseudoFirstNode);
@@ -45,7 +47,6 @@ class Slider extends Component{
                 transitionProperty:"transform",
                 transitionTimingFunction:"ease-in-out",
                 transform
-                // transitionDelay:delay+"s"
             }});
             this.setState({slideStyle:{
                 width:animationType === "scrollX"?slideNode.offsetWidth:null,
@@ -60,7 +61,7 @@ class Slider extends Component{
         const self = this;
         this.timeout = setTimeout(function interval(){
             const prevIndex = self.getActiveIndex();
-            const count = self.slidesCount;
+            const count = React.Children.count(this.props.children);
             self.next();
             clearTimeout(self.timeout);
             if(self.needPseudoNode() === true && prevIndex === count - 1 
@@ -70,7 +71,6 @@ class Slider extends Component{
                 self.timeout = setTimeout(interval,self.props.delay);
             }
         },this.props.delay);
-        // this.timeout = setTimeout(this.next.bind(this),this.props.delay);
     }
     needPseudoNode(){
         return this.props.animationType === "scrollX" || this.props.animationType === "scrollY";
@@ -97,8 +97,6 @@ class Slider extends Component{
     }
     next(e){
         e && e.preventDefault();
-        // console.log(e.isDefaultPrevented());
-        // e.stopProgapation();
         const prevIndex = this.getActiveIndex();
         var nextIndex = prevIndex + 1;
         const count = React.Children.count(this.props.children);
@@ -119,7 +117,7 @@ class Slider extends Component{
             if(!this.props.loop){
                 return;
             }
-            nextIndex = count;
+            nextIndex = count - 1;
         }
         this.handleSelect(nextIndex,count,'prev')
     }
@@ -127,9 +125,8 @@ class Slider extends Component{
         e && e.preventDefault();
         var prevActiveIndex,nextActiveIndex;
         if(direction === "next"){
-            console.log('index',index)
-            index = (this.needPseudoNode() && index === 0)?1:index;
             // console.log('index',index)
+            index = (this.needPseudoNode() && index === 0)?1:index;
             prevActiveIndex = index - 1,nextActiveIndex = index + 1;
             if(prevActiveIndex < 0){
                 prevActiveIndex = count - 1;
@@ -139,6 +136,8 @@ class Slider extends Component{
             }
         }
         if(direction === "prev"){
+            index = (this.needPseudoNode() && index === (count - 1))?count - 2:index;
+            // console.log('index',index,count)
             prevActiveIndex = index + 1,nextActiveIndex = index -1;
             if(nextActiveIndex < 0){
                 nextActiveIndex = count - 1;
@@ -154,7 +153,7 @@ class Slider extends Component{
             direction
         };
         const slidesStyle = this.transitionSlides(state,this.props,direction);
-        console.log(slidesStyle)
+        // console.log(slidesStyle)
         this.setState(Object.assign({},state,{
             slidesStyle
         }))
@@ -164,19 +163,29 @@ class Slider extends Component{
             return;
         }
         const {animationType} = props;
-        if(animationType === "scrollX" || animationType === "scrollY"){
-            const activeIndex = state.activeIndex;
+        const count = React.Children.count(this.props.children);
+        const activeIndex = state.activeIndex;
+        if(this.needPseudoNode() === true){
             var transform,slidesStyle = this.state.slidesStyle;
-            var symbol = direction === "prev"?"+":"-";
+            var symbol = direction === "prev"?"-":"-";
             // console.log("direction",direction)
-            // console.log('symbol',symbol)
-            console.log('prevActiveIndex',state.prevActiveIndex)
-            console.log('activeIndex',activeIndex)
-            console.log('nextActiveIndex',state.nextActiveIndex)
-            if(activeIndex === 1 && state.prevActiveIndex !== null){
+            // console.log('prevActiveIndex',state.prevActiveIndex)
+            // console.log('activeIndex',activeIndex)
+            // console.log('nextActiveIndex',state.nextActiveIndex)
+            // if direction is next and should active is pseudo item then redirect to the first real item
+            if(activeIndex === 1&& state.direction === "next"){
                 transform = animationType === "scrollX"?
                 "translate3D(-"+this.state.slideStyle.width+"px,0,0)":
                 "translate3D(0,-"+this.state.slideStyle.height+"px,0)";
+                slidesStyle = Object.assign({},slidesStyle,{
+                    transform,
+                    transitionDuration:"0s"
+                })
+            // if direction is prev and should active is pseudo item then redirect to the last real item
+            }else if(activeIndex === (count - 2) && state.direction === "prev"){
+                transform = animationType === "scrollX"?
+                "translate3D(-"+(this.state.slideStyle.width*activeIndex)+"px,0,0)":
+                "translate3D(0,-"+(this.state.slideStyle.height*activeIndex)+"px,0)";
                 slidesStyle = Object.assign({},slidesStyle,{
                     transform,
                     transitionDuration:"0s"
@@ -196,12 +205,28 @@ class Slider extends Component{
                     transitionDuration:speed+"s"
                 })
             }
-            // state.activeIndex = (activeIndex === 0)?activeIndex + 1:activeIndex;
             return slidesStyle;
         }
     }
     componentDidUpdate(){
-        console.log('activeIndex',this.state.activeIndex)
+        const count = React.Children.count(this.props.children);
+        const nextTick = this.props.speed + 10;
+        if(this.needPseudoNode() === true){
+            if(this.getActiveIndex() === (count - 1) 
+                && this.state.direction === "next"
+                // && this.state.prevActiveIndex !== 0
+                ){
+                // if direction is next and should active is pseudo item then redirect to the first real item
+                setTimeout(this.next.bind(this),nextTick)
+                // console.log('updated',this.state.activeIndex)
+            }else if(this.getActiveIndex() === 0 
+                && this.state.direction === "prev"
+                ){
+                // if direction is prev and should active is pseudo item then redirect to the last real item
+                setTimeout(this.prev.bind(this),nextTick)
+                // console.log('updated',this.state.activeIndex)
+            }
+        }
     }
     getActiveIndex(){
         return this.props.activeIndex !== undefined ? this.props.activeIndex : this.state.activeIndex;
@@ -237,16 +262,21 @@ class Slider extends Component{
         if(this.props.controlNav === true){
             var activeIndex = this.getActiveIndex();
             const slidesCount = React.Children.count(this.props.children);
-            if(this.needPseudoNode() === true && activeIndex === slidesCount - 1){
-                activeIndex = 1;
+            if(this.needPseudoNode() === true){
+                // if direction is next and should active is pseudo item then redirect to 1
+                activeIndex = (activeIndex === slidesCount - 1)?1:activeIndex;
+                // if direction is prev and should active is pseudo item then redirect to the last real item
+                activeIndex = (activeIndex === 0)?(slidesCount - 2):activeIndex;
             }
             const children = React.Children.map(this.props.children,(child,i)=>{
+                /* dont render pseudo control item*/
                 if(this.needPseudoNode() === true && i === slidesCount - 1){
                     return;
                 }
                 if(this.needPseudoNode() === true && i === 0){
                     return;
                 }
+                // console.log('activeIndex',activeIndex,"i",i)
                 const childrenClasses = classNames({
                     active:activeIndex === i
                 })
@@ -268,7 +298,7 @@ class Slider extends Component{
         var classes = classNames({
             "slide":true
         });
-        console.log('render',this.state.activeIndex)
+        // console.log('render',this.state.activeIndex)
         return (
             <div className={classes} 
             style={this.state.sliderStyle}
