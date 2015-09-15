@@ -2,6 +2,9 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
+import dom from "../../lib/dom.es6";
+
+React.initializeTouchEvents(true);
 
 class Slider extends Component{
     constructor(props){
@@ -59,9 +62,9 @@ class Slider extends Component{
     }
     slideToNext(){
         const self = this;
+        const count = React.Children.count(this.props.children);
         this.timeout = setTimeout(function interval(){
             const prevIndex = self.getActiveIndex();
-            const count = React.Children.count(this.props.children);
             self.next();
             clearTimeout(self.timeout);
             if(self.needPseudoNode() === true && prevIndex === count - 1 
@@ -95,6 +98,111 @@ class Slider extends Component{
             this.play();
         }
     }
+    handleTouchStart(e){
+        const {clientY,clientX} = e.changedTouches[0];
+        this.startTouchX = clientX;
+        this.startTouchY = clientY;
+        // console.log('touch start',e.changedTouches,e.targetTouches,e.touches)
+    }
+    handleTouchEnd(e){
+        const {clientY,clientX} = e.changedTouches[0];
+        const inTouchableRegion = this.inTouchableRegion(clientX,clientY,e.currentTarget);
+        if(!inTouchableRegion){
+            // e.preventDefault();
+            // return;
+        }
+        const offsetWidth = e.currentTarget.offsetWidth; 
+        const offsetHeight = e.currentTarget.offsetHeight; 
+        const {animationType} = this.props;
+        var offsetY,offsetX;
+        if(animationType === "scrollY"){
+            offsetY = Math.abs(clientY) - Math.abs(this.startTouchY);
+            const absOfOffsetY = Math.abs(offsetY);
+
+            if(absOfOffsetY >= offsetHeight / 2){
+                if(offsetY < 0){
+                    // console.log('next Y')
+                    setTimeout(this.next.bind(this),100);
+                }else if(offsetY > 0){
+                    // console.log('prev Y')
+                    setTimeout(this.prev.bind(this),100);
+                }
+            }else{
+                absOfOffsetY > 0 && this.restorePosition();
+            }
+        }
+        if(animationType === "scrollX"){
+            offsetX = Math.abs(clientX) - Math.abs(this.startTouchX);
+            const absOfOffsetX = Math.abs(offsetX);
+            // console.log('distance',Math.abs(clientX),Math.abs(this.startTouchX))
+            if(absOfOffsetX >= offsetHeight / 2){
+                if(offsetX < 0){
+                    // console.log('next X');
+                    setTimeout(this.next.bind(this),100);
+                }else if(offsetX > 0){
+                    // console.log('prev X');
+                    setTimeout(this.prev.bind(this),100);
+                }
+            }else{
+                absOfOffsetX > 0 && this.restorePosition()
+            }
+        }
+    }
+    handleTouchMove(e){
+        const {clientY,clientX} = e.changedTouches[0];
+        const inTouchableRegion = this.inTouchableRegion(clientX,clientY,e.currentTarget);
+        if(!inTouchableRegion){
+            e.preventDefault();
+            return;
+        }
+
+        const offsetX = Math.abs(this.startTouchX) - Math.abs(clientX);
+        const offsetY = Math.abs(this.startTouchY) - Math.abs(clientY);
+        // console.log('currentX',clientX,'currentY',clientY)
+        // console.log('lastX',this.lastMoveX,'lastY',this.lastMoveY)
+        this.transitionTouch(offsetX,offsetY)
+        this.lastMoveY = clientY;
+        this.lastMoveX = clientX;
+    }
+    restorePosition(){
+        // console.log('restorePosition')
+        const slidesNode = React.findDOMNode(this.refs.slides);
+        slidesNode.style.transform = this.state.slidesStyle.transform;
+        slidesNode.style.transitionDuration = ".3s";
+    }
+    transitionTouch(offsetX,offsetY){
+        const {animationType} = this.props;
+        const count = React.Children.count(this.props.children);
+        const activeIndex = this.getActiveIndex();
+        var transform = null;
+        if(animationType === "scrollY" && offsetY !== 0){
+            var scrollY = this.state.slideStyle.height * activeIndex;
+            scrollY += offsetY;
+            transform = "translate3D(0,-"+scrollY+"px,0)";
+        }else if(animationType === "scrollX" && offsetX !== 0){
+            var scrollX = this.state.slideStyle.width * activeIndex;
+            scrollX += offsetX;
+            transform = "translate3D(-"+scrollX+"px,0,0)";
+        }
+        const slidesNode = React.findDOMNode(this.refs.slides);
+        if(transform !==null){
+            slidesNode.style.transform = transform;
+            slidesNode.style.transitionDuration = ".3s";
+        }
+    }
+    inTouchableRegion(x,y,element){
+        const targetOffset = dom.offset(element);
+        const minY = targetOffset.top;
+        const maxY = targetOffset.top + element.offsetHeight;
+        const minX = targetOffset.left;
+        const maxX = targetOffset.left + element.offsetWidth;
+        const isXValid = (x >= minX && x <= maxX);
+        const isYValid = (y >= minY && y <= maxY);
+        if(isXValid && isYValid){
+            return true;
+        }
+        return false;
+    }
     next(e){
         e && e.preventDefault();
         const prevIndex = this.getActiveIndex();
@@ -106,7 +214,7 @@ class Slider extends Component{
             }
             nextIndex = 0;
         }
-        this.handleSelect(nextIndex,count,"next");
+        this.handleSelect(nextIndex,"next");
     }
     prev(e){
         e && e.preventDefault();
@@ -119,10 +227,11 @@ class Slider extends Component{
             }
             nextIndex = count - 1;
         }
-        this.handleSelect(nextIndex,count,'prev')
+        this.handleSelect(nextIndex,'prev')
     }
-    handleSelect(index,count,direction,e){
+    handleSelect(index,direction,e){
         e && e.preventDefault();
+        const count = React.Children.count(this.props.children);
         var prevActiveIndex,nextActiveIndex;
         if(direction === "next"){
             // console.log('index',index)
@@ -302,9 +411,12 @@ class Slider extends Component{
         return (
             <div className={classes} 
             style={this.state.sliderStyle}
+            onTouchStart={this.handleTouchStart.bind(this)}
+            onTouchMove={this.handleTouchMove.bind(this)}
+            onTouchEnd={this.handleTouchEnd.bind(this)}
             onMouseOver={this.handleMouseOver.bind(this)} 
             onMouseOut={this.handleMouseOut.bind(this)}>
-            <div className="slides" style={this.state.slidesStyle}>
+            <div className="slides" style={this.state.slidesStyle} ref="slides">
             {React.Children.map(this.props.children,this.renderItem.bind(this))}
             </div>
             {this.renderControlNav()}
@@ -315,7 +427,7 @@ class Slider extends Component{
 }
 
 Slider.defaultProps = {
-    directionNav:true,
+    directionNav:false,
     controlNav:true,
     animationType:"scrollX",
     direction:"next",
