@@ -2,7 +2,7 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
-import dom from "../../lib/dom.es6";
+import dom from "../util/dom";
 
 React.initializeTouchEvents(true);
 
@@ -17,7 +17,6 @@ class Slider extends Component{
             direction:null,
             slidesStyle:null,
             slideStyle:null,
-            sliderStyle:null
         }
         this.paused = false;
         this.slides = null;
@@ -43,30 +42,39 @@ class Slider extends Component{
         }
     }
     initialize(){
-        const {animationType} = this.props;
+        const {oriention} = this.props;
         const {activeIndex} = this.state;
+        const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
+        const slidesWidth = slideNode.offsetWidth * this.slides.length;
+        const slidesHeight = slideNode.offsetHeight * this.slides.length;
+        if(slidesWidth === 0 || slidesHeight === 0){
+            return;
+        }
+        var slidesStyle = {
+            width:oriention === "horizontal"?slidesWidth + "px":null,
+            height:oriention === "vertical"?slidesHeight + "px":null,
+        }
         if(this.needPseudoNode() === true){
-            const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
-            const slidesWidth = slideNode.offsetWidth * this.slides.length;
-            const slidesHeight = slideNode.offsetHeight * this.slides.length;
-            const transform = this.props.animationType === "scrollX"?
+            const transform = this.props.oriention === "horizontal"?
                 "translate3D(-"+slideNode.offsetWidth*activeIndex+"px,0,0)":
                 "translate3D(0,-"+slideNode.offsetHeight*activeIndex+"px,0)";
-            this.setState({slidesStyle:{
-                width:animationType === "scrollX"?slidesWidth + "px":null,
-                height:animationType === "scrollY"?slidesHeight + "px":null,
+            slidesStyle = Object.assign({},slidesStyle,{
                 transitionProperty:"transform",
                 transitionTimingFunction:"ease-in-out",
                 transform
-            }});
-            this.setState({slideStyle:{
-                width:animationType === "scrollX"?slideNode.offsetWidth:null,
-                height:animationType === "scrollY"?slideNode.offsetHeight:null
-            }});
-            this.setState({sliderStyle:{
-                height:animationType === "scrollY"?slideNode.offsetHeight:null
-            }});
+            })
         }
+        this.setState({
+            slideStyle:{
+                width:oriention === "horizontal"?slideNode.offsetWidth:null,
+                height:oriention === "vertical"?slideNode.offsetHeight:null
+            },
+            slidesStyle,
+            sliderStyle:{
+                width:oriention === "horizontal"?slideNode.offsetWidth:null,
+                height:oriention === "vertical"?slideNode.offsetHeight:null
+            }
+        });
     }
     slideToNext(){
         const self = this;
@@ -84,7 +92,7 @@ class Slider extends Component{
         },this.props.delay);
     }
     needPseudoNode(){
-        return this.props.animationType === "scrollX" || this.props.animationType === "scrollY";
+        return this.props.effect === "roll";
     }
     play(){
         this.paused = false;
@@ -107,12 +115,20 @@ class Slider extends Component{
         }
     }
     handleTouchStart(e){
+        e && e.preventDefault();
+        if(this.animateSlide() === true){
+            return;
+        }
         const {clientY,clientX} = e.changedTouches[0];
         this.startTouchX = clientX;
         this.startTouchY = clientY;
         // console.log('touch start',e.changedTouches,e.targetTouches,e.touches)
     }
     handleTouchEnd(e){
+        e && e.preventDefault();
+        if(this.animateSlide() === true){
+            return;
+        }
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = this.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(!inTouchableRegion){
@@ -121,9 +137,9 @@ class Slider extends Component{
         }
         const offsetWidth = e.currentTarget.offsetWidth; 
         const offsetHeight = e.currentTarget.offsetHeight; 
-        const {animationType} = this.props;
+        const {oriention} = this.props;
         var offsetY,offsetX;
-        if(animationType === "scrollY"){
+        if(oriention === "vertical"){
             offsetY = Math.abs(clientY) - Math.abs(this.startTouchY);
             const absOfOffsetY = Math.abs(offsetY);
 
@@ -139,7 +155,7 @@ class Slider extends Component{
                 absOfOffsetY > 0 && this.restorePosition();
             }
         }
-        if(animationType === "scrollX"){
+        if(oriention === "horizontal"){
             offsetX = Math.abs(clientX) - Math.abs(this.startTouchX);
             const absOfOffsetX = Math.abs(offsetX);
             // console.log('distance',Math.abs(clientX),Math.abs(this.startTouchX))
@@ -157,6 +173,10 @@ class Slider extends Component{
         }
     }
     handleTouchMove(e){
+        e && e.preventDefault();
+        if(this.animateSlide() === true){
+            return;
+        }
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = this.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(!inTouchableRegion){
@@ -179,15 +199,15 @@ class Slider extends Component{
         slidesNode.style.transitionDuration = ".3s";
     }
     transitionTouch(offsetX,offsetY){
-        const {animationType} = this.props;
+        const {oriention} = this.props;
         const count = this.slides.length;
         const activeIndex = this.getActiveIndex();
         var transform = null;
-        if(animationType === "scrollY" && offsetY !== 0){
+        if(oriention === "vertical" && offsetY !== 0){
             var scrollY = this.state.slideStyle.height * activeIndex;
             scrollY += offsetY;
             transform = "translate3D(0,-"+scrollY+"px,0)";
-        }else if(animationType === "scrollX" && offsetX !== 0){
+        }else if(oriention === "horizontal" && offsetX !== 0){
             var scrollX = this.state.slideStyle.width * activeIndex;
             scrollX += offsetX;
             transform = "translate3D(-"+scrollX+"px,0,0)";
@@ -274,7 +294,8 @@ class Slider extends Component{
         this.setState(Object.assign({},state,{
             slidesStyle
         }),()=>{
-            console.log('index will change',index)
+            index = this.needPseudoNode() === true?index - 1:index; 
+            // console.log('index will change',index)
             this.props.onChange(index);
         })
     }
@@ -282,19 +303,20 @@ class Slider extends Component{
         if(state.prevActiveIndex === null){
             return;
         }
-        const {animationType} = props;
+        const {oriention} = props;
         const count = this.slides.length;
         const activeIndex = state.activeIndex;
+        var slidesStyle = this.state.slidesStyle;
         if(this.needPseudoNode() === true){
-            var transform,slidesStyle = this.state.slidesStyle;
-            var symbol = direction === "prev"?"-":"-";
+            var transform;
+            // var symbol = direction === "prev"?"-":"-";
             // console.log("direction",direction)
-            console.log('prevActiveIndex',state.prevActiveIndex)
-            console.log('activeIndex',activeIndex)
-            console.log('nextActiveIndex',state.nextActiveIndex)
+            // console.log('prevActiveIndex',state.prevActiveIndex)
+            // console.log('activeIndex',activeIndex)
+            // console.log('nextActiveIndex',state.nextActiveIndex)
             // if direction is next and should active is pseudo item then redirect to the first real item
             if(activeIndex === 1&& state.direction === "next"){
-                transform = animationType === "scrollX"?
+                transform = oriention === "horizontal"?
                 "translate3D(-"+this.state.slideStyle.width+"px,0,0)":
                 "translate3D(0,-"+this.state.slideStyle.height+"px,0)";
                 slidesStyle = Object.assign({},slidesStyle,{
@@ -303,7 +325,7 @@ class Slider extends Component{
                 })
             // if direction is prev and should active is pseudo item then redirect to the last real item
             }else if(activeIndex === (count - 2) && state.direction === "prev"){
-                transform = animationType === "scrollX"?
+                transform = oriention === "horizontal"?
                 "translate3D(-"+(this.state.slideStyle.width*activeIndex)+"px,0,0)":
                 "translate3D(0,-"+(this.state.slideStyle.height*activeIndex)+"px,0)";
                 slidesStyle = Object.assign({},slidesStyle,{
@@ -312,12 +334,12 @@ class Slider extends Component{
                 })
             }else{
                 const speed = props.speed / 1000;
-                if(animationType === "scrollX"){
+                if(oriention === "horizontal"){
                     const scrollX = this.state.slideStyle.width * activeIndex;
-                    transform = "translate3D("+ symbol + scrollX +"px,0,0)";
-                }else if(animationType === "scrollY"){
+                    transform = "translate3D(-"+ scrollX +"px,0,0)";
+                }else if(oriention === "vertical"){
                     const scrollY = this.state.slideStyle.height * activeIndex;
-                    transform = "translate3D(0,"+ symbol + scrollY +"px,0)";
+                    transform = "translate3D(0,-"+ scrollY +"px,0)";
                 }
                 // console.log('transform',transform)
                 slidesStyle = Object.assign({},slidesStyle,{
@@ -327,6 +349,7 @@ class Slider extends Component{
             }
             return slidesStyle;
         }
+        return slidesStyle;
     }
     componentDidUpdate(nextProps,nextState){
         const count = this.slides.length;
@@ -341,9 +364,9 @@ class Slider extends Component{
                 setTimeout(this.next.bind(this),nextTick)
             }else if(this.getActiveIndex() === 0 
                 && this.state.direction === "prev" 
-                && this.state.activeIndex !== nextState.activeIndex
+                && this.state.activeIndex === nextState.activeIndex
                 ){
-                console.log('updated ---',nextState.activeIndex,this.state.activeIndex)
+                // console.log('updated ---',nextState.activeIndex,this.state.activeIndex)
                 // if direction is prev and should active is pseudo item then redirect to the last real item
                 setTimeout(this.prev.bind(this),nextTick)
                 // console.log('updated',this.state.activeIndex)
@@ -353,7 +376,7 @@ class Slider extends Component{
     getActiveIndex(){
         return this.props.activeIndex !== undefined ? this.props.activeIndex : this.state.activeIndex;
     }
-    renderItem(child,index){
+    renderSlide(child,index){
         const activeIndex = this.getActiveIndex();
         const isActive = (index === activeIndex);
         const isPrevActive = this.state.prevActiveIndex !== null && this.state.prevActiveIndex === index;
@@ -366,8 +389,13 @@ class Slider extends Component{
             style:this.state.slideStyle,
             animateOut:isPrevActive,
             animateIn:isActive && this.state.prevActiveIndex !== null,
+            animateSpeed:this.props.speed,
+            animateSlide:this.animateSlide(),
             direction:this.state.direction
         })
+    }
+    animateSlide(){
+        return this.props.effect === "fade";
     }
     renderDirectionNav(){
         if(this.props.directionNav === true){
@@ -417,20 +445,25 @@ class Slider extends Component{
         return null
     }
     render(){
-        var classes = classNames({
-            "slide":true
-        });
-        // console.log('render',this.state.activeIndex)
+        var {sliderStyle,slidesStyle} = this.state;
+        const classes = classNames("slider",{
+            "slider-fade":this.props.effect === "fade"
+        })
+        if(this.animateSlide()){
+            sliderStyle = null;
+            slidesStyle = null;
+        }
+        // console.log('render slider')
         return (
             <div className={classes} 
-            style={this.state.sliderStyle}
+            style={sliderStyle}
             onTouchStart={this.handleTouchStart.bind(this)}
             onTouchMove={this.handleTouchMove.bind(this)}
             onTouchEnd={this.handleTouchEnd.bind(this)}
             onMouseOver={this.handleMouseOver.bind(this)} 
             onMouseOut={this.handleMouseOut.bind(this)}>
-            <div className="slides" style={this.state.slidesStyle} ref="slides">
-            {React.Children.map(this.slides,this.renderItem.bind(this))}
+            <div className="slides" style={slidesStyle} ref="slides">
+            {React.Children.map(this.slides,this.renderSlide.bind(this))}
             </div>
             {this.renderControlNav()}
             {this.renderDirectionNav()}
@@ -442,12 +475,14 @@ class Slider extends Component{
 Slider.defaultProps = {
     directionNav:false,
     controlNav:true,
-    animationType:"scrollX",
+    effect:"roll",
     direction:"next",
+    reverse:false,
+    oriention:"horizontal", //vertical
     autoPlay:false,
     loop:true,
-    speed:500,
-    delay:3000,
+    speed:300,
+    delay:5000,
     pauseOnHover:true,
     onChange:function(){}
 }

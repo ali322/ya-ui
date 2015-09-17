@@ -1,20 +1,32 @@
 'use strict'
 module.exports = {
   offset: function(element) {
-        if (element) {
+        if (!element) {
+          return null;
+        } 
+        var top = 0, left = 0;  
+        if ("getBoundingClientRect" in document.documentElement) {
           var rect = element.getBoundingClientRect();
-          var body = document.body;
-          var clientTop = element.clientTop || body.clientTop || 0;
-          var clientLeft = element.clientLeft || body.clientLeft || 0;
-          var scrollTop = window.pageYOffset || element.scrollTop;
-          var scrollLeft = window.pageXOffset || element.scrollLeft;
+          var doc = element.ownerDocument;
+          var body = doc.body;
+          var docEl = doc.documentElement;
+          var clientTop = docEl.clientTop || body.clientTop || 0;
+          var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+          var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+          var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
     
           return {
             top: rect.top + scrollTop - clientTop,
             left: rect.left + scrollLeft - clientLeft
           };
+        }else{
+          do{  
+            top += element.offsetTop || 0;  
+            left += element.offsetLeft || 0;  
+            element = element.offsetParent;  
+          }while(element);  
+          return {top,left};
         }
-        return null;
     },
     ownerWindow(element){
         const doc = (element && element.ownerDocument) || document;

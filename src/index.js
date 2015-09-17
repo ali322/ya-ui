@@ -10,6 +10,10 @@ import Sticky from "./component/sticky.jsx";
 import Popup from "./component/popup.jsx";
 import Dropdown from "./component/dropdown.jsx";
 import Checkbox from "./component/checkbox.jsx";
+import Slider from "./component/slider/slider.jsx";
+import Slide from "./component/slider/slide.jsx";
+import DatetimePicker from "./component/datetimepicker/datetimepicker.jsx";
+import DatetimeInput from "./component/datetimepicker/datetimeinput.jsx";
 
 require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
@@ -27,7 +31,11 @@ const yaui = {
         Sticky,
         Popup,
         LazyLoad,
-        Image
+        Image,
+        Slider,
+        Slide,
+        DatetimePicker,
+        DatetimeInput
     }
 };
 export default yaui;
