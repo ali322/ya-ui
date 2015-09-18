@@ -14,6 +14,7 @@ import Slider from "./component/slider/slider.jsx";
 import Slide from "./component/slider/slide.jsx";
 import DatetimePicker from "./component/datetimepicker/datetimepicker.jsx";
 import DatetimeInput from "./component/datetimepicker/datetimeinput.jsx";
+import NumberPicker from "./component/numberpicker.jsx";
 
 require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
@@ -35,7 +36,8 @@ const yaui = {
         Slider,
         Slide,
         DatetimePicker,
-        DatetimeInput
+        DatetimeInput,
+        NumberPicker
     }
 };
 export default yaui;
