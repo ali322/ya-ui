@@ -1,0 +1,38 @@
+.alert {
+    position: fixed;
+    top: 70%;
+    left: 50%;
+    padding: .5rem 1rem;
+    margin: 0 0 0 -25%;
+    color: #F1F1F1;
+    background: rgba(0, 0, 0, .75);
+    text-align: center;
+    border-radius: .25rem;
+    display: none;
+    &.active {
+        display: block;
+        animation: moveUp .3s ease-in-out;
+    }
+}
+
+@keyframes moveUp {
+    from {
+        transform: translateY(.15rem);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes moveDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(.25rem);
+        opacity: 0;
+    }
+}
