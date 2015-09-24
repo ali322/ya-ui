@@ -17,6 +17,7 @@ import DatetimeInput from "./component/datetimepicker/datetimeinput.jsx";
 import NumberPicker from "./component/numberpicker.jsx";
 import Alert from "./component/alert/alert.jsx";
 import PullHook from "./component/pullhook/pullhook.jsx";
+import Checkbox from "./component/form/checkbox.jsx";
 
 require("normalize.css");
 // require("font-awesome/css/font-awesome.css");
@@ -41,7 +42,8 @@ const yaui = {
         DatetimeInput,
         NumberPicker,
         Alert,
-        PullHook
+        PullHook,
+        Checkbox
     }
 };
 export default yaui;
