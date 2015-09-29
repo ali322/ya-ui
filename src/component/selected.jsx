@@ -127,6 +127,7 @@ class Selected extends Component{
 Selected.defaultProps = {
     delimiter:",",
     placeholder:"点击请选择...",
+    infinity:false,
     onChange:function(){},
     optionFilter:(filterText,option)=>{
         return (option.label.toLowerCase().indexOf(filterText) > -1);
