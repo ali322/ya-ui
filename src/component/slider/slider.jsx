@@ -2,7 +2,7 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
-import dom from "../util/dom";
+import dom from "../../lib/dom.es6";
 
 React.initializeTouchEvents(true);
 
@@ -25,25 +25,12 @@ class Slider extends Component{
         this.initialize();
         this.props.autoPlay && this.slideToNext();
     }
-    componentWillMount(){
-        this.slides = this.props.children;
-        if(this.needPseudoNode() === true){
-            const count = this.slides.length;
-            const pseudoFirstNode = React.cloneElement(this.slides[0],{
-                key:"pseudo-first",
-                pseudo:true
-            });
-            const pseudoLastNode = React.cloneElement(this.slides[count-1],{
-                key:"pseudo-last",
-                pseudo:true
-            });
-            this.slides.push(pseudoFirstNode);
-            this.slides.unshift(pseudoLastNode);
-        }
-    }
     initialize(){
         const {oriention} = this.props;
-        const {activeIndex} = this.state;
+        var {activeIndex} = this.state;
+        if(this.props.defaultActiveIndex !== undefined){
+            activeIndex = this.props.defaultActiveIndex;
+        }
         const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
         const slidesWidth = slideNode.offsetWidth * this.slides.length;
         const slidesHeight = slideNode.offsetHeight * this.slides.length;
@@ -54,7 +41,7 @@ class Slider extends Component{
             width:oriention === "horizontal"?slidesWidth + "px":null,
             height:oriention === "vertical"?slidesHeight + "px":null,
         }
-        if(this.needPseudoNode() === true){
+        if(this.props.effect === "roll"){
             const transform = this.props.oriention === "horizontal"?
                 "translate3D(-"+slideNode.offsetWidth*activeIndex+"px,0,0)":
                 "translate3D(0,-"+slideNode.offsetHeight*activeIndex+"px,0)";
@@ -64,12 +51,14 @@ class Slider extends Component{
                 transform
             })
         }
+
         this.setState({
             slideStyle:{
                 width:oriention === "horizontal"?slideNode.offsetWidth:null,
                 height:oriention === "vertical"?slideNode.offsetHeight:null
             },
             slidesStyle,
+            activeIndex,
             sliderStyle:{
                 width:oriention === "horizontal"?slideNode.offsetWidth:null,
                 height:oriention === "vertical"?slideNode.offsetHeight:null
@@ -92,7 +81,7 @@ class Slider extends Component{
         },this.props.delay);
     }
     needPseudoNode(){
-        return this.props.effect === "roll";
+        return this.props.effect === "roll" && this.props.loop === true;
     }
     play(){
         this.paused = false;
@@ -135,14 +124,13 @@ class Slider extends Component{
             // e.preventDefault();
             // return;
         }
-        const offsetWidth = e.currentTarget.offsetWidth; 
-        const offsetHeight = e.currentTarget.offsetHeight; 
+        const offsetWidth = this.state.slideStyle.width; 
+        const offsetHeight = this.state.slideStyle.height; 
         const {oriention} = this.props;
         var offsetY,offsetX;
         if(oriention === "vertical"){
             offsetY = Math.abs(clientY) - Math.abs(this.startTouchY);
             const absOfOffsetY = Math.abs(offsetY);
-
             if(absOfOffsetY >= offsetHeight / 2){
                 if(offsetY < 0){
                     // console.log('next Y')
@@ -159,7 +147,7 @@ class Slider extends Component{
             offsetX = Math.abs(clientX) - Math.abs(this.startTouchX);
             const absOfOffsetX = Math.abs(offsetX);
             // console.log('distance',Math.abs(clientX),Math.abs(this.startTouchX))
-            if(absOfOffsetX >= offsetHeight / 2){
+            if(absOfOffsetX >= offsetWidth / 2){
                 if(offsetX < 0){
                     // console.log('next X');
                     setTimeout(this.next.bind(this),100);
@@ -186,6 +174,7 @@ class Slider extends Component{
 
         const offsetX = Math.abs(this.startTouchX) - Math.abs(clientX);
         const offsetY = Math.abs(this.startTouchY) - Math.abs(clientY);
+
         // console.log('currentX',clientX,'currentY',clientY)
         // console.log('lastX',this.lastMoveX,'lastY',this.lastMoveY)
         this.transitionTouch(offsetX,offsetY)
@@ -205,10 +194,20 @@ class Slider extends Component{
         var transform = null;
         if(oriention === "vertical" && offsetY !== 0){
             var scrollY = this.state.slideStyle.height * activeIndex;
+            var maxOffsetY = 1.25 * this.state.slideStyle.height;
+            // console.log('maxOffsetY',maxOffsetY,offsetY)
+            if(Math.abs(offsetY) > maxOffsetY){
+                // console.log('out of maxOffsetY',offsetY)
+                return;
+            }
             scrollY += offsetY;
             transform = "translate3D(0,-"+scrollY+"px,0)";
         }else if(oriention === "horizontal" && offsetX !== 0){
             var scrollX = this.state.slideStyle.width * activeIndex;
+            var maxOffsetX = 1.25 * this.state.slideStyle.width;
+            if(offsetX > maxOffsetX){
+                return;
+            }
             scrollX += offsetX;
             transform = "translate3D(-"+scrollX+"px,0,0)";
         }
@@ -444,7 +443,24 @@ class Slider extends Component{
         }
         return null
     }
+    processSlides(){
+        this.slides = this.props.children;
+        if(this.needPseudoNode() === true){
+            const count = this.slides.length;
+            const pseudoFirstNode = React.cloneElement(this.slides[0],{
+                key:"pseudo-first",
+                pseudo:true
+            });
+            const pseudoLastNode = React.cloneElement(this.slides[count-1],{
+                key:"pseudo-last",
+                pseudo:true
+            });
+            this.slides.push(pseudoFirstNode);
+            this.slides.unshift(pseudoLastNode);
+        }
+    }
     render(){
+        this.processSlides();
         var {sliderStyle,slidesStyle} = this.state;
         const classes = classNames("slider",{
             "slider-fade":this.props.effect === "fade"
@@ -476,6 +492,7 @@ Slider.defaultProps = {
     directionNav:false,
     controlNav:true,
     effect:"roll",
+    infinity:true,
     direction:"next",
     reverse:false,
     oriention:"horizontal", //vertical
