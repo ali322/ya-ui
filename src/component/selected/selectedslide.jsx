@@ -15,17 +15,12 @@ class SelectedSlide extends Component{
             value:this.props.value,
         }
     }
-    getValueArray(){
-        return this.state.value ? this.state.value.split(this.props.delimiter):[];
-    }
-    getActiveIndexArray(){
-        return this.state.activeIndex ? this.state.activeIndex.split(this.props.delimiter):[];
-    }
     getValue(){
         return this.state.value;
     }
     hasValue(value){
-        return this.getValueArray().indexOf(value) > -1;
+        return value === this.state.value;
+        // return this.getValueArray().indexOf(value) > -1;
     }
     setValue(value,activeIndex){
         this.setState({
@@ -44,22 +39,8 @@ class SelectedSlide extends Component{
             }
         })
         var selectedValue = checkedOption.value;
-
-        if(this.props.multiple){
-            var values = this.getValueArray();
-            var activeIndexes = this.getActiveIndexArray();
-            if(this.hasValue(selectedValue)){
-                values.splice(values.indexOf(selectedValue),1);
-                activeIndexes.splice(activeIndex,1)
-            }else{
-                values.push(selectedValue);
-                activeIndexes.push(activeIndex);
-            }
-            this.setValue(values.join(this.props.delimiter),activeIndexes.join(this.props.delimiter));
-        }else{
-            this.setValue(selectedValue,activeIndex);
+        this.setValue(selectedValue,activeIndex);
             // this.refs.dropdown.setDropdownState(false);
-        }
     }
     renderStatus(labels){
         return labels.map((label)=>{
@@ -70,7 +51,7 @@ class SelectedSlide extends Component{
     }
     renderItem(){
         var selectedLabels = [];
-        var activeIndexes = [];
+        var activeIndex;
         var items = [];
         var groupHeader;
         const {selectedIcon,unselectedIcon} = this.props;
@@ -80,7 +61,7 @@ class SelectedSlide extends Component{
             const checkedIcon = checked?<Icon icon={selectedIcon}/>:
             unselectedIcon === null?null:<Icon icon={unselectedIcon}/>;
             checked && selectedLabels.push(option.label);
-            checked && activeIndexes.push(i);
+            checked && (activeIndex = i);
             items.push(
                 <Slide className={checkedClass} 
                 key={"item-"+i} >
@@ -89,9 +70,9 @@ class SelectedSlide extends Component{
                 </Slide>
             );
         });
+        // console.log('selectedLabels',selectedLabels)
 
-
-        return {selectedLabels,activeIndexes,items};
+        return {selectedLabels,activeIndex,items};
     }
     redrawSlider(){
         const slider = this.refs.dropdownSlide;
@@ -100,7 +81,7 @@ class SelectedSlide extends Component{
     render(){
         const classes = classNames(this.props.className,"selected","selected-slide");
         
-        const {items,selectedLabels,activeIndexes} = this.renderItem();
+        const {items,selectedLabels,activeIndex} = this.renderItem();
 
         const status = (
             <span className="status">{selectedLabels.length > 0?
@@ -114,7 +95,6 @@ class SelectedSlide extends Component{
         const itemsStyle = {
             maxHeight:this.props.maxHeight
         }
-        // console.log('activeIndexes',activeIndexes[0])
         return (
             <Dropdown className={classes} title={status} 
             onOpen={this.redrawSlider.bind(this)}
@@ -125,7 +105,7 @@ class SelectedSlide extends Component{
             loop={false}
             onChange={this.handleCheck.bind(this)}
             slideTransitionCount={5}
-            defaultActiveIndex={activeIndexes[0]}
+            defaultActiveIndex={activeIndex}
             oriention="vertical" ref="dropdownSlide">{items}</Slider>
             <input type="hidden" value={this.state.value}/>
             </Dropdown>
@@ -134,14 +114,12 @@ class SelectedSlide extends Component{
 }
 
 SelectedSlide.defaultProps = {
-    delimiter:",",
     placeholder:"点击请选择...",
     selectedIcon:"ok",
     unselectedIcon:null,
     maxHeight:null,
     minWidth:null,
     infinity:false,
-    multiple:false,
     onChange:function(){}
 };
 
