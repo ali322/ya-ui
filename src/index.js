@@ -4,6 +4,7 @@ import Dialog from "./component/dialog.jsx";
 import Messager from "./component/messager.jsx";
 import Loading from "./component/loading.jsx";
 import Selected from "./component/selected.jsx";
+import SelectedSlide from "./component/selectedslide.jsx";
 import LazyLoad from "./component/lazyload.jsx";
 import Image from "./component/core/image.jsx";
 import Sticky from "./component/sticky.jsx";
@@ -30,6 +31,7 @@ const yaui = {
         Messager,
         Loading,
         Selected,
+        SelectedSlide,
         Dropdown,
         Checkbox,
         Sticky,
