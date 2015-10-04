@@ -1,7 +1,7 @@
 'use strict'
 import React from "react";
 import classNames from "classnames";
-import Dom from "../util/dom";
+import dom from "../lib/dom.es6";
 
 class GoTop extends React.Component{
     constructor(props){
@@ -9,7 +9,7 @@ class GoTop extends React.Component{
         this.state = {active:false};
     }
     updateVisible(){
-        var scrollTop = Dom.scrollTop(window);
+        var scrollTop = dom.scrollTop(window);
         if(scrollTop > 50){
             this.setState({active:true});
         }else{
@@ -24,11 +24,11 @@ class GoTop extends React.Component{
     }
     backToTop(){
         var smoothScroll = function(){
-            var scrollTop = Dom.scrollTop(window);
+            var scrollTop = dom.scrollTop(window);
             if(scrollTop <= 0){
                 clearInterval(tickTock);
             }
-            Dom.scrollTop(window,scrollTop/1.1);
+            dom.scrollTop(window,scrollTop/1.1);
         }
         var tickTock = setInterval(smoothScroll,10)
         // console.log(scrollFunc);
