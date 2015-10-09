@@ -8,9 +8,8 @@ export class Accordion extends Component{
     constructor(props){
         super(props);
         this.state = {
-            activeIndex:props.activeIndex !== undefined?props.activeIndex:0,
-            prevIndex:null,
-            itemHeight:null
+            activeIndex:props.activeIndex !== undefined?props.activeIndex:null,
+            prevIndex:null
         }
     }
     componentWillReceiveProps(nextProps){
@@ -22,15 +21,11 @@ export class Accordion extends Component{
             })
         }
     }
-    componentDidMount(){
-        const activeItemNode = React.findDOMNode(this.refs.activeItem);
-        this.setState({
-            itemHeight:activeItemNode.offsetHeight
-        })
-    }
     handleSelect(index,e){
         e && e.preventDefault();
         const prevIndex = this.state.activeIndex;
+        // if select again then collapse else expand
+        index = (prevIndex === index) ? null:index;
         this.setState({
             activeIndex:index,
             prevIndex
@@ -42,9 +37,7 @@ export class Accordion extends Component{
         const active = (index === this.state.activeIndex);
         return React.cloneElement(child,{
             active,
-            ref:active ? "activeItem":"inactiveItem",
             key:child.key ? child.key:index,
-            nodeHeight:this.state.itemHeight,
             handleSelect:this.handleSelect.bind(this,index)
         })
     }
@@ -68,13 +61,14 @@ export class AccordionItem extends Component{
     }
     componentDidUpdate(prevProps){
         const {active} = this.props;
+        const self = this;
+        const element = React.findDOMNode(this.refs.accordionContent);
+        var initialHeight,targetHeight,lastHeight;
         if(active === true && prevProps.active === false){
-            const element = React.findDOMNode(this.refs.accordionContent);
-            const targetHeight = element.offsetHeight;
-            const initialHeight = 0;
-            const self = this;
-            // console.log('targetHeight',targetHeight)
-            var lastHeight = initialHeight;
+            targetHeight = element.offsetHeight;
+            initialHeight = 0;
+            console.log('expand')
+            lastHeight = initialHeight;
             rAF(function interval(){
                 lastHeight += 2;
                 // console.log('lastHeight',lastHeight)
@@ -84,6 +78,38 @@ export class AccordionItem extends Component{
                     }
                 })
                 if(lastHeight >= targetHeight){
+                    self.setState({
+                        ddStyle:{
+                            height:targetHeight
+                        }
+                    })
+                    return false;
+                }else{
+                    rAF(interval)
+                }
+            })
+        }
+        if(active === false && prevProps.active === true){
+            targetHeight = 0;
+            initialHeight = element.offsetHeight;
+            console.log('collapse')
+            lastHeight = 56;
+            rAF(function interval(){
+                lastHeight -= 2;
+                // console.log('lastHeight',lastHeight)
+                self.setState({
+                    ddStyle:{
+                        height:lastHeight,
+                        display:"block"
+                    }
+                })
+                if(lastHeight <= targetHeight){
+                    self.setState({
+                        ddStyle:{
+                            // height:targetHeight,
+                            // display:"none"
+                        }
+                    })
                     return false;
                 }else{
                     rAF(interval)
@@ -100,8 +126,7 @@ export class AccordionItem extends Component{
         return (
             <dl className={classes} key={"accordion-item-" + key}>
                 <dt onClick={handleSelect}>{title}</dt>
-                <dd ref="accordionContent" style={this.state.ddStyle}>
-                <div className="accordion-content">{this.props.children}</div></dd>
+                <dd ref="accordionContent" style={this.state.ddStyle}><div className="accordion-content">{this.props.children}</div></dd>
             </dl>
         )
     }

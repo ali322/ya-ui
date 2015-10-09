@@ -3,31 +3,34 @@
     background: #FFF;
     margin-bottom: 1rem;
     .accordion-item {
-        &:last-child {
-            dt {
-                border-bottom: 0 none;
-            }
+        line-height:0;
+        font-size:0;
+        border-top:.05rem solid #DEDEDE;
+        &:first-child {
+            border-top:0 none;
         }
         dt {
             padding: .4rem .5rem;
             line-height: 1.2rem;
-            border-bottom: .05rem solid #DEDEDE;
+            cursor: pointer;
+            font-size:.7rem;
         }
         dd {
             display: none;
+            overflow:hidden;
+            .accordion-content {
+                font-size:.7rem;
+                line-height:1rem;
+                padding: .4rem .5rem;
+            }
         }
         &.active {
             dt {
                 background: #F5F5F5;
-                border-bottom: .05rem solid #DEDEDE;
+                box-shadow:.05rem .05rem .05rem #DEDEDE;
             }
             dd {
                 display: block;
-                overflow: hidden;
-                .accordion-content {
-                    padding: .4rem .5rem;
-                }
-                border-bottom: .05rem solid #DEDEDE;
             }
         }
     }
