@@ -3,6 +3,7 @@
 import React,{Component} from "react";
 import classNames from "classnames";
 import rAF from "../../lib/requestAnimationFrame";
+import Icon from "../core/icon.jsx";
 
 export class Accordion extends Component{
     constructor(props){
@@ -122,10 +123,14 @@ export class AccordionItem extends Component{
         const classes = classNames("accordion-item",{
             active
         });
+        var icon = (<Icon icon="right-open"/>);
+        if(active === true){
+            icon = (<Icon icon="up-open"/>);
+        }
         // console.log('ddStyle',this.state.ddStyle)
         return (
             <dl className={classes} key={"accordion-item-" + key}>
-                <dt onClick={handleSelect}>{title}</dt>
+                <dt onClick={handleSelect}>{title}{icon}</dt>
                 <dd ref="accordionContent" style={this.state.ddStyle}><div className="accordion-content">{this.props.children}</div></dd>
             </dl>
         )

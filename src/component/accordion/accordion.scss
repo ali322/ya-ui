@@ -14,6 +14,10 @@
             line-height: 1.2rem;
             cursor: pointer;
             font-size:.7rem;
+            &>.iconfont{
+                position:absolute;
+                right:2%;
+            }
         }
         dd {
             display: none;
