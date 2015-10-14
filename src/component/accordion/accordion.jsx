@@ -68,7 +68,7 @@ export class AccordionItem extends Component{
         if(active === true && prevProps.active === false){
             targetHeight = element.offsetHeight;
             initialHeight = 0;
-            console.log('expand')
+            // console.log('expand')
             lastHeight = initialHeight;
             rAF(function interval(){
                 lastHeight += 2;
@@ -93,7 +93,7 @@ export class AccordionItem extends Component{
         if(active === false && prevProps.active === true){
             targetHeight = 0;
             initialHeight = element.offsetHeight;
-            console.log('collapse')
+            // console.log('collapse')
             lastHeight = 56;
             rAF(function interval(){
                 lastHeight -= 2;
@@ -124,9 +124,9 @@ export class AccordionItem extends Component{
             active
         });
         var icon = (<Icon icon="right-open"/>);
-        if(active === true){
-            icon = (<Icon icon="up-open"/>);
-        }
+        // if(active === true){
+        //     icon = (<Icon icon="up-open"/>);
+        // }
         // console.log('ddStyle',this.state.ddStyle)
         return (
             <dl className={classes} key={"accordion-item-" + key}>

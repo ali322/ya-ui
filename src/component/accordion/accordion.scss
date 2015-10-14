@@ -14,9 +14,16 @@
             line-height: 1.2rem;
             cursor: pointer;
             font-size:.7rem;
+            position:relative;
             &>.iconfont{
                 position:absolute;
-                right:2%;
+                right:3%;
+                top:50%;
+                font-size:.7rem;
+                margin-top:-0.4rem;
+                line-height:1;
+                transform:rotate(0);
+                transition:transform .3s linear;
             }
         }
         dd {
@@ -32,6 +39,9 @@
             dt {
                 background: #F5F5F5;
                 box-shadow:.05rem .05rem .05rem #DEDEDE;
+                &>.iconfont{
+                    transform:rotate(90deg);
+                }
             }
             dd {
                 display: block;
