@@ -384,7 +384,7 @@ class Slider extends Component{
             active:isActive,
             prev:isPrevActive,
             next:isNextActive,
-            key:child.key ? child.key:index,
+            key:child.key?child.key:index,
             style:this.state.slideStyle,
             animateOut:isPrevActive,
             animateIn:isActive && this.state.prevActiveIndex !== null,
@@ -459,8 +459,10 @@ class Slider extends Component{
             this.slides.unshift(pseudoLastNode);
         }
     }
-    render(){
+    componentWillMount(){
         this.processSlides();
+    }
+    render(){
         var {sliderStyle,slidesStyle} = this.state;
         const classes = classNames("slider",{
             "slider-fade":this.props.effect === "fade"
@@ -469,7 +471,7 @@ class Slider extends Component{
             sliderStyle = null;
             slidesStyle = null;
         }
-        // console.log('render slider')
+        // console.log('render slider',this.slides.length)
         return (
             <div className={classes} 
             style={sliderStyle}
