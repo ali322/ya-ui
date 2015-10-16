@@ -5,11 +5,11 @@ import classNames from "classnames";
 class Popup extends Component{
     componentWillReceiveProps(nextProps){
         if(nextProps.active !== this.props.active){
-            console.log(nextProps);            
+            // console.log(nextProps);            
             if(nextProps.active === true){
-                document.body.style.overflow = "hidden";
+                document.body.style["overflow-y"] = "hidden";
             }else{
-                document.body.style.overflow = "auto";
+                document.body.style["overflow-y"] = "auto";
             }
         }
     }
