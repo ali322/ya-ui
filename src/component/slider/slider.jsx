@@ -31,9 +31,12 @@ class Slider extends Component{
         if(this.props.defaultActiveIndex !== undefined){
             activeIndex = this.props.defaultActiveIndex;
         }
-        const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
-        const slidesWidth = slideNode.offsetWidth * this.slides.length;
-        const slidesHeight = slideNode.offsetHeight * this.slides.length;
+        // const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
+        const slideNode = React.findDOMNode(this);
+        const slideNodeWidth = slideNode.offsetWidth;
+        const slideNodeHeight = slideNode.querySelector(".slides").firstChild.offsetHeight
+        const slidesWidth = slideNodeWidth * this.slides.length;
+        const slidesHeight = slideNodeHeight * this.slides.length;
         if(slidesWidth === 0 || slidesHeight === 0){
             return;
         }
@@ -43,25 +46,26 @@ class Slider extends Component{
         }
         if(this.props.effect === "roll"){
             const transform = this.props.oriention === "horizontal"?
-                "translate3D(-"+slideNode.offsetWidth*activeIndex+"px,0,0)":
-                "translate3D(0,-"+slideNode.offsetHeight*activeIndex+"px,0)";
+                "translate3D(-"+slideNodeWidth*activeIndex+"px,0,0)":
+                "translate3D(0,-"+slideNodeHeight*activeIndex+"px,0)";
             slidesStyle = Object.assign({},slidesStyle,{
                 transitionProperty:"transform",
                 transitionTimingFunction:"ease-in-out",
                 transform
             })
         }
-
+        // console.log('currentStyle',slideNodeHeight)
+        // const computedStyle = window.getComputedStyle(slideNode,null);
         this.setState({
             slideStyle:{
-                width:oriention === "horizontal"?slideNode.offsetWidth:null,
-                height:oriention === "vertical"?slideNode.offsetHeight:null
+                width:oriention === "horizontal"?slideNodeWidth:null,
+                height:oriention === "vertical"?slideNodeHeight:null
             },
             slidesStyle,
             activeIndex,
             sliderStyle:{
-                width:oriention === "horizontal"?slideNode.offsetWidth:null,
-                height:oriention === "vertical"?slideNode.offsetHeight:null
+                width:oriention === "horizontal"?slideNodeWidth:null,
+                height:oriention === "vertical"?slideNodeHeight:null
             }
         });
     }
@@ -350,22 +354,25 @@ class Slider extends Component{
         }
         return slidesStyle;
     }
-    componentDidUpdate(nextProps,nextState){
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps.children.length !== this.props.children.length){
+            this.processSlides();
+        }
         const count = this.slides.length;
         const nextTick = this.props.speed + 10;
         if(this.needPseudoNode() === true){
-            if(nextState.activeIndex === (count - 1) 
+            if(prevState.activeIndex === (count - 1) 
                 && this.state.direction === "next"
-                && this.state.activeIndex === nextState.activeIndex
+                && this.state.activeIndex === prevState.activeIndex
                 // && this.state.prevActiveIndex !== 0
                 ){
                 // if direction is next and should active is pseudo item then redirect to the first real item
                 setTimeout(this.next.bind(this),nextTick)
             }else if(this.getActiveIndex() === 0 
                 && this.state.direction === "prev" 
-                && this.state.activeIndex === nextState.activeIndex
+                && this.state.activeIndex === prevState.activeIndex
                 ){
-                // console.log('updated ---',nextState.activeIndex,this.state.activeIndex)
+                // console.log('updated ---',prevState.activeIndex,this.state.activeIndex)
                 // if direction is prev and should active is pseudo item then redirect to the last real item
                 setTimeout(this.prev.bind(this),nextTick)
                 // console.log('updated',this.state.activeIndex)
@@ -463,7 +470,7 @@ class Slider extends Component{
         this.processSlides();
     }
     render(){
-        var {sliderStyle,slidesStyle} = this.state;
+        var {sliderStyle,slidesStyle,slideStyle} = this.state;
         const classes = classNames("slider",{
             "slider-fade":this.props.effect === "fade"
         })
