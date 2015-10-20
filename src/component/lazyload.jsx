@@ -1,7 +1,7 @@
 'use strict'
 
-import React,{Component,addons} from "react/addons";
-import util from "../../common/util.es6";
+import React,{Component,addons} from "react";
+import util from "../../lib/util.es6";
 
 const listeners = [];
 
@@ -48,7 +48,7 @@ class LazyLoad extends Component{
     }
     render(){
         return (
-            addons.cloneWithProps(this.props.children,{
+            React.cloneElement(this.props.children,{
                 visible:this.state.visible
             })
         )
