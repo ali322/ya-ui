@@ -29,6 +29,14 @@ class Selected extends Component{
             this.props.onChange(value);
         })
     }
+    isMounted(component){
+        try{
+            React.findDOMNode(component);
+            return true
+        }catch(e){
+            return false
+        }
+    }
     handleCheck(option,e){
         e && e.preventDefault();
         var selectedValue = option.value;
@@ -43,7 +51,9 @@ class Selected extends Component{
             this.setValue(values.join(this.props.delimiter));
         }else{
             this.setValue(selectedValue);
-            this.refs.dropdown.setDropdownState(false);
+            // if(this.refs.dropdown.isMounted){
+                this.refs.dropdown.setDropdownState(false);
+            // }
         }
     }
     handleFilterInput(e){
@@ -124,16 +134,18 @@ class Selected extends Component{
             maxHeight:this.props.maxHeight
         }
         return (
-            <Dropdown className={classes} title={status} ref="dropdown" {...this.props}>
-            {this.props.filterInput?(
-                <div className="filter-input">
-                <input type="text" onChange={this.handleFilterInput.bind(this)} ref="filterInput"/>
-                <Icon icon="search"/>
-                </div>
-            ):null}
-            <ul className="selected-items" style={itemsStyle}>{items}</ul>
-            <input type="hidden" value={this.state.value}/>
-            </Dropdown>
+            <div>
+                <Dropdown className={classes} title={status} ref="dropdown" {...this.props}>
+                {this.props.filterInput?(
+                    <div className="filter-input">
+                    <input type="text" onChange={this.handleFilterInput.bind(this)} ref="filterInput"/>
+                    <Icon icon="search"/>
+                    </div>
+                ):null}
+                <ul className="selected-items" style={itemsStyle}>{items}</ul>
+                <input type="hidden" value={this.state.value}/>
+                </Dropdown>
+            </div>
         )
     }
 }
