@@ -8,31 +8,13 @@
     background: rgba(0, 0, 0, .75);
     text-align: center;
     border-radius: .25rem;
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0) scale(0.85);
+    transition: opacity .3s linear, transform .3s linear, visibility .3s linear,height .5s linear;
     &.active {
-        display: block;
-        animation: moveUp .3s ease-in-out;
-    }
-}
-
-@keyframes moveUp {
-    from {
-        transform: translateY(.15rem);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes moveDown {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(.25rem);
-        opacity: 0;
+        visibility: visible;
+        opacity: .85;
+        transform: translateY(-0.25rem) scale(1);
     }
 }
