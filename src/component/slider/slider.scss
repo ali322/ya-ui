@@ -4,6 +4,7 @@ $pink-color:#e30083;
     width: 100%;
     position: relative;
     overflow-x:hidden;
+    line-height:0;
     .control-nav {
         position: absolute;
         height: .5rem;
@@ -60,10 +61,11 @@ $pink-color:#e30083;
     overflow: hidden;
     width: 100%;
     position: relative;
+    line-height:0;
     &>.slide {
+        display:table-cell;
         width: 100%;
-        font-size: 0;
-        display: table-cell;
+        font-size:0;
         line-height: 0;
         &.active {
             opacity: 1;

@@ -76,13 +76,13 @@ class SelectedSlide extends Component{
     }
     redrawSlider(){
         const slider = this.refs.dropdownSlide;
+        // if(slider.isMounted){
         slider.initialize();
+        // }
     }
     render(){
         const classes = classNames(this.props.className,"selected","selected-slide");
-        
         const {items,selectedLabels,activeIndex} = this.renderItem();
-
         const status = (
             <span className="status">{selectedLabels.length > 0?
             (selectedLabels.length > 1?this.renderStatus(selectedLabels):
@@ -91,10 +91,7 @@ class SelectedSlide extends Component{
             )
             }</span>
         )
-
-        const itemsStyle = {
-            maxHeight:this.props.maxHeight
-        }
+        // console.log('items',this.props.options,items)
         return (
             <Dropdown className={classes} title={status} 
             onOpen={this.redrawSlider.bind(this)}
@@ -104,7 +101,6 @@ class SelectedSlide extends Component{
             autoPlay={false}
             loop={false}
             onChange={this.handleCheck.bind(this)}
-            slideTransitionCount={5}
             defaultActiveIndex={activeIndex}
             oriention="vertical" ref="dropdownSlide">{items}</Slider>
             <input type="hidden" value={this.state.value}/>

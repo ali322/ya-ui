@@ -22,8 +22,10 @@ class Slider extends Component{
         this.slides = null;
     }
     componentDidMount(){
-        this.initialize();
-        this.props.autoPlay && this.slideToNext();
+        if(this.isMounted){
+            this.initialize();
+            this.props.autoPlay && this.slideToNext();
+        }
     }
     initialize(){
         const {oriention} = this.props;
@@ -137,13 +139,14 @@ class Slider extends Component{
             const absOfOffsetY = Math.abs(offsetY);
             if(absOfOffsetY >= offsetHeight / 2){
                 if(offsetY < 0){
-                    // console.log('next Y')
+                    console.log('next Y')
                     setTimeout(this.next.bind(this),100);
                 }else if(offsetY > 0){
-                    // console.log('prev Y')
+                    console.log('prev Y')
                     setTimeout(this.prev.bind(this),100);
                 }
             }else{
+                console.log('restorePosition');
                 absOfOffsetY > 0 && this.restorePosition();
             }
         }
@@ -185,11 +188,24 @@ class Slider extends Component{
         this.lastMoveY = clientY;
         this.lastMoveX = clientX;
     }
+    /** if touch move not fill the change condition then restore the slide position */
     restorePosition(){
         // console.log('restorePosition')
+        const {oriention} = this.props;
+        const activeIndex = this.getActiveIndex();
+        var transform = null;
+        if(oriention === "vertical"){
+            var scrollY = this.state.slideStyle.height * activeIndex;
+            transform = "translate3D(0,-"+scrollY+"px,0)";
+        }else if(oriention === "horizontal"){
+            var scrollX = this.state.slideStyle.width * activeIndex;
+            transform = "translate3D(-"+scrollX+"px,0,0)";
+        }
         const slidesNode = React.findDOMNode(this.refs.slides);
-        slidesNode.style.transform = this.state.slidesStyle.transform;
-        slidesNode.style.transitionDuration = ".3s";
+        if(transform !== null){
+            slidesNode.style.transform = transform;
+            slidesNode.style.transitionDuration = ".3s";
+        }
     }
     transitionTouch(offsetX,offsetY){
         const {oriention} = this.props;
@@ -200,6 +216,7 @@ class Slider extends Component{
             var scrollY = this.state.slideStyle.height * activeIndex;
             var maxOffsetY = 1.25 * this.state.slideStyle.height;
             // console.log('maxOffsetY',maxOffsetY,offsetY)
+            /** vertical move cant beyond limit*/
             if(Math.abs(offsetY) > maxOffsetY){
                 // console.log('out of maxOffsetY',offsetY)
                 return;
@@ -355,9 +372,6 @@ class Slider extends Component{
         return slidesStyle;
     }
     componentDidUpdate(prevProps,prevState){
-        if(prevProps.children.length !== this.props.children.length){
-            this.processSlides();
-        }
         const count = this.slides.length;
         const nextTick = this.props.speed + 10;
         if(this.needPseudoNode() === true){
@@ -450,8 +464,8 @@ class Slider extends Component{
         }
         return null
     }
-    processSlides(){
-        this.slides = this.props.children;
+    processSlides(children = this.props.children){
+        this.slides = [...children];
         if(this.needPseudoNode() === true){
             const count = this.slides.length;
             const pseudoFirstNode = React.cloneElement(this.slides[0],{
@@ -465,9 +479,15 @@ class Slider extends Component{
             this.slides.push(pseudoFirstNode);
             this.slides.unshift(pseudoLastNode);
         }
+        // console.log('processSlides',this.props.children.length,this.slides.length)
     }
     componentWillMount(){
         this.processSlides();
+    }
+    componentWillUpdate(nextProps){
+        if(nextProps.children.length !== this.props.children.length){
+            this.processSlides(nextProps.children);
+        }
     }
     render(){
         var {sliderStyle,slidesStyle,slideStyle} = this.state;
@@ -478,7 +498,7 @@ class Slider extends Component{
             sliderStyle = null;
             slidesStyle = null;
         }
-        // console.log('render slider',this.slides.length)
+        // console.log('render slider',this.state)
         return (
             <div className={classes} 
             style={sliderStyle}
