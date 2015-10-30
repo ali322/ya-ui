@@ -173,6 +173,9 @@
                         font-size: .7rem;
                         line-height: 1.6rem;
                     }
+                    &>span.iconfont{
+                        display:none;
+                    }
                     &.pseudo-slide>span {
                         transition-duration: 0s;
                     }
