@@ -41,14 +41,15 @@ export class Tabs extends Component{
                 active:i === this.state.activeIndex
             });
             return (
-                <span className={classes} onClick={this.handleClick.bind(this,i)}>{title}</span>
+                <span className={classes} key={"tab-nav-"+i} 
+                onClick={this.handleClick.bind(this,i)}>{title}</span>
             );
         })
     }
-    renderContent(content,index){
-        return React.cloneElement(content,{
+    renderContent(child,index){
+        return React.cloneElement(child,{
             active:index === this.state.activeIndex,
-            key:content.key ? content.key:index
+            key:child.key ? child.key:index
         });
     }
     render(){

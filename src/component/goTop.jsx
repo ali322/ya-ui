@@ -1,15 +1,19 @@
 'use strict'
-import React from "react";
+import React,{Component} from "react";
+import util from "../../lib/util.es6";
+import _ from "lodash";
 import classNames from "classnames";
-import dom from "../lib/dom.es6";
+import {smoothScroll} from "../../lib/dom.es6";
 
-class GoTop extends React.Component{
+class GoTop extends Component{
     constructor(props){
         super(props);
-        this.state = {active:false};
+        this.state = {
+            active:false
+        };
     }
-    updateVisible(){
-        var scrollTop = dom.scrollTop(window);
+    toggleVisble(){
+        const scrollTop = util.scrollTop();
         if(scrollTop > 50){
             this.setState({active:true});
         }else{
@@ -17,32 +21,25 @@ class GoTop extends React.Component{
         }
     }
     componentDidMount(){
-        Event.bindEvent(window,'scroll',_.debounce(this.updateVisible.bind(this),100));
+        util.bindEvent(window,'scroll',_.debounce(this.toggleVisble.bind(this),100))
     }
     componentWillUnmount(){
-        Event.unbindEvent(window,'scroll',_.debounce(this.updateVisible.bind(this),100));
+        util.unbindEvent(window,'scroll',_.debounce(this.toggleVisble.bind(this),100))
     }
     backToTop(){
-        var smoothScroll = function(){
-            var scrollTop = dom.scrollTop(window);
-            if(scrollTop <= 0){
-                clearInterval(tickTock);
-            }
-            dom.scrollTop(window,scrollTop/1.1);
-        }
-        var tickTock = setInterval(smoothScroll,10)
-        // console.log(scrollFunc);
+        smoothScroll(window,0);
     }
     render(){
-        var classes = classNames({
+        const classes = classNames({
             "back-to-top":true,
             "active":this.state.active
         });
+
         return (
             <div className={classes}>
-                <a href={null} onClick={this.backToTop}><span className="icon iconfont icon-top"></span></a>
+                <a href={null} onClick={this.backToTop}><span className="iconfont icon-up-big"></span></a>
             </div>
-        );
+        )
     }
 }
 

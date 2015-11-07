@@ -34,7 +34,7 @@ class Sticky extends Component{
         var stickerStyle = Object.assign({},offsets,{
             position:"absolute",
             transform:"translate3D(0,0,0)",
-            // transition:"top .05s ease-in-out",
+            // transition:"transform .05s ease-in-out",
             width:holder.offsetWidth
         });
         if(checkResult === true){

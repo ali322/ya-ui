@@ -3,7 +3,7 @@
 import React,{Component} from "react/addons";
 const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-const placeholder = "/client/common/image/blank.gif";
+const placeholder = "/client/asset/image/blank.gif";
 
 class Image extends Component{
     constructor(props){

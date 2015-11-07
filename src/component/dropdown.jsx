@@ -1,10 +1,10 @@
 'use strict';
 
 import React,{Component} from "react";
+import ReactDOM from "react-dom";
 import classNames from "classnames";
-import Icon from "../core/icon.jsx";
-import dom from "../../lib/dom.es6";
-import util from "../../lib/util.es6";
+import Icon from "./icon.jsx";
+import dom from "../lib/dom.es6";
 
 class Dropdown extends Component{
     constructor(props){
@@ -33,18 +33,18 @@ class Dropdown extends Component{
         })
     }
     bindOuterEvent(){
-        util.bindEvent(document,this.handleOuterClick.bind(this));
-        util.bindEvent(document,this.handleKeyup.bind(this));
+        dom.bindEvent(document,"click",this.handleOuterClick.bind(this));
+        dom.bindEvent(document,"keyup",this.handleKeyup.bind(this));
     }
     unbindOuterEvent(){
-        util.unbindEvent(document,this.handleOuterClick.bind(this));
-        util.unbindEvent(document,this.handleKeyup.bind(this));
+        dom.unbindEvent(document,"click",this.handleOuterClick.bind(this));
+        dom.unbindEvent(document,"keyup",this.handleKeyup.bind(this));
     }
-    handleKeyup(){
+    handleKeyup(e){
         e && e.keyCode === 27 && this.setDropdownState(false);
     }
-    handleOuterClick(){
-        if(dom.hasNode(e.target,React.findDOMNode(this)) === true){
+    handleOuterClick(e){
+        if(dom.hasNode(e.target,ReactDOM.findDOMNode(this)) === true){
             return false;
         }
         this.setDropdownState(false);
@@ -53,35 +53,54 @@ class Dropdown extends Component{
         e && e.preventDefault();
         this.setDropdownState(!this.state.open);
     }
+    renderStatus(){
+        const {minWidth,showStatus,unfoldIcon,foldIcon} = this.props;
+        const caret = (<Icon 
+            icon={this.state.open?foldIcon:unfoldIcon}/>);
+        if(showStatus === true){
+            const btnStyle = {
+                width:minWidth
+            };
+            return (
+                <button onClick={this.handleClick.bind(this)} style={btnStyle} ref="dropdownTrigger">
+                <span className="dropdown-status">{this.props.title}</span>{caret}
+                </button>
+            )
+        }else{
+            return (
+                <div className="fixed-caret" onClick={this.handleClick.bind(this)}>{caret}</div>
+            )
+        }
+    }
     render(){
         const dropdownClasses = classNames(this.props.className,{
-            "dropdown":true,
+            "dropdown":this.props.showStatus,
+            "dropdown-headless":!this.props.showStatus,
             active:this.state.open
         });
-        const caret = (<Icon 
-            icon={this.state.open?"up-open":"down-open"}/>);
         const contentClasses = classNames({
             "dropdown-content":true,
             active:this.state.open
         });
-        const {maxHeight,minWidth} = this.props;
-        const btnStyle = {
-            width:minWidth
-        };
-        const contentStyle = {
+        const {maxHeight} = this.props;
+        const dropdownContentStyle = {
             maxHeight
         };
         return (
             <div className={dropdownClasses}>
-            <button onClick={this.handleClick.bind(this)} style={btnStyle} ref="dropdownTrigger">
-            <span className="dropdown-status">{this.props.title}</span>{caret}
-            </button>
-            <div ref="dropdownContent" className={contentClasses} style={contentStyle}>
-            {this.props.children}
-            </div>
+            {this.renderStatus()}
+            <div ref="dropdownContent" className={contentClasses} style={dropdownContentStyle}>{this.props.children}</div>
             </div>
         )
     }
+}
+
+Dropdown.defaultProps = {
+    showStatus:true,
+    foldIcon:"up-open",
+    unfoldIcon:"down-open",
+    onOpen:function(){},
+    onClose:function(){}
 }
 
 export default Dropdown;
