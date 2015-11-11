@@ -7,7 +7,7 @@
     "test": "karma start ./task/karma.config.js",
     "mocha-test": "mocha --reporter spec --bail --check-leaks --compilers js:babel-core/register src/__tests__/",
     "start": "gulp run-example",
-    "develop": "node task/server.js",
+    "develop": "node task/static-server.js",
     "build": "webpack --config ./task/webpack.build.js --display-error-details --watch",
     "example-build": "webpack --config ./task/webpack.example.js --display-error-details",
     "example-prod": "webpack --config ./task/webpack.example-prod.js --display-error-details",

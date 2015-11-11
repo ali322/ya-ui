@@ -11,6 +11,5 @@ new WebpackDevServer(webpack(config), {
   if (err) {
     console.log(err);
   }
-
-  console.log('Listening at localhost:9527');
+  console.log('HMR Listening at 9527');
 });
