@@ -27,8 +27,8 @@ module.exports = {
         }, {
             test: /\.styl/,
             exclude: [node_modules_dir],
-            loader: 'style!css!stylus!autoprefixer'
-                // loader: ExtractTextPlugin.extract('style', 'css!sass')
+            // loader: 'style!css!stylus!autoprefixer'
+            loader: ExtractTextPlugin.extract('style', 'css!stylus!autoprefixer')
         }, {
             test: /\.css/,
             // exclude: [node_modules_dir],
@@ -76,6 +76,6 @@ module.exports = {
             }
         }),
         // new webpack.optimize.CommonsChunkPlugin('vendor', './vendor.js'),
-        // new ExtractTextPlugin("./[name].css")
+        new ExtractTextPlugin("[name].css")
     ]
 }
