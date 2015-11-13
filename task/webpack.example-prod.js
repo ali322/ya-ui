@@ -1,5 +1,6 @@
 var webpack = require('webpack'),
     path = require('path'),
+    del = require("del"),
     _ = require("lodash");
 
 // var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
@@ -16,33 +17,30 @@ _.each(examples, function(obj, name) {
         // 'webpack/hot/only-dev-server',
         obj.entyJs
     ];
+    del.sync(obj.path + "dist/*.js");
     _.extend(entries, entry);
 });
-console.log(entries);
+
 
 module.exports = {
     entry: entries,
     module: {
         loaders: [{
-            test: /\.coffee$/,
-            exclude: [node_modules_dir],
-            loader: 'coffee'
-        }, {
             test: /\.json/,
             exclude: [node_modules_dir],
             loader: 'json'
         }, {
-            test: /\.(js|jsx)$/,
+            test: /\.(es6|jsx)$/,
             exclude: [node_modules_dir],
-            loader: 'babel-loader'
+            loader: 'babel'
         }, , {
             test: /\.html/,
             exclude: [node_modules_dir],
             loader: 'html'
         }, {
-            test: /\.scss/,
+            test: /\.styl/,
             exclude: [node_modules_dir],
-            loader: 'style!css!sass!autoprefixer'
+            loader: 'style!css!stylus!autoprefixer'
                 // loader: ExtractTextPlugin.extract('style', 'css!sass!autoprefixer')
         }, {
             test: /\.css/,

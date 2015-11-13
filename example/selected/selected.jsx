@@ -1,8 +1,7 @@
 'use strict'
-var React = require("react");
-require("./selected.scss");
-
-import {component} from "../../src/index";
+import React,{Component} from "react";
+import ReactDOM from "react-dom";
+import {component} from "../../src/index.es6";
 let {Selected} = component;
 
 let SelectedForm = React.createClass({
@@ -23,5 +22,5 @@ let SelectedForm = React.createClass({
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
-    React.render(<SelectedForm />,document.getElementById('selected'));
+    ReactDOM.render(<SelectedForm />,document.getElementById('selected'));
 })

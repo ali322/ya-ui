@@ -7,7 +7,7 @@ var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
 module.exports = {
     entry: {
-        'yaui': './src/index.js',
+        'yaui': './src/index.es6',
         // 'vendor': ['react', 'react/addons', 'reflux', 'lodash']
     },
     module: {
@@ -16,18 +16,18 @@ module.exports = {
             exclude: [node_modules_dir],
             loader: 'json'
         }, {
-            test: /\.(js|jsx)$/,
+            test: /\.(es6|jsx)$/,
             exclude: [node_modules_dir],
-            loader: 'babel-loader'
+            loader: 'babel'
                 // loader: 'react-hot!babel-loader'
         }, , {
             test: /\.html/,
             exclude: [node_modules_dir],
             loader: 'html'
         }, {
-            test: /\.scss/,
+            test: /\.styl/,
             exclude: [node_modules_dir],
-            loader: 'style!css!sass!autoprefixer'
+            loader: 'style!css!stylus!autoprefixer'
                 // loader: ExtractTextPlugin.extract('style', 'css!sass')
         }, {
             test: /\.css/,
@@ -65,9 +65,9 @@ module.exports = {
         chunkFilename: "[id].chunk.js",
     },
     externals: {
-        "react/addons": "react/addons",
-        "reflux": "reflux",
-        "lodash": "lodash"
+        // "react/addons": "react/addons",
+        // "reflux": "reflux",
+        // "lodash": "lodash"
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({

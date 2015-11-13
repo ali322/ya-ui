@@ -1,5 +1,6 @@
 'use strict'
-import React from "react";
+import React,{Component} from "react";
+import ReactDOM from "react-dom";
 import {component} from "../../src/index";
 let {Dialog} = component;
 

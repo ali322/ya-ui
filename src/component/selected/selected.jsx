@@ -2,8 +2,8 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
-import Dropdown from "../dropdown/dropdown.jsx";
-import Icon from "../core/icon.jsx";
+import Dropdown from "../dropdown.jsx";
+import Icon from "../icon.jsx";
 
 class Selected extends Component{
     constructor(props){

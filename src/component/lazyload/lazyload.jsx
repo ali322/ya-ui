@@ -1,14 +1,14 @@
 'use strict'
 
 import React,{Component,addons} from "react";
-import util from "../../lib/util.es6";
+import dom from "../../lib/dom.es6";
 
 const listeners = [];
 
 function checkVisble(component){
     let node = React.findDOMNode(component);
     let {top,bottom} = node.getBoundingClientRect();
-    let scrollTop = util.scrollTop();
+    let scrollTop = dom.scrollTop();
 
     let elementTop = top + scrollTop;
     let elementHeight = bottom - top;

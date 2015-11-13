@@ -1,7 +1,6 @@
 'use strict'
 import React,{Component} from "react";
-import util from "../../lib/util.es6";
-import dom from "../../lib/dom.es6";
+import dom from "../lib/dom.es6";
 
 class Sticky extends Component{
     constructor(props){

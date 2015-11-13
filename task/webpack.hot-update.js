@@ -7,7 +7,8 @@ var entries = {},
 _.each(examples, function(obj, name) {
     var entry = {};
     entry[name] = [
-        'webpack-dev-server/client?http://localhost:9527',
+        // 'webpack-dev-server/client?http://localhost:9527',
+        "webpack-hot-middleware/client",
         'webpack/hot/only-dev-server',
         obj.entyJs
     ];
@@ -18,6 +19,26 @@ _.each(examples, function(obj, name) {
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
+var babelrc = {
+    "stage": 2,
+    "env": {
+        "development": {
+            "plugins": [
+                "react-transform"
+            ],
+            "extra": {
+                "react-transform": {
+                    "transforms": [{
+                        "transform": "react-transform-hmr",
+                        "imports": ["react"],
+                        "locals": ["module"]
+                    }]
+                }
+            }
+        }
+    }
+};
+
 module.exports = {
     entry: entries,
     module: {
@@ -26,17 +47,18 @@ module.exports = {
             exclude: [node_modules_dir],
             loader: 'json'
         }, {
-            test: /\.(js|jsx)$/,
+            test: /\.(es6|jsx)$/,
             exclude: [node_modules_dir],
-            loader: 'react-hot!babel-loader'
+            loader: 'babel',
+            query:babelrc
         }, , {
             test: /\.html/,
             exclude: [node_modules_dir],
             loader: 'html'
         }, {
-            test: /\.scss/,
+            test: /\.styl/,
             exclude: [node_modules_dir],
-            loader: 'style!css!sass!autoprefixer'
+            loader: 'style!css!stylus!autoprefixer'
                 // loader: ExtractTextPlugin.extract('style', 'css!sass!autoprefixer')
         }, {
             test: /\.css/,
