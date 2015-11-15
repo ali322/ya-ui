@@ -1,7 +1,7 @@
 {
   "name": "ya-ui",
   "version": "0.1.0",
-  "description": "web components build with React and Reflux",
+  "description": "web components build with React",
   "main": "dist/yaui.js",
   "scripts": {
     "test": "karma start ./task/karma.config.js",
