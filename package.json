@@ -5,28 +5,13 @@
   "main": "dist/yaui.js",
   "scripts": {
     "test": "karma start ./task/karma.config.js",
-    "mocha-test": "mocha --reporter spec --bail --check-leaks --compilers js:babel-core/register src/__tests__/",
     "start": "gulp run-example",
-    "build": "webpack --config ./task/webpack.build.js --display-error-details --watch",
+    "build": "webpack --config ./task/webpack.build.js --display-error-details",
+    "release": "gulp clean-dist && webpack --config ./task/webpack.release.js --display-error-details",
     "example-build": "webpack --config ./task/webpack.example.js --display-error-details",
     "example-release": "webpack --config ./task/webpack.example-prod.js --display-error-details",
     "develop-example": "npm run example-build && gulp develop-example",
     "deploy-example": "npm run example-release && gulp deploy-example"
-  },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/task/preprocessor.js",
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json"
-    ],
-    "testPathDirs": [
-      "<rootDir>/src"
-    ],
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react",
-      "<rootDir>/node_modules/reflux"
-    ]
   },
   "repository": {
     "type": "git",
@@ -47,9 +32,9 @@
     "babel-loader": "^5.3.2",
     "babel-plugin-react-transform": "^1.1.1",
     "browser-sync": "^2.10.0",
-    "chai": "^3.2.0",
     "css-loader": "^0.15.6",
     "del": "^1.2.0",
+    "expect": "^1.13.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
     "gulp-inject": "^1.5.0",
@@ -58,14 +43,11 @@
     "karma": "^0.13.9",
     "karma-cli": "^0.1.0",
     "karma-coverage": "^0.5.0",
+    "karma-jsdom-launcher": "^1.0.0",
     "karma-mocha": "^0.2.0",
-    "karma-phantomjs-launcher": "^0.2.1",
     "karma-sourcemap-loader": "^0.3.5",
     "karma-webpack": "^1.7.0",
     "mocha": "^2.2.5",
-    "node-sass": "^3.2.0",
-    "phantomjs": "^1.9.18",
-    "phantomjs-polyfill": "0.0.1",
     "react-transform-hmr": "^1.0.1",
     "style-loader": "^0.12.3",
     "stylus-loader": "^1.4.2",

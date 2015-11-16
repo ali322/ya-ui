@@ -17,6 +17,10 @@ var bundler = webpack(config);
 var examples = require("./task/example.json");
 var examplePort = 5000;
 
+gulp.task("clean-dist",function(){
+    del.sync("./dist/minified");
+})
+
 gulp.task("develop-example", function() {
     _.each(examples, function(obj, name) {
         var injectTarget = obj.html,

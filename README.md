@@ -39,6 +39,10 @@ web components build with React
   ```shell
   npm run build
   ```
+### Customize release
+  ```shell
+  npm run release
+  ```
 
 ### Develop examples
 1. develop with your own example

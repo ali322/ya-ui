@@ -2,8 +2,7 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
-import dom from "../../lib/dom.es6";
-import util from "../../lib/util.es6";
+import dom from "../lib/dom.es6";
 
 class ScrollSpy extends Component{
     componentDidMount(){

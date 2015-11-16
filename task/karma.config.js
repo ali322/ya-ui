@@ -5,20 +5,17 @@ module.exports = function(config) {
         basePath: "../src/",
         frameworks: ['mocha'],
         files: [
-            '../node_modules/phantomjs-polyfill/bind-polyfill.js',
-            '__tests__/*.js'
+            '__tests__/*.es6'
         ],
         preprocessors: {
-            'action/*.js': ['webpack', 'sourcemap'],
-            'store/*.js': ['webpack', 'sourcemap'],
-            '__tests__/*.js': ['webpack', 'sourcemap'],
-            'component/*.jsx': ['webpack', 'coverage', 'sourcemap'],
+            '__tests__/*.es6': ['webpack', 'sourcemap'],
+            'component/**/*.jsx': ['webpack', 'coverage', 'sourcemap'],
         },
         webpack: {
             resolve: webpackConfig.resolve,
             module: webpackConfig.module
         },
-        webpackServer: {
+        webpackMiddleware: {
             noInfo: true
         },
         reporters: ['progress', 'coverage'],
@@ -26,11 +23,11 @@ module.exports = function(config) {
             type: 'lcov',
             dir: '__coverage__/'
         },
-        port: 9876,
+        port: 7000,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: false,
-        browsers: ['PhantomJS'],
+        browsers: ['jsdom'],
         singleRun: true
     });
 };

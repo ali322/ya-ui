@@ -8,6 +8,7 @@ var node_modules_dir = path.resolve(__dirname, '../node_modules');
 module.exports = {
     entry: {
         'yaui': ['./src/index.es6','./src/theme/index.styl'],
+        // 'vendor': ['react', 'react/addons', 'reflux', 'lodash']
     },
     module: {
         loaders: [{
@@ -58,12 +59,18 @@ module.exports = {
         extensions: ["", ".webpack-loader.js", ".web-loader.js", ".loader.js", ".js", ".json", ".coffee"]
     },
     output: {
-        path: "./dist",
+        path: "./dist/minified",
         libraryTarget: "commonjs",
-        filename: "[name].js",
-        chunkFilename: "[id].chunk.js",
+        filename: "[name]-[hash].js",
+        chunkFilename: "[id]-[hash].chunk.js",
     },
     plugins: [
-        new ExtractTextPlugin("[name].css")
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
+        // new webpack.optimize.CommonsChunkPlugin('vendor', './vendor.js'),
+        new ExtractTextPlugin("[name]-[hash].css")
     ]
 }
