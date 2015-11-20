@@ -1,4 +1,4 @@
 language: node_js
 node_js:
   - "4.2.1"
-after_script: "npm install coveralls && cat ./src/__coverage__/phantomjs/lcov.info | coveralls --free-travis"
+after_script: "npm install coveralls@2.11.4 && cat ./src/__coverage__/phantomjs/lcov.info | coveralls --free-travis"
