@@ -20,7 +20,7 @@ module.exports = function(config) {
         },
         reporters: ['progress', 'coverage'],
         coverageReporter: {
-            type: 'lcov',
+            type: 'lcovonly',
             dir: '__coverage__/',
             subdir:function(browser){
                 return browser.toLowerCase().split(/[ /-]/)[0]
