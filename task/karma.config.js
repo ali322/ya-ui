@@ -18,13 +18,14 @@ module.exports = function(config) {
         webpackMiddleware: {
             noInfo: true
         },
-        reporters: ['progress', 'coverage'],
+        reporters: ['progress', 'coverage',"coveralls"],
         coverageReporter: {
-            type: 'lcovonly',
+            type: 'lcov',
             dir: '__coverage__/',
-            subdir:function(browser){
-                return browser.toLowerCase().split(/[ /-]/)[0]
-            }
+            subdir:"."
+            // subdir:function(browser){
+            //     return browser.toLowerCase().split(/[ /-]/)[0]
+            // }
         },
         port: 7000,
         colors: true,
