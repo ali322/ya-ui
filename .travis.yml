@@ -3,4 +3,4 @@ node_js:
   - "4.2.1"
 env:
   - NODE_ENV:test
-after_script: "npm install coveralls@2.11.4 && cat ./src/__coverage__/phantomjs/lcov.info | coveralls --free-travis"
+after_script: "npm install coveralls@2.11.4 && cat ./src/__coverage__/phantomjs/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
