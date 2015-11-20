@@ -23,10 +23,10 @@ module.exports = function(config) {
         coverageReporter: {
             type: 'lcov',
             dir: '__coverage__/',
-            subdir:"."
-            // subdir:function(browser){
-            //     return browser.toLowerCase().split(/[ /-]/)[0]
-            // }
+            // subdir:"."
+            subdir:function(browser){
+                return browser.toLowerCase().split(/[ /-]/)[0]
+            }
         },
         port: 7000,
         colors: true,
