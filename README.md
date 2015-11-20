@@ -1,7 +1,7 @@
 Ya-UI
 ===
 
-[![Circle CI](https://circleci.com/gh/ali322/ya-ui/tree/master.svg?style=svg)](https://circleci.com/gh/ali322/ya-ui/tree/master)
+[![Build Status](https://travis-ci.org/ali322/ya-ui.svg)](https://travis-ci.org/ali322/ya-ui)
 [![Dependency Status](https://gemnasium.com/ali322/ya-ui.svg)](https://gemnasium.com/ali322/ya-ui)
 [![Coverage Status](https://coveralls.io/repos/ali322/ya-ui/badge.svg?branch=master&service=github)](https://coveralls.io/github/ali322/ya-ui?branch=master)
 

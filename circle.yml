@@ -1,5 +1,0 @@
-machine:
-  node:
-    version: 4.2.1
-  environment:
-    COVERALLS_REPO_TOKEN: qqtHJu6KiFHBZxvfy08oR2ZYbNfgVp74l

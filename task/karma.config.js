@@ -3,7 +3,7 @@ var webpackConfig = require("./webpack.build.js");
 module.exports = function(config) {
     config.set({
         basePath: "../src/",
-        frameworks: ['mocha'],
+        frameworks: ['mocha',"phantomjs-shim"],
         files: [
             '__tests__/*.es6'
         ],
@@ -21,13 +21,16 @@ module.exports = function(config) {
         reporters: ['progress', 'coverage'],
         coverageReporter: {
             type: 'lcov',
-            dir: '__coverage__/'
+            dir: '__coverage__/',
+            subdir:function(browser){
+                return browser.toLowerCase().split(/[ /-]/)[0]
+            }
         },
         port: 7000,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: false,
-        browsers: ['jsdom'],
+        browsers: ['PhantomJS'],
         singleRun: true
     });
 };
