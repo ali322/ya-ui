@@ -5,11 +5,12 @@ module.exports = function(config) {
         basePath: "../src/",
         frameworks: ['mocha',"phantomjs-shim"],
         files: [
-            '__tests__/*.es6'
+            '__tests__/*.es6',
+            'index.es6'
         ],
         preprocessors: {
             '__tests__/*.es6': ['webpack', 'sourcemap'],
-            'component/**/*.jsx': ['webpack', 'coverage', 'sourcemap'],
+            'index.es6': ['webpack',"coverage"],
         },
         webpack: {
             resolve: webpackConfig.resolve,
@@ -18,7 +19,7 @@ module.exports = function(config) {
         webpackMiddleware: {
             noInfo: true
         },
-        reporters: ['progress', 'coverage',"coveralls"],
+        reporters: ['progress', 'coverage'],
         coverageReporter: {
             type: 'lcov',
             dir: '__coverage__/',
