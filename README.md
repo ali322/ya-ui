@@ -11,6 +11,7 @@ web components build with React
 
 
 ```
+|- asset/ #font and background images etc
 |- dist/     #build directory
 |- example/
   |- selected/  #selected's example
