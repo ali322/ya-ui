@@ -1,6 +1,8 @@
 Ya-UI
 ===
 
+[![Join the chat at https://gitter.im/ali322/ya-ui](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ali322/ya-ui?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/ali322/ya-ui.svg)](https://travis-ci.org/ali322/ya-ui)
 [![Dependency Status](https://gemnasium.com/ali322/ya-ui.svg)](https://gemnasium.com/ali322/ya-ui)
 [![Coverage Status](https://coveralls.io/repos/ali322/ya-ui/badge.svg?branch=master&service=github)](https://coveralls.io/github/ali322/ya-ui?branch=master)
