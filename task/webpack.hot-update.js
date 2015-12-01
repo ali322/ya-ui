@@ -12,7 +12,7 @@ _.each(examples, function(obj, name) {
         // 'webpack-dev-server/client?http://localhost:9527',
         "webpack-hot-middleware/client",
         'webpack/hot/only-dev-server',
-        entryCSS,entryJS
+        entryCSS, entryJS
     ];
     _.extend(entries, entry);
 });
@@ -52,7 +52,7 @@ module.exports = {
             test: /\.(es6|jsx)$/,
             exclude: [node_modules_dir],
             loader: 'babel',
-            query:babelrc
+            query: babelrc
         }, , {
             test: /\.html/,
             exclude: [node_modules_dir],
@@ -67,20 +67,11 @@ module.exports = {
             // exclude: [node_modules_dir],
             loader: 'style!css'
         }, {
-            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=application/font-woff"
+            test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+            loader: "url-loader?limit=10000&mimetype=application/font-woff"
         }, {
-            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=application/font-woff"
-        }, {
-            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=application/octet-stream"
-        }, {
-            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "file"
-        }, {
-            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=image/svg+xml"
+            test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+            loader: "file-loader"
         }, {
             test: /\.(png|jpg)$/,
             exclude: [node_modules_dir],

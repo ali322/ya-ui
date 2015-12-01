@@ -64,7 +64,7 @@ gulp.task("run-example", function() {
     browserSync({
         port: examplePort,
         server: {
-            baseDir: "./example",
+            baseDir: "./",
             middleware: [
                 webpackDevMiddleware(bundler, {
                     publicPath: config.output.publicPath,
