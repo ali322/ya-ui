@@ -6,9 +6,9 @@ let {Selected} = component;
 
 let SelectedForm = React.createClass({
     render(){
-        let options = [
-            {text:'option 1',value:1},
-            {text:'option 2',value:2}
+        const options = [
+            {label:'option 1',value:1},
+            {label:'option 2',value:2}
         ];
         return (
             <form action="">

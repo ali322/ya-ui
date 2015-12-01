@@ -6,17 +6,19 @@ var entries = {},
     examples = require("./example.json");
 _.each(examples, function(obj, name) {
     var entry = {};
+    var entryJS = obj.path + obj.entryJS;
+    var entryCSS = obj.path + obj.entryCSS;
     entry[name] = [
         // 'webpack-dev-server/client?http://localhost:9527',
         "webpack-hot-middleware/client",
         'webpack/hot/only-dev-server',
-        obj.entyJs
+        entryCSS,entryJS
     ];
     _.extend(entries, entry);
 });
 // console.log(entries);
 // var commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+// var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
 var babelrc = {
@@ -96,7 +98,7 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
+        // new webpack.NoErrorsPlugin(),
         // new webpack.optimize.CommonsChunkPlugin( /* chunkName= */ vendorChunkName, /* filename= */ vendorFile),
         // new ExtractTextPlugin("modules/[name]/build/[name].css")
     ]

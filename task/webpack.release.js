@@ -7,7 +7,7 @@ var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
 module.exports = {
     entry: {
-        'yaui': ['./src/index.es6','./src/theme/index.styl'],
+        'yaui': ['./src/index.es6', './src/theme/index.styl'],
         // 'vendor': ['react', 'react/addons', 'reflux', 'lodash']
     },
     module: {
@@ -70,6 +70,7 @@ module.exports = {
                 warnings: false
             }
         }),
+        new webpack.NoErrorsPlugin(),
         // new webpack.optimize.CommonsChunkPlugin('vendor', './vendor.js'),
         new ExtractTextPlugin("[name]-[hash].css")
     ]

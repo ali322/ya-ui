@@ -12,10 +12,14 @@ web components build with React
 
 ```
 |- dist/     #build directory
+|- example/
+  |- selected/  #selected's example
+  |- index.html #example index.html
 |- src/      #source directory
   |- component/ # web component
-  |- util/
-  |- index.js # entry point
+  |- lib/ #helper and tool
+  |- index.es6 # entry point
+|- task/ #build tasks
 |- package.json
 ```
 
@@ -31,7 +35,7 @@ web components build with React
 
     ```javascript
     var yaui = require("ya-ui");
-    var Loading = yaui.component.Loading
+    var Selected = yaui.component.Selected
     // coding
     ```
 
@@ -49,26 +53,20 @@ web components build with React
   - when start new example,some build and inject work need to be done
 
     ```shell
-    npm run example-build
     npm run develop-example
     ```
 
   - reqired work finished,start develop server
 
     ```shell
-    npm run develop
+    npm start
     ```
 
 2. release you own example
   - like develop workflow,build and inject work need to be done
 
     ```shell
-    npm run example-prod
     npm run deploy-example
     ```
 
-  - then start to preview
-  
-    ```shell
-    npm start
-    ```
+  - then deploy example directory to your own server

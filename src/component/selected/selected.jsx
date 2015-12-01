@@ -20,7 +20,12 @@ class Selected extends Component{
         return this.state.value;
     }
     hasValue(value){
-        return this.getValueArray().indexOf(value) > -1;
+        const {multiple} = this.props;
+        if(multiple === true){
+            return this.getValueArray().indexOf(value) > -1;
+        }else{
+            return this.getValue() === value;
+        }
     }
     setValue(value){
         this.setState({
@@ -80,7 +85,6 @@ class Selected extends Component{
             const checkedIcon = checked?<Icon icon={selectedIcon}/>:
             unselectedIcon === null?null:<Icon icon={unselectedIcon}/>;
             checked && selectedLabels.push(option.label);
-
             if(filterText && this.props.optionFilter(filterText,option) === false){
                 return;
             }
