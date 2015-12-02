@@ -18,12 +18,11 @@
         overflow-y: auto;
         li {
             line-height: 1rem;
-            padding: .25rem 0;
             clear: both;
             overflow: hidden;
             width: 100%;
             box-sizing: border-box;
-            padding: .25rem .5rem;
+            padding: .35rem .5rem;
             .selected-item {
                 float: left;
                 display: inline-block;
@@ -40,6 +39,7 @@
                 box-sizing: border-box;
                 width: 20%;
                 color: #AAA;
+                text-align:center;
             }
             &.selected-group-header {
                 border-bottom: 1px solid #E5E5E5;
@@ -49,6 +49,7 @@
         }
     }
     &>.dropdown-content {
+        padding:0;
         &::before,
         &::after {
             content: "";

@@ -1,14 +1,20 @@
+@import "../common/example"
 @import "../../src/theme/dropdown.styl"
 @import "../../src/theme/selected.styl"
-
+.selected-example{
+    font-size:.7rem;
+}
 .form-row{
-    padding:1rem 0.5rem;
-    clear:both;
+    padding:.4rem 0.5rem
+    max-width:16rem
+    display:flex
+    justify-content:center
+    align-items:center
     &>label{
-        float:left;
+        width:30%;
     }
-    &>.yaui-selected{
-        float:left;
+    &>div{
+        width:70%;
         padding:0 0 0 0.5rem;
     }
 }

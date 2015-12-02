@@ -138,18 +138,16 @@ class Selected extends Component{
             maxHeight:this.props.maxHeight
         }
         return (
-            <div>
-                <Dropdown className={classes} title={status} ref="dropdown" {...this.props}>
-                {this.props.filterInput?(
-                    <div className="filter-input">
-                    <input type="text" onChange={this.handleFilterInput.bind(this)} ref="filterInput"/>
-                    <Icon icon="search"/>
-                    </div>
-                ):null}
-                <ul className="selected-items" style={itemsStyle}>{items}</ul>
-                <input type="hidden" value={this.state.value}/>
-                </Dropdown>
-            </div>
+            <Dropdown className={classes} title={status} ref="dropdown" {...this.props}>
+            {this.props.filterInput?(
+                <div className="filter-input">
+                <input type="text" onChange={this.handleFilterInput.bind(this)} ref="filterInput"/>
+                <Icon icon="search"/>
+                </div>
+            ):null}
+            <ul className="selected-items" style={itemsStyle}>{items}</ul>
+            <input type="hidden" value={this.state.value}/>
+            </Dropdown>
         )
     }
 }

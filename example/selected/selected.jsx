@@ -2,7 +2,7 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import {component} from "../../src/index.es6";
-let {Selected} = component;
+let {Selected,SelectedSlide} = component;
 
 let SelectedForm = React.createClass({
     render(){
@@ -11,12 +11,16 @@ let SelectedForm = React.createClass({
             {label:'option 2',value:2}
         ];
         return (
-            <form action="">
-            <div className="form-row">
-                <label>choose:</label>
-                <Selected options={options}/>
+            <div className="selected-example">
+                <div className="form-row">
+                    <label>Selected:</label>
+                    <Selected options={options}/>
+                </div>
+                <div className="form-row">
+                    <label>SelectedSlider:</label>
+                    <SelectedSlide options={options}/>
+                </div>
             </div>
-            </form>
         );
     }
 });
