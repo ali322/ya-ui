@@ -17,46 +17,53 @@ var bundler = webpack(config);
 var examples = require("./task/example.json");
 var examplePort = 5000;
 
-gulp.task("clean-dist",function(){
+gulp.task("clean-dist", function() {
     del.sync("./dist/minified");
 })
 
 gulp.task("develop-example", function() {
     _.each(examples, function(obj, name) {
-        var injectTarget = obj.html,
-            jsFiles = [],
+        var injectTarget = obj.path + obj.html,
+            destPath = name === "index" ? obj.path + "../" : obj.path,
+            injectFiles = [],
             jsFile = path.join(obj.path, 'build/' + name + '.js');
 
-        jsFiles.push(jsFile);
-        // console.log(jsFiles)
-        var sources = gulp.src(jsFiles, {
+        injectFiles.push(jsFile);
+        console.log(injectFiles)
+        var sources = gulp.src(injectFiles, {
             read: false
         });
         gulp.src(injectTarget).pipe(inject(sources, {
             relative: true,
+            empty:true,
             transform: function(filepath) {
-                if (/^build\/\w+.js/.test(filepath) === true) {
-                    filepath = filepath.replace('build', '/public');
+                console.log('filepath',filepath)
+                if (/build\/\w+.js/.test(filepath) === true) {
+                    filepath = filepath.replace(/(\w+\/)*build/g, '/public');
                 }
                 return inject.transform.apply(inject.transform, arguments);
             }
 
-        })).pipe(gulp.dest(obj.path));
+        })).pipe(gulp.dest(destPath));
     });
 });
-gulp.task("deploy-example", function() {
+gulp.task("release-example", function() {
     _.each(examples, function(obj, name) {
-        var injectTarget = obj.html,
-            jsFiles = [],
+        var injectTarget = obj.path + obj.html,
+            destPath = name === "index" ? obj.path + "../" : obj.path,
+            injectFiles = [],
+            cssFile = path.join(obj.path, 'dist/*.css'),
             jsFile = path.join(obj.path, 'dist/*.js');
-        jsFiles.push(jsFile);
-        var sources = gulp.src(jsFiles, {
+        injectFiles.push(jsFile);
+        injectFiles.push(cssFile);
+        var sources = gulp.src(injectFiles, {
             read: false
         });
-        // console.log(jsFiles)
+        // console.log(jsFiles,injectTarget)
         gulp.src(injectTarget).pipe(inject(sources, {
-            relative: true
-        })).pipe(gulp.dest(obj.path));
+            relative: true,
+            empty:true
+        })).pipe(gulp.dest(destPath));
     });
 });
 
@@ -94,7 +101,7 @@ gulp.task("run-example", function() {
         },
         // logConnections: true,
         logLevel: "info"
-    },function(){
-        console.log('🌎 example listening at %d!',examplePort);
+    }, function() {
+        console.log('🌎 example listening at %d!', examplePort);
     })
 });

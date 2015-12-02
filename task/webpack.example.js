@@ -11,10 +11,11 @@ var entries = {},
     examples = require("./example.json");
 _.each(examples, function(obj, name) {
     var entry = {};
+    var entryCSS = obj.path + obj.entryCSS;
+    var entryJS = obj.path + obj.entryJS;
     entry[name] = [
-        // 'webpack-dev-server/client?http://localhost:9527',
-        // 'webpack/hot/only-dev-server',
-        obj.entyJs
+        entryCSS,
+        entryJS        
     ];
     _.extend(entries, entry);
 });
@@ -45,25 +46,6 @@ module.exports = {
             // exclude: [node_modules_dir],
             loader: 'style!css'
                 // loader: ExtractTextPlugin.extract('style', 'css')
-        }, {
-            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=application/font-woff"
-        }, {
-            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=application/font-woff"
-        }, {
-            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=application/octet-stream"
-        }, {
-            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "file"
-        }, {
-            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: "url?limit=8192&mimetype=image/svg+xml"
-        }, {
-            test: /\.(png|jpg)$/,
-            exclude: [node_modules_dir],
-            loader: 'url?limit=25000'
         }]
     },
     resolve: {

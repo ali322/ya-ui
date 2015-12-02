@@ -1,8 +1,14 @@
 {
+    "index": {
+        "html": ["../index.html"],
+        "path": "./example/index/",
+        "entryJS": "index.jsx",
+        "entryCSS": "index.styl"
+    },
     "selected": {
         "html": ["selected.html"],
         "path": "./example/selected/",
         "entryJS": "selected.jsx",
-        "entryCSS":"selected.styl"
+        "entryCSS": "selected.styl"
     }
 }

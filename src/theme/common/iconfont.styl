@@ -1,9 +1,17 @@
+@import "./constant"
+
+$eot = $assetPath + 'font/fontello.eot'
+$eotIEFix = $assetPath + 'font/fontello.eot?#iefix'
+$woff = $assetPath + "font/fontello.woff"
+$ttf = $assetPath + "font/fontello.ttf"
+$svg = $assetPath + "font/fontello.svg#iconfont"
+
 @font-face {font-family: "iconfont";
-  src: url('/asset/font/fontello.eot');
-  src: url('/asset/font/fontello.eot?#iefix') format('embedded-opentype'),
-  url('/asset/font/fontello.woff') format('woff'),
-  url('/asset/font/fontello.ttf') format('truetype'),
-  url('/asset/font/fontello.svg#iconfont') format('svg');
+  src: url($eot);
+  src: url($eotIEFix) format('embedded-opentype'),
+  url($woff) format('woff'),
+  url($ttf) format('truetype'),
+  url($svg) format('svg');
 }
 
 .iconfont {
