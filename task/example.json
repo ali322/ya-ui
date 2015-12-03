@@ -10,5 +10,11 @@
         "path": "./example/selected/",
         "entryJS": "selected.jsx",
         "entryCSS": "selected.styl"
+    },
+    "popup": {
+        "html": ["popup.html"],
+        "path": "./example/popup/",
+        "entryJS": "popup.jsx",
+        "entryCSS": "popup.styl"
     }
 }

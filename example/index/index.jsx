@@ -11,7 +11,7 @@ class IndexExample extends Component{
             <div className="index-content">
                 <ul>
                     <li><a href="./selected/selected.html">Selected</a></li>
-                    <li><a href="./dialog/dialog.html">Dialog</a></li>
+                    <li><a href="./popup/popup.html">Popup</a></li>
                 </ul>
             </div>
         )
