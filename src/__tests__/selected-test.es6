@@ -19,8 +19,7 @@ describe("selected", function() {
         let renderer = ReactTestUtils.createRenderer();
         renderer.render(<Selected options={options}/>);
         let output = renderer.getRenderOutput();
-        expect(output.type).toBe("div");
-        let dropdown = output.props.children;
+        let dropdown = output;
         let dropdownContent  = dropdown.props.children[1];
         expect(dropdownContent.props.children.length).toBe(2);
     });
