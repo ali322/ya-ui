@@ -16,5 +16,11 @@
         "path": "./example/popup/",
         "entryJS": "popup.jsx",
         "entryCSS": "popup.styl"
+    },
+    "numberpicker": {
+        "html": ["numberpicker.html"],
+        "path": "./example/numberpicker/",
+        "entryJS": "numberpicker.jsx",
+        "entryCSS": "numberpicker.styl"
     }
 }
