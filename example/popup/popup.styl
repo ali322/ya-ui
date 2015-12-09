@@ -1,25 +1,26 @@
-@import "../common/example"
-@import "../../src/theme/popup.styl"
+@import "../common/example";
+@import "../common/md";
+@import "../../src/theme/popup";
 #popup-example{
     height:100%;
 }
 .popup-example{
-    font-size:.7rem;
-    padding:.5rem 0;
+    font-size:px2rem(14);
+    padding:px2rem(10) 0;
     height:100%;
     .md-card{
-        padding:.4rem .3rem
-        margin:.3rem
+        padding:px2rem(8) px2rem(6)
+        margin:px2rem(6)
         h3{
-            border-bottom:1px solid rgba(0,0,0,.1);
-            line-height:1.2rem;
+            border-bottom:px2rem(1) solid rgba(0,0,0,.1);
+            line-height:px2rem(24);
         }
     }
     
     .popup-bottons{
-        margin:.5rem;
+        margin:px2rem(10);
         button{
-            margin:0 .3rem .4rem 0;
+            margin:0 px2rem(6) px2rem(8) 0;
         }
     }
 }
