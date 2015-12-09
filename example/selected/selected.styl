@@ -1,21 +1,23 @@
 @import "../common/example"
+@import "../../src/theme/common/common"
 @import "../../src/theme/dropdown.styl"
 @import "../../src/theme/selected.styl"
 .selected-example{
-    font-size:.7rem;
+    font-size:px2rem(14);
 }
 .form-row{
-    padding:.4rem 0.5rem
-    max-width:16rem
+    padding:px2rem(8) px2rem(10)
+    max-width:px2rem(320)
     display:flex
     justify-content:center
     align-items:center
     &>label{
         width:30%;
+        padding-right:px2rem(5);
     }
     &>div{
         width:70%;
-        padding:0 0 0 0.5rem;
+        padding:0 0 0 px2rem(1);
     }
 }
 

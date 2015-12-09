@@ -13,11 +13,11 @@ let SelectedForm = React.createClass({
         return (
             <div className="selected-example">
                 <div className="form-row">
-                    <label>Selected:</label>
+                    <label>Selected</label>
                     <Selected options={options}/>
                 </div>
                 <div className="form-row">
-                    <label>SelectedSlider:</label>
+                    <label>SelectedSlider</label>
                     <SelectedSlide options={options}/>
                 </div>
             </div>
