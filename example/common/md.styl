@@ -1,5 +1,28 @@
 @import "../../src/theme/common/util";
 
+header{
+    line-height:px2rem(40);
+    background-color:#F1F1F1;
+    border-bottom:px2rem(1) solid #DDD;
+    margin-bottom:px2rem(8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    .back-button,.more-button{
+        width:px2rem(50);
+        text-align:center;
+        button{
+            background-color:inherit;
+            border:0 none;
+            color:#999;
+        }
+    }
+    h3{
+        flex:1;
+        text-align:center;
+    }
+}
+
 .md-button{
     box-shadow:0 px2rem(2) px2rem(2) 0 rgba(0,0,0,.14),
     0 px2rem(3) px2rem(1) px2rem(-2) rgba(0,0,0,.2),

@@ -198,7 +198,7 @@ class Slider extends Component{
             var scrollX = this.state.slideStyle.width * activeIndex;
             transform = "translate3D(-"+scrollX+"px,0,0)";
         }
-        const slidesNode = React.findDOMNode(this.refs.slides);
+        const slidesNode = ReactDOM.findDOMNode(this.refs.slides);
         if(transform !== null){
             slidesNode.style.transform = transform;
             slidesNode.style.transitionDuration = ".3s";
@@ -229,7 +229,7 @@ class Slider extends Component{
             scrollX += offsetX;
             transform = "translate3D(-"+scrollX+"px,0,0)";
         }
-        const slidesNode = React.findDOMNode(this.refs.slides);
+        const slidesNode = ReactDOM.findDOMNode(this.refs.slides);
         if(transform !==null){
             slidesNode.style.transform = transform;
             slidesNode.style.transitionDuration = ".3s";

@@ -33123,7 +33123,13 @@
 	    }, {
 	        key: "hasValue",
 	        value: function hasValue(value) {
-	            return this.getValueArray().indexOf(value) > -1;
+	            var multiple = this.props.multiple;
+
+	            if (multiple === true) {
+	                return this.getValueArray().indexOf(value) > -1;
+	            } else {
+	                return this.getValue() === value;
+	            }
 	        }
 	    }, {
 	        key: "setValue",
@@ -33201,7 +33207,6 @@
 	                var checkedClass = checked ? "checked" : null;
 	                var checkedIcon = checked ? _react2["default"].createElement(_iconJsx2["default"], { icon: selectedIcon }) : unselectedIcon === null ? null : _react2["default"].createElement(_iconJsx2["default"], { icon: unselectedIcon });
 	                checked && selectedLabels.push(option.label);
-
 	                if (filterText && _this2.props.optionFilter(filterText, option) === false) {
 	                    return;
 	                }
@@ -33271,24 +33276,20 @@
 	                maxHeight: this.props.maxHeight
 	            };
 	            return _react2["default"].createElement(
-	                "div",
-	                null,
+	                _dropdownJsx2["default"],
+	                _extends({ className: classes, title: status, ref: "dropdown" }, this.props),
+	                this.props.filterInput ? _react2["default"].createElement(
+	                    "div",
+	                    { className: "filter-input" },
+	                    _react2["default"].createElement("input", { type: "text", onChange: this.handleFilterInput.bind(this), ref: "filterInput" }),
+	                    _react2["default"].createElement(_iconJsx2["default"], { icon: "search" })
+	                ) : null,
 	                _react2["default"].createElement(
-	                    _dropdownJsx2["default"],
-	                    _extends({ className: classes, title: status, ref: "dropdown" }, this.props),
-	                    this.props.filterInput ? _react2["default"].createElement(
-	                        "div",
-	                        { className: "filter-input" },
-	                        _react2["default"].createElement("input", { type: "text", onChange: this.handleFilterInput.bind(this), ref: "filterInput" }),
-	                        _react2["default"].createElement(_iconJsx2["default"], { icon: "search" })
-	                    ) : null,
-	                    _react2["default"].createElement(
-	                        "ul",
-	                        { className: "selected-items", style: itemsStyle },
-	                        items
-	                    ),
-	                    _react2["default"].createElement("input", { type: "hidden", value: this.state.value })
-	                )
+	                    "ul",
+	                    { className: "selected-items", style: itemsStyle },
+	                    items
+	                ),
+	                _react2["default"].createElement("input", { type: "hidden", value: this.state.value })
 	            );
 	        }
 	    }]);
@@ -33795,7 +33796,7 @@
 	                var scrollX = this.state.slideStyle.width * activeIndex;
 	                transform = "translate3D(-" + scrollX + "px,0,0)";
 	            }
-	            var slidesNode = _react2["default"].findDOMNode(this.refs.slides);
+	            var slidesNode = _reactDom2["default"].findDOMNode(this.refs.slides);
 	            if (transform !== null) {
 	                slidesNode.style.transform = transform;
 	                slidesNode.style.transitionDuration = ".3s";
@@ -33829,7 +33830,7 @@
 	                scrollX += offsetX;
 	                transform = "translate3D(-" + scrollX + "px,0,0)";
 	            }
-	            var slidesNode = _react2["default"].findDOMNode(this.refs.slides);
+	            var slidesNode = _reactDom2["default"].findDOMNode(this.refs.slides);
 	            if (transform !== null) {
 	                slidesNode.style.transform = transform;
 	                slidesNode.style.transitionDuration = ".3s";
@@ -34345,7 +34346,7 @@
 	                var key = "hour-" + i;
 	                hours.push(_react2["default"].createElement(
 	                    _sliderSlideJsx2["default"],
-	                    null,
+	                    { key: key },
 	                    _react2["default"].createElement(
 	                        "span",
 	                        null,
@@ -34382,7 +34383,7 @@
 	                var key = "minute-" + i;
 	                minutes.push(_react2["default"].createElement(
 	                    _sliderSlideJsx2["default"],
-	                    null,
+	                    { key: key },
 	                    _react2["default"].createElement(
 	                        "span",
 	                        null,
@@ -34424,7 +34425,7 @@
 	                var key = "second-" + i;
 	                seconds.push(_react2["default"].createElement(
 	                    _sliderSlideJsx2["default"],
-	                    null,
+	                    { key: key },
 	                    _react2["default"].createElement(
 	                        "span",
 	                        null,
@@ -47641,7 +47642,7 @@
 
 	                    weekLabels.push(_react2["default"].createElement(
 	                        "div",
-	                        { className: "week-cell" },
+	                        { className: "week-cell", key: week },
 	                        week
 	                    ));
 	                }
@@ -47681,7 +47682,7 @@
 	            for (var i = 1; i <= offsetOfMonth; i++) {
 	                cells.push(_react2["default"].createElement(
 	                    "div",
-	                    { className: "blank-day day-cell" },
+	                    { className: "blank-day day-cell", key: "blank-" + i },
 	                    "blank"
 	                ));
 	            }
@@ -47695,7 +47696,7 @@
 	                // console.log('selectedDay',selectedDay)
 	                cells.push(_react2["default"].createElement(
 	                    "div",
-	                    { className: dayCellClasses, onClick: this.props.onDayChange.bind(this, i) },
+	                    { className: dayCellClasses, onClick: this.props.onDayChange.bind(this, i), key: "day-" + i },
 	                    i
 	                ));
 	            }
@@ -47879,17 +47880,15 @@
 	        key: "renderStatus",
 	        value: function renderStatus() {
 	            var selectedDate = this.state.value;
-	            var selectedDateLabel;
-	            var showTimepicker = this.props.showTimepicker;
-	            if (this.props.showDatepicker && this.props.showTimepicker) {
-	                showTimepicker = false;
-	            }
-	            if (!showTimepicker) {
+	            var selectedDateLabel = (0, _moment2["default"])(selectedDate).format("YYYY-MM-DD HH:mm:ss");
+	            var _props = this.props;
+	            var showDatepicker = _props.showDatepicker;
+	            var showTimepicker = _props.showTimepicker;
+
+	            if (showTimepicker === false && showDatepicker === true) {
 	                selectedDateLabel = (0, _moment2["default"])(selectedDate).format("YYYY-MM-DD");
-	            } else if (showTimepicker) {
+	            } else if (showTimepicker === true && showDatepicker === false) {
 	                selectedDateLabel = (0, _moment2["default"])(selectedDate).format("HH:mm:ss");
-	            } else {
-	                selectedDateLabel = (0, _moment2["default"])(selectedDate).format("YYYY-MM-DD HH:mm:ss");
 	            }
 	            return _react2["default"].createElement(
 	                "span",

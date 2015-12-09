@@ -26,17 +26,12 @@ class DatetimeInput extends Component{
     }
     renderStatus(){
         const selectedDate = this.state.value;
-        var selectedDateLabel;
-        var showTimepicker = this.props.showTimepicker;
-        if(this.props.showDatepicker && this.props.showTimepicker){
-            showTimepicker = false
-        }
-        if(!showTimepicker){
+        let selectedDateLabel = moment(selectedDate).format("YYYY-MM-DD HH:mm:ss");
+        const {showDatepicker,showTimepicker} = this.props;
+        if(showTimepicker === false && showDatepicker === true){
             selectedDateLabel = moment(selectedDate).format("YYYY-MM-DD");
-        }else if(showTimepicker){
+        }else if(showTimepicker === true && showDatepicker === false){
             selectedDateLabel = moment(selectedDate).format("HH:mm:ss");
-        }else{
-            selectedDateLabel = moment(selectedDate).format("YYYY-MM-DD HH:mm:ss");
         }
         return (
             <span className="status">{selectedDate!== undefined ?

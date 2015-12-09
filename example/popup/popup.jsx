@@ -1,6 +1,7 @@
 'use strict'
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
+import Header from "../common/header.jsx";
 import {component} from "../../src/index.es6";
 let {Popup} = component;
 
@@ -46,6 +47,7 @@ class PopupExample extends Component{
         const {leftActive,rightActive,bottomActive} = this.state;
         return (
             <div className="popup-example" onClick={this.hideAll.bind(this)}>
+            <Header title="Popup" backButton={true} />
             <div className="popup-bottons">
                 <button onClick={this.toggleLeft.bind(this)} className="md-button">Popup Left</button>
                 <button onClick={this.toggleRight.bind(this)} className="md-button">Popup Right</button>

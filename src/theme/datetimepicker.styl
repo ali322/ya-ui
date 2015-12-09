@@ -1,5 +1,6 @@
 @import "./common/common";
 @import "./common/util";
+@import "./common/iconfont";
 
 .date-picker {
     &.invisible{
@@ -28,6 +29,8 @@
             width: 60%;
             text-align: center;
             .month-year-toggle {
+                text-decoration:none;
+                font-size:px2rem(14);
                 padding: px2rem(4) px2rem(20);
                 margin: px2rem(6) 0;
                 box-sizing: border-box;
@@ -58,15 +61,17 @@
         .week-cell {
             flex: 1;
             text-align: center;
-            font-size: px2rem(16);
+            font-size: px2rem(14);
         }
     }
     .date-picker-day {
         width: 100%;
         padding: px2rem(5) 0;
+        clear:both;
+        overflow:hidden;
         .day-cell {
-            display: inline-block;
             width: 14.2%;
+            float:left;
             font-size: px2rem(14);
             text-align: center;
             line-height: px2rem(20);
@@ -77,9 +82,6 @@
                 border-radius:px2rem(2);
                 font-weight: 700;
                 font-size:px2rem(16);
-                max-height:px2rem(24);
-                box-sizing: border-box;
-                padding:px2rem(2) 0 px2rem(4) 0;
             }
             &.blank-day {
                 font-size: 0;
@@ -164,17 +166,21 @@
 
 .datetime-toggle {
     border-top:px2rem(1) solid #DADADA;
+    padding:px2rem(6) px2rem(20);
     &>span {
         display: inline-block;
         cursor: pointer;
         line-height: px2rem(20);
-        padding:px2rem(6) px2rem(10);
-        font-size:px2rem(24);
+        font-size:px2rem(18);
         width: 100%;
         box-sizing: border-box;
         text-align: center;
+        display:flex;
+        justify-content:center;
+        align-items:center;
         &>.iconfont {
             padding-right:px2rem(10);
+            font-size:px2rem(14);
         }
     }
 }

@@ -22,5 +22,11 @@
         "path": "./example/numberpicker/",
         "entryJS": "numberpicker.jsx",
         "entryCSS": "numberpicker.styl"
+    },
+    "datetimepicker": {
+        "html": ["datetimepicker.html"],
+        "path": "./example/datetimepicker/",
+        "entryJS": "datetimepicker.jsx",
+        "entryCSS": "datetimepicker.styl"
     }
 }

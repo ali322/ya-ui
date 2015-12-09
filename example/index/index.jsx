@@ -1,6 +1,7 @@
 'use strict';
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
+import Header from "../common/header.jsx";
 
 class IndexExample extends Component{
     constructor(props){
@@ -9,7 +10,7 @@ class IndexExample extends Component{
     render(){
         return (
             <div className="index-example">
-                <h2>Ya-UI</h2>
+                <Header title="Ya-UI"/>
                 <table className="md-data-table">
                     <thead>
                     <tr>
@@ -25,6 +26,14 @@ class IndexExample extends Component{
                     <tr>
                         <td>Popup</td>
                         <td><a href="./popup/popup.html">example</a></td>
+                    </tr>
+                    <tr>
+                        <td>NumberPicker</td>
+                        <td><a href="./numberpicker/numberpicker.html">example</a></td>
+                    </tr>
+                    <tr>
+                        <td>DatetimePicker</td>
+                        <td><a href="./datetimepicker/datetimepicker.html">example</a></td>
                     </tr>
                     </tbody>
                 </table>

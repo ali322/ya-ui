@@ -15,7 +15,7 @@ class TimePicker extends Component{
         for(var i = 0;i<24;i++){
             const key = "hour-" + i;
             hours.push(
-                <Slide>
+                <Slide key={key}>
                 <span>{i}</span>
                 </Slide>
             );
@@ -39,7 +39,7 @@ class TimePicker extends Component{
         for(var i = 0;i<60;i++){
             const key = "minute-" + i;
             minutes.push(
-                <Slide>
+                <Slide key={key}>
                 <span>{i}</span>
                 </Slide>
             );
@@ -66,7 +66,7 @@ class TimePicker extends Component{
         for(var i = 0;i<60;i++){
             const key = "second-" + i;
             seconds.push(
-                <Slide>
+                <Slide key={key}>
                 <span>{i}</span>
                 </Slide>
             );

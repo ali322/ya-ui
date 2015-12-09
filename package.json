@@ -9,10 +9,10 @@
     "start": "gulp run-example",
     "build": "webpack --config ./task/webpack.build.js --display-error-details",
     "release": "gulp clean-dist && webpack --config ./task/webpack.release.js --display-error-details",
-    "example-build": "webpack --config ./task/webpack.example.js --display-error-details",
-    "example-release": "webpack --config ./task/webpack.example-release.js --display-error-details",
     "develop-example": "npm run example-build && gulp develop-example",
-    "release-example": "npm run example-release && gulp release-example"
+    "release-example": "npm run example-release && gulp release-example",
+    "example-build": "webpack --config ./task/webpack.example.js --display-error-details",
+    "example-release": "webpack --config ./task/webpack.example-release.js --display-error-details"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,7 @@
 'use strict'
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
+import Header from "../common/header.jsx";
 import {component} from "../../src/index.es6";
 let {Selected,SelectedSlide} = component;
 
@@ -12,6 +13,7 @@ let SelectedForm = React.createClass({
         ];
         return (
             <div className="selected-example">
+                <Header title="Selected" backButton={true} />
                 <div className="form-row">
                     <label>Selected</label>
                     <Selected options={options}/>

@@ -23,7 +23,7 @@ class DatePicker extends Component{
         var weekLabels = [];
         for(var week of weeks){
             weekLabels.push(
-                <div className="week-cell">{week}</div>
+                <div className="week-cell" key={week}>{week}</div>
             )
         }
         return weekLabels;
@@ -44,7 +44,7 @@ class DatePicker extends Component{
 
         for(var i = 1;i<=offsetOfMonth;i++){
             cells.push(
-                <div className="blank-day day-cell">blank</div>
+                <div className="blank-day day-cell" key={"blank-"+i}>blank</div>
             );
         }
 
@@ -56,7 +56,7 @@ class DatePicker extends Component{
             });
             // console.log('selectedDay',selectedDay)
             cells.push(
-                <div className={dayCellClasses} onClick={this.props.onDayChange.bind(this,i)}>{i}</div>
+                <div className={dayCellClasses} onClick={this.props.onDayChange.bind(this,i)} key={"day-"+i}>{i}</div>
             )
         }
         return cells;
