@@ -28,5 +28,11 @@
         "path": "./example/datetimepicker/",
         "entryJS": "datetimepicker.jsx",
         "entryCSS": "datetimepicker.styl"
+    },
+    "form": {
+        "html": ["form.html"],
+        "path": "./example/form/",
+        "entryJS": "form.jsx",
+        "entryCSS": "form.styl"
     }
 }

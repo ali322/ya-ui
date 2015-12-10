@@ -35,6 +35,10 @@ class IndexExample extends Component{
                         <td>DatetimePicker</td>
                         <td><a href="./datetimepicker/datetimepicker.html">example</a></td>
                     </tr>
+                    <tr>
+                        <td>Form</td>
+                        <td><a href="./form/form.html">example</a></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
