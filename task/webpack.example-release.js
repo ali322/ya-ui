@@ -18,7 +18,7 @@ _.each(examples, function(obj, name) {
         entryCSS,
         entryJS        
     ];
-    del.sync(obj.path + "dist/*.js");
+    del.sync(obj.path + "dist/*.*");
     _.extend(entries, entry);
 });
 
