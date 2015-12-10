@@ -22,5 +22,6 @@ class DatetimepickerExample extends Component{
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+    require("../lib/responder");
     ReactDOM.render(<DatetimepickerExample />,document.getElementById("datetimepicker-example"));
 })

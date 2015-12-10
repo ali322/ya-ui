@@ -1,4 +1,5 @@
-@import "./variable"
+@import "./variable";
+@import "./util";
 
 $eot = $assetPath + 'font/fontello.eot'
 $eotIEFix = $assetPath + 'font/fontello.eot?#iefix'
@@ -16,7 +17,7 @@ $svg = $assetPath + "font/fontello.svg#iconfont"
 
 .iconfont {
   font-family:"iconfont" !important;
-  font-size:16px;
+  px2px("font-size",16);
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;

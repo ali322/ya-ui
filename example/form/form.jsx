@@ -65,5 +65,6 @@ class FormExample extends Component{
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+    require("../lib/responder");
     ReactDOM.render(<FormExample />,document.getElementById('form-example'));
 })

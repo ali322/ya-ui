@@ -77,6 +77,7 @@ class PopupExample extends Component{
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+    require("../lib/responder");
     ReactDOM.render(<PopupExample />,document.getElementById("popup-example"));
 })
 

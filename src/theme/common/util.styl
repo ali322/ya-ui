@@ -3,6 +3,25 @@ px2rem($px){
     return $px / 32 * 1rem;
 }
 
+px2px($name,$px){
+    {$name}: $px * 1px;
+    [data-dpr="2"] & {
+        {$name}: round($px *2) * 1px;
+    }
+    [data-dpr="2.5"] & {
+        {$name}: round($px * 2.5) * 1px;
+    }
+    [data-dpr="2.75"] & {
+        {$name}: round($px * 2.75) * 1px;
+    }
+    [data-dpr="3"] & {
+        {$name}: round($px * 3) * 1px
+    }
+    [data-dpr="4"] & {
+        {$name}: $px * 4px;
+    }
+}
+
 /*mixin*/
 text-overflow(){
     overflow:hidden;

@@ -28,5 +28,6 @@ let SelectedForm = React.createClass({
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
+    require("../lib/responder");
     ReactDOM.render(<SelectedForm />,document.getElementById('selected-example'));
 })

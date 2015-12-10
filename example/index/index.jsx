@@ -47,5 +47,6 @@ class IndexExample extends Component{
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+    require("../lib/responder");
     ReactDOM.render(<IndexExample />,document.getElementById('example'));
 })

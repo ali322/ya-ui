@@ -22,5 +22,6 @@ class NumberpickerExample extends Component{
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+    require("../lib/responder");
     ReactDOM.render(<NumberpickerExample />,document.getElementById("numberpicker-example"));
 })
