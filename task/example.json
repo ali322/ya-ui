@@ -34,5 +34,17 @@
         "path": "./example/form/",
         "entryJS": "form.jsx",
         "entryCSS": "form.styl"
+    },
+    "slider": {
+        "html": ["slider.html"],
+        "path": "./example/slider/",
+        "entryJS": "slider.jsx",
+        "entryCSS": "slider.styl"
+    },
+    "more": {
+        "html": ["more.html"],
+        "path": "./example/more/",
+        "entryJS": "more.jsx",
+        "entryCSS": "more.styl"
     }
 }

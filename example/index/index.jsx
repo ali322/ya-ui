@@ -39,6 +39,14 @@ class IndexExample extends Component{
                         <td>Form</td>
                         <td><a href="./form/form.html">example</a></td>
                     </tr>
+                    <tr>
+                        <td>Slider</td>
+                        <td><a href="./slider/slider.html">example</a></td>
+                    </tr>
+                    <tr>
+                        <td>More</td>
+                        <td><a href="./more/more.html">example</a></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

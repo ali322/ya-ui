@@ -39,7 +39,7 @@ module.exports = {
         }, {
             test: /\.styl/,
             exclude: [node_modules_dir],
-            loader: 'style!css!stylus!autoprefixer'
+            loader: 'style!css!autoprefixer!stylus'
                 // loader: ExtractTextPlugin.extract('style', 'css!sass!autoprefixer')
         }, {
             test: /\.css/,

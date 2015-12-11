@@ -29,7 +29,7 @@ gulp.task("develop-example", function() {
             jsFile = path.join(obj.path, 'build/' + name + '.js');
 
         injectFiles.push(jsFile);
-        console.log(injectFiles)
+        // console.log(injectFiles)
         var sources = gulp.src(injectFiles, {
             read: false
         });
@@ -37,7 +37,7 @@ gulp.task("develop-example", function() {
             relative: true,
             empty:true,
             transform: function(filepath) {
-                console.log('filepath',filepath)
+                // console.log('filepath',filepath)
                 if (/build\/\w+.js/.test(filepath) === true) {
                     filepath = filepath.replace(/(\w+\/)*build/g, '/public');
                 }
