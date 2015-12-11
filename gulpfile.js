@@ -99,6 +99,7 @@ gulp.task("run-example", function() {
             forms: true,
             scroll: true
         },
+        notify:false,
         // logConnections: true,
         logLevel: "info"
     }, function() {

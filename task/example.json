@@ -41,6 +41,30 @@
         "entryJS": "slider.jsx",
         "entryCSS": "slider.styl"
     },
+    "tabs": {
+        "html": ["tabs.html"],
+        "path": "./example/tabs/",
+        "entryJS": "tabs.jsx",
+        "entryCSS": "tabs.styl"
+    },
+    "accordion": {
+        "html": ["accordion.html"],
+        "path": "./example/accordion/",
+        "entryJS": "accordion.jsx",
+        "entryCSS": "accordion.styl"
+    },
+    "sticky": {
+        "html": ["sticky.html"],
+        "path": "./example/sticky/",
+        "entryJS": "sticky.jsx",
+        "entryCSS": "sticky.styl"
+    },
+    "scrollspy": {
+        "html": ["scrollspy.html"],
+        "path": "./example/scrollspy/",
+        "entryJS": "scrollspy.jsx",
+        "entryCSS": "scrollspy.styl"
+    },
     "more": {
         "html": ["more.html"],
         "path": "./example/more/",
