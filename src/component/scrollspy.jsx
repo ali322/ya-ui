@@ -1,6 +1,7 @@
 'use strict';
 
 import React,{Component} from "react";
+import ReactDOM from "react-dom";
 import classNames from "classnames";
 import dom from "../lib/dom.es6";
 
@@ -9,7 +10,7 @@ class ScrollSpy extends Component{
         this.initialize();
     }
     initialize(){
-        this.linkedNodes = React.findDOMNode(this).querySelectorAll(".anchor-point"),
+        this.linkedNodes = ReactDOM.findDOMNode(this).querySelectorAll(".anchor-point"),
         this.anchorNodes = [];
         Array.prototype.forEach.call(this.linkedNodes,(linkedNode)=>{
             const anchor = document.getElementById(linkedNode.dataset.anchor);
@@ -19,10 +20,6 @@ class ScrollSpy extends Component{
         });
     }
     checkVisible(element,relativeElement){
-        // console.log(element.dataset.anchor)
-        // console.log('scrollTop',relativeElement.scrollTop)
-        // console.log('offsetTop',element.offsetTop)
-        // console.log('height',element.offsetHeight)
         const offsetTop = element.offsetTop - 40;
         return offsetTop <= relativeElement.scrollTop && 
                 (offsetTop + element.offsetHeight) >= relativeElement.scrollTop
@@ -38,13 +35,11 @@ class ScrollSpy extends Component{
         if(visibleNodes.length === 0){
             return;
         }
-        // console.log('visibleNodes',visibleNodes)
         const targetNode = targetNodes[0];
         Array.prototype.forEach.call(this.anchorNodes,(anchorNode)=>{
             dom.removeClass(anchorNode,"active");
         });
         dom.addClass(targetNode,"active");        
-        // util.dispatchEvent(targetNode,'click');
     }
     render(){
         const classes = classNames(this.props.className,{
