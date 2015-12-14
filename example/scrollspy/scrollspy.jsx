@@ -37,6 +37,7 @@ class ScrollspyExample extends Component{
     render(){
         return (
             <div className="scrollspy-example">
+                <Header title="Scrollspy" backButton={true} />
                 <div className="scrollspy-example-inner">
                 <div className="shortcut">
                     <span onClick={this.jumpTo.bind(this,"a")} id="anchor-a">A</span>
@@ -47,7 +48,6 @@ class ScrollspyExample extends Component{
                     <span onClick={this.jumpTo.bind(this,"f")} id="anchor-f">F</span>
                 </div>
                 <ScrollSpy ref="scrollEl" className="scroll-list">
-                    <h4>All</h4>
                     <div className="anchor-point" data-anchor="anchor-a">
                     <h5>A</h5>
                     <ul>

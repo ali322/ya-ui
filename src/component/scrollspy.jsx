@@ -20,14 +20,18 @@ class ScrollSpy extends Component{
         });
     }
     checkVisible(element,relativeElement){
-        const offsetTop = element.offsetTop - 40;
-        return offsetTop <= relativeElement.scrollTop && 
-                (offsetTop + element.offsetHeight) >= relativeElement.scrollTop
+        const paddingTop = relativeElement.firstChild.offsetTop
+        const offsetTop = element.offsetTop - paddingTop;
+        const scrollTop = relativeElement.scrollTop;
+        const offsetHeight = element.offsetHeight;
+        // console.log(offsetTop,scrollTop,paddingTop)
+        return offsetTop <= scrollTop && 
+                (offsetTop + offsetHeight) >= scrollTop
     }
     handleScroll(){
         var visibleNodes = [],targetNodes = [];
         Array.prototype.forEach.call(this.linkedNodes,(linkedNode,i)=>{
-            if(this.checkVisible(linkedNode,React.findDOMNode(this)) === true){
+            if(this.checkVisible(linkedNode,ReactDOM.findDOMNode(this)) === true){
                 visibleNodes.push(linkedNode);
                 targetNodes.push(this.anchorNodes[i])
             }

@@ -1,11 +1,23 @@
 @import "../common/example";
 @import "../common/md";
 @import "../../src/theme/scrollspy";
+#scrollspy-example{
+    height:100%;
+}
 .scrollspy-example{
     px2px("font-size",14)
     background: #FFF;
     font-size:px2rem(16);
     position: relative;
+    height:100%;
+    &>header{
+        position:absolute;
+        width:100%;
+        z-index:100;
+    }
+    .scrollspy-example-inner{
+        height:100%;
+    }
     .scroll-list{
         width: 100%;
         height: 100%;
@@ -14,6 +26,8 @@
         box-sizing: border-box;
         padding-right:px2rem(30);
         padding-bottom:px2rem(40);
+        padding-top:px2rem(41);
+        position:relative;
         h4 {
             line-height:px2rem(40);
             padding: 0 0 0 px2rem(15);
@@ -71,7 +85,7 @@
             font-weight: 700;
             text-shadow:px2rem(2) px2rem(2) px2rem(3) #DDD;
             &.active{
-                color:$pink-color;
+                color:#FF3300;
             }
         }
     }
