@@ -3,6 +3,7 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
+import Sticky from "../../src/component/sticky.jsx";
 
 class StickyExample extends Component{
     constructor(props){
@@ -12,6 +13,9 @@ class StickyExample extends Component{
         return (
             <div className="sticky-example">
                 <Header title="Sticky" backButton={true} />
+                <Sticky bottom="0">
+                <div className="sticky-bottom">im bottom</div>
+                </Sticky>
             </div>
         )
     }
