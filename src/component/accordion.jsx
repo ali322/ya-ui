@@ -124,9 +124,9 @@ export class AccordionItem extends Component{
             active
         });
         var icon = (<Icon icon="right-open"/>);
-        // if(active === true){
-        //     icon = (<Icon icon="up-open"/>);
-        // }
+        if(active === true){
+            icon = (<Icon icon="up-open"/>);
+        }
         // console.log('ddStyle',this.state.ddStyle)
         return (
             <dl className={classes} key={"accordion-item-" + key}>
