@@ -1,9 +1,8 @@
 'use strict'
 
 import React,{Component} from "react";
+import ReactDOM from "react-dom";
 import {ReactCSSTransitionGroup} from "react/lib/ReactCSSTransitionGroup";
-
-const placeholder = "/client/asset/image/blank.gif";
 
 class Image extends Component{
     constructor(props){
@@ -22,11 +21,11 @@ class Image extends Component{
         }
     }
     componentDidMount(){
-        var imgNode = React.findDOMNode(this);
+        var imgNode = ReactDOM.findDOMNode(this);
         this.initialHeight = imgNode.clientWidth;
     }
     render(){
-        var src = placeholder,classes="",transition="flip";
+        var src = this.props.placeholder,classes="",transition="flip";
         if(this.state.isReady === true){
             src = this.props.src;
             classes="loaded";
@@ -35,15 +34,15 @@ class Image extends Component{
             height:this.initialHeight
         };
         return (
-            <ReactCSSTransitionGroup transitionName={transition} component="div"
-             className="lazyload-image" style={initialStyle}>
-             <div key={src} style={initialStyle}>
+             <div key={src} style={initialStyle} className="lazyload">
                 <img src={src} className={classes}/>
-                {this.state.isReady && this.props.children}
              </div>
-            </ReactCSSTransitionGroup>
         )
     }
+}
+
+Image.defaultProps = {
+    placeholder:"/asset/image/placeholder-500x500.png"
 }
 
 export default Image;

@@ -1,32 +1,8 @@
 'use strict'
 
 import React,{Component,addons} from "react";
+import ReactDOM from "react-dom";
 import dom from "../../lib/dom.es6";
-
-const listeners = [];
-
-function checkVisble(component){
-    let node = React.findDOMNode(component);
-    let {top,bottom} = node.getBoundingClientRect();
-    let scrollTop = dom.scrollTop();
-
-    let elementTop = top + scrollTop;
-    let elementHeight = bottom - top;
-    let windowInnerHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if ((elementTop < (scrollTop + windowInnerHeight + component.props.offset)) &&
-          ((elementTop + elementHeight + component.props.offset) > scrollTop)) {
-        component.setState({
-            visible:true
-        });
-    }
-}
-
-function lazyLoadHandler(){
-    listeners.forEach((listener)=>{
-        checkVisble(listener);
-    })
-}
 
 class LazyLoad extends Component{
     constructor(props){
@@ -35,20 +11,34 @@ class LazyLoad extends Component{
             visible:false
         }
     }
-    componentDidMount(){
-        util.bindEvent(window,'scroll',lazyLoadHandler)
-        listeners.push(this);
-        checkVisble(this);
-    }
-    componentWillUnmount(){
-        const index = listeners.indexOf(this);
-        if (index !== -1) {
-          listeners.splice(index, 1);
+    checkVisble(e){
+        const anchorScrollTop = dom.scrollTop(e.target);
+        const {offset} = this.props;
+        let {top,bottom} = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        const elementScrollTop = top + anchorScrollTop;
+        const anchorHeight = e.target.clientHeight;
+        const elementHeight = top - bottom;
+        // console.log(elementScrollTop,anchorScrollTop,anchorHeight)
+        if ((elementScrollTop < (anchorScrollTop + anchorHeight + offset)) &&
+          ((elementScrollTop + elementHeight + offset) > anchorScrollTop)) {
+            // console.log('render')
+            this.setState({
+                visible:true
+            })
         }
     }
+    componentDidMount(){
+        const {anchor} = this.props;
+        let anchorElement = anchor !== undefined ?
+            document.getElementById(anchor):window;
+            // console.log('anchorElement',anchorElement)
+        dom.bindEvent(anchorElement,'scroll',this.checkVisble.bind(this))
+    }
     render(){
+        // console.log('render lazyload')
         return (
             React.cloneElement(this.props.children,{
+                className:"lazyload",
                 visible:this.state.visible
             })
         )

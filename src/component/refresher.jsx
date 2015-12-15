@@ -1,6 +1,7 @@
 'use strict'
 import React from "react";
 import classNames from "classnames";
+import Icon from "./icon.jsx";
 
 class Refresher extends React.Component{
     render(){
@@ -10,7 +11,7 @@ class Refresher extends React.Component{
         })
         return (
             <div className={classes}>
-                <span className="iconfont icon-spin5 animate-spin"></span>正在加载
+                <Icon icon="spin-5" className="animate-spin"/>Loading
             </div>
         );
     }

@@ -1,5 +1,36 @@
 @import "../common/example";
 @import "../common/md";
+@import "../../src/theme/gotop";
+@import "../../src/theme/refresher";
+@import "../../src/theme/alert";
+@import "../../src/theme/lazyload";
+/*prevent chrome's font boosting bug*/
+html *{
+    max-height:999999px;
+}
+#more-example{
+    height:100%
+}
 .more-example{
-    px2px("font-size",14)
+    height:100%;
+    px2px("font-size",14);
+    position:relative;
+    &>header{
+        position:absolute;
+        width:100%;
+    }
+    .more-example-inner{
+        padding:px2rem(41) 0 0 0;
+        box-sizing:border-box;
+        height:100%;
+        overflow-y:auto;
+        overflow-x:hidden;
+        .more-example-list{
+            &>li{
+                padding:px2rem(8) px2rem(10);
+                line-height:px2rem(25);
+                border-bottom:px2rem(1) solid #CECECE;
+            }
+        }
+    }
 }

@@ -24,8 +24,13 @@
     }
     .tabs-content {
         position: relative;
+        .tabs-item:first-child{
+            position:static;
+        }
         .tabs-item {
             position: absolute;
+            top:0;
+            left:0;
             z-index: 100;
             width: 100%;
             transform: translateX(-100%);
