@@ -1,26 +1,12 @@
 @import "./common/common";
 @import "./common/util";
-img.is-ready {
-    animation: fadeIn .5s ease-in-out;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        // transform: rotateY(0deg);
-    }
-    100% {
-        opacity: 1;
-        // transform: rotateY(180deg);
-    }
-}
 
 .lazyload-image {
     position: relative;
     width: 100%;
-    // overflow:hidden;
+    &>.image-container{
+        line-height:0;
+    }
     &>div {
         z-index: 2;
         position: absolute;
@@ -35,7 +21,7 @@ img.is-ready {
 
 .lazyload-image {
     &>div.flip-enter.flip-enter-active {
-        animation: flip-enter .5s ease-in-out;
+        animation: flip-enter .3s ease-in-out;
         transform-style: preserve-3d;
         backface-visibility: hidden;
     }
@@ -43,6 +29,14 @@ img.is-ready {
         animation: flip-leave .5s ease-in-out;
         transform-style: preserve-3d;
         backface-visibility: hidden;
+    }
+    &>div.fade-enter.fade-enter-active{
+        opacity:1;
+        transition:opacity .3s ease-in-out;
+    }
+    &>div.fade-leave.fade-leave-active{
+        opacity:0;
+        transition:opacity .5s ease-in-out;
     }
 }
 

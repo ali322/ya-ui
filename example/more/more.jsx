@@ -77,7 +77,7 @@ class MoreExample extends Component{
                 <li key={i}>
                 <div className="example-image">
                 <ScrollSpy scrollBy=".more-example-inner">
-                <Image src="/asset/image/food-q-c-500-500-4.jpg"/>
+                <Image src="/asset/image/food-q-c-500-500-4.jpg" animation="fade"/>
                 </ScrollSpy>
                 </div>
                 <div className="example-desc">

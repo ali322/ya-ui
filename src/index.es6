@@ -6,8 +6,7 @@ import GoTop from "./component/gotop.jsx";
 import Selected from "./component/selected/selected.jsx";
 import SelectedSlide from "./component/selected/selectedslide.jsx";
 import NumberPicker from "./component/numberpicker.jsx";
-import LazyLoad from "./component/lazyload/lazyload.jsx";
-import Image from "./component/lazyload/image.jsx";
+import Image from "./component/image.jsx";
 import Sticky from "./component/sticky.jsx";
 import Popup from "./component/popup.jsx";
 import Popover from "./component/popover.jsx";
@@ -32,7 +31,6 @@ const yaui = {
         Sticky,
         Popup,
         Popover,
-        LazyLoad,
         Refresher,
         Image,
         Slider,
