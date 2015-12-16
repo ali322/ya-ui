@@ -18,6 +18,15 @@ let dom = {
             el.detachEvent("on${event}",listener);
         }
       },
+      staticOffset(element){
+        let top = 0,left = 0;
+        do{  
+            top += element.offsetTop || 0;  
+            left += element.offsetLeft || 0;  
+            element = element.offsetParent;  
+          }while(element);  
+        return {top,left}
+      },
       offset(element) {
         if (!element) {
           return null;
@@ -49,6 +58,33 @@ let dom = {
       ownerWindow(element){
         const doc = (element && element.ownerDocument) || document;
         return doc.defaultView || doc.parentWindow || window;
+      },
+      inViewport(element){
+        let top = element.offsetTop;
+        let left = element.offsetLeft;
+        let width = element.offsetWidth;
+        let height = element.offsetHeight;
+        while(element.offsetParent){
+          element = element.offsetParent;
+          top += element.offsetTop;
+          left += element.offsetLeft;
+        }
+        return (
+          top < (window.pageYOffset + window.innerHeight) &&
+          left < (window.pageXOffset + window.innerWidth) &&
+          (top + height) > window.pageYOffset &&
+          (left + width) > window.pageXOffset
+        )
+      },
+      scrollNode(element){
+        let scrollNode = element;
+        while(scrollNode !== window){
+          scrollNode = scrollNode.parentNode;
+          if(scrollNode.scrollTop > 0){
+            break;
+          }
+        }
+        return scrollNode;
       },
       scrollTo(element,options){
         options = options || {};
