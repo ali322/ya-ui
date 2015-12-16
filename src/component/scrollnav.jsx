@@ -6,19 +6,6 @@ import classNames from "classnames";
 import dom from "../lib/dom.es6";
 
 class ScrollNav extends Component{
-    componentDidMount(){
-        this.initialize();
-    }
-    initialize(){
-        this.linkedNodes = ReactDOM.findDOMNode(this).querySelectorAll(".anchor-point"),
-        this.anchorNodes = [];
-        Array.prototype.forEach.call(this.linkedNodes,(linkedNode)=>{
-            const anchor = document.getElementById(linkedNode.dataset.anchor);
-            if(anchor){
-                this.anchorNodes.push(anchor);
-            }
-        });
-    }
     checkVisible(element,relativeElement){
         const paddingTop = relativeElement.firstChild.offsetTop
         const offsetTop = element.offsetTop - paddingTop;
@@ -29,29 +16,50 @@ class ScrollNav extends Component{
                 (offsetTop + offsetHeight) >= scrollTop
     }
     handleScroll(){
-        var visibleNodes = [],targetNodes = [];
-        Array.prototype.forEach.call(this.linkedNodes,(linkedNode,i)=>{
-            if(this.checkVisible(linkedNode,ReactDOM.findDOMNode(this)) === true){
+        var visibleNodes = [],activeAnchorNodes = [];
+        let navbarNodes = ReactDOM.findDOMNode(this).querySelector(this.props.navbar).children;
+        React.Children.forEach(this.props.children,(child,i)=>{
+            let childNode = ReactDOM.findDOMNode(child);
+            if(this.checkVisible(childNode,ReactDOM.findDOMNode(this)) === true){
                 visibleNodes.push(linkedNode);
-                targetNodes.push(this.anchorNodes[i])
+                activeAnchorNodes.push(anchorNodes[i]);
             }
-        });
+        })
         if(visibleNodes.length === 0){
-            return;
+            return false;
         }
-        const targetNode = targetNodes[0];
-        Array.prototype.forEach.call(this.anchorNodes,(anchorNode)=>{
-            dom.removeClass(anchorNode,"active");
+        Array.prototype.forEach.call(navbarNodes,(navbarNode)=>{
+            dom.removeClass(navbarNode,"active");
         });
-        dom.addClass(targetNode,"active");        
+        dom.addClass(navbarNodes[0],"active");        
     }
     render(){
-        const classes = classNames(this.props.className,{
-            "scroll-spy":true
-        });
+        const classes = classNames(this.props.className,"scroll-nav");
         return (
-            <div className={classes} onScroll={this.handleScroll.bind(this)}>{this.props.children}</div>
+            <div className={classes} 
+            onScroll={this.handleScroll.bind(this)}>
+            {this.props.children}
+            </div>
         );
+    }
+}
+
+export class ScrollNavbar extends Component{
+    renderScrollAnchors(){
+        let anchors = [];
+        Array.prototype.forEach.call(this.props.children,(child)=>{
+            anchors.push(
+                <div className="scroll-navbar-anchor">{child}</div>
+            )
+        })
+    }
+    render(){
+        // let child = React.Children.only(this.props.children);
+        return (
+            <div className="scroll-navbar">
+            {this.renderScrollAnchors()}
+            </div>
+        )
     }
 }
 

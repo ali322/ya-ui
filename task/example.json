@@ -59,11 +59,11 @@
         "entryJS": "sticky.jsx",
         "entryCSS": "sticky.styl"
     },
-    "scrollspy": {
-        "html": ["scrollspy.html"],
-        "path": "./example/scrollspy/",
-        "entryJS": "scrollspy.jsx",
-        "entryCSS": "scrollspy.styl"
+    "scrollnav": {
+        "html": ["scrollnav.html"],
+        "path": "./example/scrollnav/",
+        "entryJS": "scrollnav.jsx",
+        "entryCSS": "scrollnav.styl"
     },
     "more": {
         "html": ["more.html"],

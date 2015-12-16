@@ -48,8 +48,8 @@ class IndexExample extends Component{
                         <td><a href="./sticky/sticky.html">example</a></td>
                     </tr>
                     <tr>
-                        <td>ScrollSpy</td>
-                        <td><a href="./scrollspy/scrollspy.html">example</a></td>
+                        <td>ScrollNav</td>
+                        <td><a href="./scrollnav/scrollnav.html">example</a></td>
                     </tr>
                     <tr>
                         <td>Accordion</td>

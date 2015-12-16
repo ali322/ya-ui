@@ -3,9 +3,9 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
-import ScrollSpy from "../../src/component/scrollspy.jsx";
+import ScrollNav,{ScrollNavbar} from "../../src/component/scrollnav.jsx";
 
-class ScrollspyExample extends Component{
+class ScrollNavExample extends Component{
     constructor(props){
         super(props);
     }
@@ -35,19 +35,21 @@ class ScrollspyExample extends Component{
         // },2000);
     }
     render(){
+        const scrollNavbar = (
+        )
         return (
-            <div className="scrollspy-example">
+            <div className="scrollnav-example">
                 <Header title="Scrollspy" backButton={true} />
-                <div className="scrollspy-example-inner">
-                <div className="shortcut">
+                <div className="scrollnav-example-inner">
+                <ScrollNavbar className="shortcut" id="shortcut">
                     <span onClick={this.jumpTo.bind(this,"a")} id="anchor-a">A</span>
                     <span onClick={this.jumpTo.bind(this,"b")} id="anchor-b">B</span>
                     <span onClick={this.jumpTo.bind(this,"c")} id="anchor-c">C</span>
                     <span onClick={this.jumpTo.bind(this,"d")} id="anchor-d">D</span>
                     <span onClick={this.jumpTo.bind(this,"e")} id="anchor-e">E</span>
                     <span onClick={this.jumpTo.bind(this,"f")} id="anchor-f">F</span>
-                </div>
-                <ScrollSpy ref="scrollEl" className="scroll-list">
+                </ScrollNavbar>
+                <ScrollNav ref="scrollEl" navbar="#shortcut">
                     <div className="anchor-point" data-anchor="anchor-a">
                     <h5>A</h5>
                     <ul>
@@ -88,7 +90,7 @@ class ScrollspyExample extends Component{
                         <li>AVO</li>
                     </ul>
                     </div>
-                </ScrollSpy>
+                </ScrollNav>
                 </div>
             </div>
         )
@@ -97,5 +99,5 @@ class ScrollspyExample extends Component{
 
 document.addEventListener('DOMContentLoaded',()=>{
     require("../lib/responder");
-    ReactDOM.render(<ScrollspyExample />,document.getElementById('scrollspy-example'));
+    ReactDOM.render(<ScrollNavExample />,document.getElementById('scrollnav-example'));
 })
