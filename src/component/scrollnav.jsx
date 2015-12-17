@@ -5,60 +5,90 @@ import ReactDOM from "react-dom";
 import classNames from "classnames";
 import dom from "../lib/dom.es6";
 
-class ScrollNav extends Component{
-    checkVisible(element,relativeElement){
-        const paddingTop = relativeElement.firstChild.offsetTop
-        const offsetTop = element.offsetTop - paddingTop;
-        const scrollTop = relativeElement.scrollTop;
-        const offsetHeight = element.offsetHeight;
-        // console.log(offsetTop,scrollTop,paddingTop)
-        return offsetTop <= scrollTop && 
-                (offsetTop + offsetHeight) >= scrollTop
-    }
-    handleScroll(){
-        var visibleNodes = [],activeAnchorNodes = [];
-        let navbarNodes = ReactDOM.findDOMNode(this).querySelector(this.props.navbar).children;
-        React.Children.forEach(this.props.children,(child,i)=>{
-            let childNode = ReactDOM.findDOMNode(child);
-            if(this.checkVisible(childNode,ReactDOM.findDOMNode(this)) === true){
-                visibleNodes.push(linkedNode);
-                activeAnchorNodes.push(anchorNodes[i]);
-            }
-        })
-        if(visibleNodes.length === 0){
-            return false;
+const ScrollNav = React.createClass({
+    getInitialState(){
+        return {
+            activeIndex:0
         }
-        Array.prototype.forEach.call(navbarNodes,(navbarNode)=>{
-            dom.removeClass(navbarNode,"active");
-        });
-        dom.addClass(navbarNodes[0],"active");        
-    }
+    },
+    getDefaultProps(){
+        return {
+            delay:100,
+            diffInViewport:0,
+            navbarRenderer:()=>{}
+        }
+    },
+    componentDidMount(){
+        this.checkVisible()
+        dom.bindEvent(ReactDOM.findDOMNode(this.refs["content"]),"scroll",this.checkVisible)
+        // dom.unbindEvent(ReactDOM.findDOMNode(this.refs["content"]),"scroll",this.handleScroll)
+    },
+    componentWillUnmount(){
+        if(this._timer){
+            clearTimeout(this._timer)
+        }
+    },
+    checkVisible(e){
+        console.log('checkVisible')
+        const {diffInViewport} = this.props;
+        let activeIndex = [];
+        let containerNode = ReactDOM.findDOMNode(this.refs["content"])
+        for(let i = 0;i < containerNode.children.length;i++){
+            let childNode = containerNode.children[i];
+            if(dom.inViewport(childNode,containerNode,diffInViewport) === true){
+                activeIndex.push(i)
+            }
+        }
+        this._timer = setTimeout(()=>{
+            this.setState({
+                activeIndex:activeIndex[0]
+            })
+        },this.props.delay)
+    },
+    jumpTo(index,e){
+        dom.unbindEvent(ReactDOM.findDOMNode(this.refs["content"]),"scroll",this.checkVisible)
+        let containerNode = ReactDOM.findDOMNode(this.refs["content"])
+        let checkNode = containerNode.children[index]
+
+        dom.scrollInView(checkNode,containerNode,()=>{
+            dom.bindEvent(ReactDOM.findDOMNode(this.refs["content"]),"scroll",this.checkVisible)
+        })
+        this._timer = setTimeout(()=>{
+            this.setState({
+                activeIndex:index
+            })
+        },this.props.delay)
+    },
+    renderNavbar(){
+        const {navbarRenderer} = this.props;
+        const {activeIndex} = this.state;
+        let navbarItems = navbarRenderer.call(this)
+        return navbarItems.map((navbarItem,i)=>
+            <ScrollNavbarAnchor key={i} 
+            jumpTo={this.jumpTo.bind(this,i)}
+            active={i === activeIndex}
+            >{navbarItem}</ScrollNavbarAnchor>
+        )
+    },
     render(){
-        const classes = classNames(this.props.className,"scroll-nav");
+        const classes = classNames(this.props.className,"scroll-nav-content");
         return (
-            <div className={classes} 
-            onScroll={this.handleScroll.bind(this)}>
-            {this.props.children}
+            <div className="scroll-nav">
+            <div className="scroll-navbar">{this.renderNavbar()}</div>
+            <div className={classes} ref="content" 
+            >{this.props.children}</div>
             </div>
         );
     }
-}
+})
 
-export class ScrollNavbar extends Component{
-    renderScrollAnchors(){
-        let anchors = [];
-        Array.prototype.forEach.call(this.props.children,(child)=>{
-            anchors.push(
-                <div className="scroll-navbar-anchor">{child}</div>
-            )
-        })
-    }
+class ScrollNavbarAnchor extends Component{
     render(){
-        // let child = React.Children.only(this.props.children);
+        const classes = classNames("scroll-navbar-anchor",{
+            "active":this.props.active
+        })
         return (
-            <div className="scroll-navbar">
-            {this.renderScrollAnchors()}
-            </div>
+            <div className={classes} onClick={this.props.jumpTo}>{this.props.children}</div>
         )
     }
 }

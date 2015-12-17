@@ -3,7 +3,7 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
-import ScrollNav,{ScrollNavbar} from "../../src/component/scrollnav.jsx";
+import ScrollNav from "../../src/component/scrollnav.jsx";
 
 class ScrollNavExample extends Component{
     constructor(props){
@@ -35,21 +35,19 @@ class ScrollNavExample extends Component{
         // },2000);
     }
     render(){
-        const scrollNavbar = (
-        )
+        const navbarRenderer = ()=>{
+            let shortcuts = ["a","b","c","d","e"];
+            return shortcuts.map((v)=>{
+                return (
+                    <span>{v}</span>
+                )
+            })
+        }
         return (
             <div className="scrollnav-example">
                 <Header title="Scrollspy" backButton={true} />
                 <div className="scrollnav-example-inner">
-                <ScrollNavbar className="shortcut" id="shortcut">
-                    <span onClick={this.jumpTo.bind(this,"a")} id="anchor-a">A</span>
-                    <span onClick={this.jumpTo.bind(this,"b")} id="anchor-b">B</span>
-                    <span onClick={this.jumpTo.bind(this,"c")} id="anchor-c">C</span>
-                    <span onClick={this.jumpTo.bind(this,"d")} id="anchor-d">D</span>
-                    <span onClick={this.jumpTo.bind(this,"e")} id="anchor-e">E</span>
-                    <span onClick={this.jumpTo.bind(this,"f")} id="anchor-f">F</span>
-                </ScrollNavbar>
-                <ScrollNav ref="scrollEl" navbar="#shortcut">
+                <ScrollNav className="scrollnav-example-list" navbarRenderer={navbarRenderer}>
                     <div className="anchor-point" data-anchor="anchor-a">
                     <h5>A</h5>
                     <ul>

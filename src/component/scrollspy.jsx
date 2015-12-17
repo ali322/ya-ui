@@ -31,14 +31,7 @@ class ScrollSpy extends Component{
             const {diffInViewport,scrollBy} = this.props;
             const checkNode = ReactDOM.findDOMNode(this);
             const scrollNode = document.querySelector(scrollBy);
-            const checkNodeTop = dom.staticOffset(checkNode).top;
-            const scrollTop = dom.scrollTop(scrollNode);
-            const paddingTop = dom.staticOffset(scrollNode.firstChild).top;
-            // console.log('isVisible',scrollTop,checkNodeTop,scrollNode.offsetHeight,diffInViewport)
-            let isVisible = (
-                (scrollTop + paddingTop) < (checkNodeTop + checkNode.offsetHeight) &&
-                (checkNodeTop - diffInViewport) < (scrollTop + scrollNode.offsetHeight)
-            )
+            let isVisible = dom.inViewport(checkNode,scrollNode,diffInViewport)
             // console.log('isVisible',isVisible)
             if(isVisible && !this.state.inViewport){
                 if(this._timer){
@@ -71,7 +64,7 @@ class ScrollSpy extends Component{
 ScrollSpy.defaultProps = {
     scrollBy:null,
     delay:100,
-    diffInViewport:300,
+    diffInViewport:0,
     animation:"fade",
     repeat:false
 }

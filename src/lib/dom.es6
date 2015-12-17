@@ -18,21 +18,12 @@ let dom = {
             el.detachEvent("on${event}",listener);
         }
       },
-      staticOffset(element){
-        let top = 0,left = 0;
-        do{  
-            top += element.offsetTop || 0;  
-            left += element.offsetLeft || 0;  
-            element = element.offsetParent;  
-          }while(element);  
-        return {top,left}
-      },
-      offset(element) {
+      offset(element,dynamic = false) {
         if (!element) {
           return null;
         } 
         var top = 0, left = 0;  
-        if ("getBoundingClientRect" in document.documentElement) {
+        if ("getBoundingClientRect" in document.documentElement && !dynamic) {
           var rect = element.getBoundingClientRect();
           var doc = element.ownerDocument;
           var body = doc.body;
@@ -59,22 +50,31 @@ let dom = {
         const doc = (element && element.ownerDocument) || document;
         return doc.defaultView || doc.parentWindow || window;
       },
-      inViewport(element){
-        let top = element.offsetTop;
-        let left = element.offsetLeft;
-        let width = element.offsetWidth;
-        let height = element.offsetHeight;
-        while(element.offsetParent){
-          element = element.offsetParent;
-          top += element.offsetTop;
-          left += element.offsetLeft;
+      inViewport(element,container = window,diffInViewport = 0){
+        if(container === window){
+          let top = element.offsetTop;
+          let left = element.offsetLeft;
+          let width = element.offsetWidth;
+          let height = element.offsetHeight;
+          while(element.offsetParent){
+            element = element.offsetParent;
+            top += element.offsetTop;
+            left += element.offsetLeft;
+          }
+          return (
+            top < (window.pageYOffset + window.innerHeight) &&
+            left < (window.pageXOffset + window.innerWidth) &&
+            (top + height) > window.pageYOffset &&
+            (left + width) > window.pageXOffset
+          )
+        }else{
+          let top = dom.offset(element).top;
+          let containerTop = dom.scrollTop(container);
+          let containerPaddingTop = dom.offset(container.firstChild).top;
+
+        return (containerTop + containerPaddingTop) < (top + element.offsetHeight) &&
+                (top - diffInViewport) < (containerTop + container.offsetHeight)
         }
-        return (
-          top < (window.pageYOffset + window.innerHeight) &&
-          left < (window.pageXOffset + window.innerWidth) &&
-          (top + height) > window.pageYOffset &&
-          (left + width) > window.pageXOffset
-        )
       },
       scrollNode(element){
         let scrollNode = element;
@@ -86,35 +86,41 @@ let dom = {
         }
         return scrollNode;
       },
-      scrollTo(element,options){
-        options = options || {};
-        const scrollTarget = element || window;
-        const value = options.position && parseInt(options.position,10) || 0;
-        const originalScrollTop = scrollTarget.scrollTop;
-        var smoothScroll = function(){
-          var scrollTop = scrollTarget.scrollTop;
-          if(originalScrollTop < value){
-            if(scrollTop + scrollTarget.clientHeight === scrollTarget.scrollHeight){
-              clearInterval(tickTock);
-            }
-            if(scrollTop > value){
-              scrollTarget.scrollTop = value;
-              // console.log('clearInterval plus',scrollTarget.scrollTop,value);
-              clearInterval(tickTock);
-            }
-            scrollTarget.scrollTop = scrollTop + 3;
+      scrollInView(element,container = window,callback = ()=>{}){
+        let paddingTop = dom.offset(container.firstChild).top;
+        let top = dom.offset(element).top - paddingTop;
+        let step = 15;
+        rAF(function smoothScroll(){
+          let scrollTop = dom.scrollTop(container);
+          // console.log(top,scrollTop)
+          if(top > scrollTop){
+              console.log("scroll down")
+              if((scrollTop + container.offsetHeight) === container.scrollHeight){
+                // clearTimeout(timer)
+                callback()
+              }else{
+                scrollTop = (scrollTop + step) >= top ? top: scrollTop + step;
+                dom.scrollTop(container,scrollTop)
+                // setTimeout(smoothScroll,10)           
+                rAF(smoothScroll)
+              }
+          }else if(top < scrollTop ){
+              console.log("scroll up")
+              if(scrollTop === 0){
+                // clearTimeout(timer)
+                callback()
+              }else{
+                scrollTop  = (scrollTop - step) <= top ? top: scrollTop - step;
+                dom.scrollTop(container,scrollTop)
+              // setTimeout(smoothScroll,10)
+                rAF(smoothScroll)
+              }
           }else{
-            // console.log('scroll minus',originalScrollTop,scrollTop,value);
-            if(scrollTop < value){
-              // scrollTarget.scrollTop = value;
-              // console.log('clearInterval minus',scrollTop,value);
-              clearInterval(tickTock);
-            }
-            scrollTarget.scrollTop = scrollTop - 3;
+              console.log("clearTimeout")
+              // clearTimeout(timer)
+              callback()
           }
-        }
-
-        const tickTock = setInterval(smoothScroll,5)
+        })
       },
       scrollTop(element,value){
         let isCSS1Compat = (document.compatMode === 'CSS1Compat');
