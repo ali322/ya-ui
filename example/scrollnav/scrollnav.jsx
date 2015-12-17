@@ -6,34 +6,6 @@ import Header from "../common/header.jsx";
 import ScrollNav from "../../src/component/scrollnav.jsx";
 
 class ScrollNavExample extends Component{
-    constructor(props){
-        super(props);
-    }
-    jumpTo(keyword,e){
-        Array.prototype.forEach.call(e.currentTarget.parentNode.children,(anchorNode)=>{
-            // dom.removeClass(anchorNode,"active");
-        });
-        // dom.addClass(e.currentTarget,"active");
-        const scrollEl = ReactDOM.findDOMNode(this.refs.scrollEl);
-        const targetEl = scrollEl.querySelector('[data-anchor="anchor-'+keyword+'"]')
-        if(!targetEl){
-            e.stopPropagation();
-            return;
-        }
-        const scrollDistance = targetEl.offsetTop
-        // dom.smoothScroll(scrollEl,{
-        //     position:scrollDistance
-        // });
-        // this.setState({
-        //     alertActive:true,
-        //     alertContent:keyword.toUpperCase()
-        // });
-        // setTimeout(()=>{
-        //     this.setState({
-        //         alertActive:false
-        //     });
-        // },2000);
-    }
     render(){
         const navbarRenderer = ()=>{
             let shortcuts = ["a","b","c","d","e"];
