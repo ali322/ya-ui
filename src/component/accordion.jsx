@@ -2,7 +2,7 @@
 
 import React,{Component} from "react";
 import classNames from "classnames";
-import rAF from "../lib/requestAnimationFrame";
+import rAF from "../lib/dom/requestAnimationFrame";
 import Icon from "./icon.jsx";
 
 export class Accordion extends Component{

@@ -33,7 +33,7 @@ class GoTop extends Component{
         dom.unbindEvent(this.relativeElement,'scroll',_.debounce(this.toggleVisble.bind(this),100))
     }
     backToTop(){
-        smoothScroll(this.relativeElement,0);
+        smoothScroll(this.relativeElement);
     }
     render(){
         const classes = classNames({
