@@ -286,7 +286,20 @@ let dom = {
           node = node.parentNode;
         }
         return false;
-      }
+      },
+      inTouchableRegion(x,y,element){
+        const offset = dom.offset(element);
+        const minY = offset.top;
+        const maxY = offset.top + element.offsetHeight;
+        const minX = offset.left;
+        const maxX = offset.left + element.offsetWidth;
+        const isXValid = (x >= minX && x <= maxX);
+        const isYValid = (y >= minY && y <= maxY);
+        if(isXValid && isYValid){
+            return true;
+        }
+        return false;
+    }
 }
 
 export default dom;

@@ -65,6 +65,12 @@
         "entryJS": "scrollnav.jsx",
         "entryCSS": "scrollnav.styl"
     },
+    "slidetabs": {
+        "html": ["slidetabs.html"],
+        "path": "./example/slidetabs/",
+        "entryJS": "slidetabs.jsx",
+        "entryCSS": "slidetabs.styl"
+    },
     "more": {
         "html": ["more.html"],
         "path": "./example/more/",

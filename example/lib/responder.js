@@ -19,14 +19,14 @@ docEl.firstElementChild.appendChild(fontEl);
 fontEl.innerHTML = 'html{font-size:' + rem + 'px!important;}';
 
 // js hook function
-// window.rem2px = function(v) {
-//     v = parseFloat(v);
-//     return v * rem;
-// };
-// window.px2rem = function(v) {
-//     v = parseFloat(v);
-//     return v / rem;
-// };
+window.rem2px = function(v) {
+    v = parseFloat(v);
+    return v * rem;
+};
+window.px2rem = function(v) {
+    v = parseFloat(v);
+    return v / rem;
+};
 
-// window.dpr = dpr;
-// window.rem = rem;
+window.dpr = dpr;
+window.rem = rem;
