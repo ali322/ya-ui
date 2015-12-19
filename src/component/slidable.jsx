@@ -3,20 +3,25 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import dom from "../lib/dom.es6";
+import rAF from "../lib/dom/requestAnimationFrame";
+import _ from "lodash"
 
 class Slidable extends Component{
     constructor(props){
         super(props);
         this.state = {
             activeIndex:0,
-            transformStyle:{}
         }
+        this.translateX = 0;
+        this.translateY = 0;
     }
     handleTouchStart(e){
         e && e.preventDefault();
         const {clientY,clientX} = e.changedTouches[0];
         this.startTouchX = clientX;
         this.startTouchY = clientY;
+        this.lastY = this.startTouchY;
+        this.lastX = this.startTouchX;
     }
     handleTouchEnd(e){
         e && e.preventDefault();
@@ -28,11 +33,11 @@ class Slidable extends Component{
         this.props.touchEnd();
         this.endTouchY = clientY;
         this.endTouchX = clientX;
-        let lastY = (this.offsetY === undefined) ? 0 : this.offsetY;
-        let lastX = (this.offsetX === undefined) ? 0 : this.offsetX;
         this.offsetY = this.endTouchY - this.startTouchY;
         this.offsetX = this.endTouchX - this.startTouchX;
-        this.restoreTranslate();
+        // console.log('touchEnd')
+        this.lastY = null
+        this.lastX = null
     }
     handleTouchMove(e){
         e && e.preventDefault();
@@ -41,68 +46,58 @@ class Slidable extends Component{
         if(!inTouchableRegion){
             // return;
         }
-        const moveX = this.startTouchX - clientX;
-        const moveY = this.startTouchY - clientY;
+        this.translateY += (clientY - this.lastY)
+        this.translateX += (clientX - this.lastX)
 
-        // console.log('startTouchY',this.startTouchY,'currentY',clientY)
-        this.transitionTouch(moveX,moveY)
-    }
-    restoreTranslate(){
         const {axis} = this.props;
-        let transform = null;
-        let translateNode = ReactDOM.findDOMNode(this);
-        let beyondY = dom.offset(translateNode.parentNode).top - dom.offset(translateNode).top; 
-        let beyondX = dom.offset(translateNode.parentNode).left - dom.offset(translateNode).left; 
-        // console.log('beyondY',beyondY,"beyondX",beyondX)
-
-        if(beyondX < 0 || beyondY < 0){
-            transform = `translate3D(0,0,0)`;
+        this.translateY = this.translateY >= 0 ? 0 : this.translateY;
+        this.translateX = this.translateX >= 0 ? 0 : this.translateX;
+        if(this.edgeChecked() === false){
+            // _.delay(()=>{
+            rAF(this.transitionTouch.bind(this))
+            // },10)
         }
+        // console.log("translateY",this.translateY,"lastY",this.lastY,"clientY",clientY)
+        this.lastY = clientY;
+        this.lastX = clientX;
+    }
+    edgeChecked(){
+        const {axis} = this.props;
+        let {translateY,translateX} = this
+        let translateNode = ReactDOM.findDOMNode(this);
+        // let beyondY = dom.offset(translateNode.parentNode).top - dom.offset(translateNode).top; 
+        // let beyondX = dom.offset(translateNode.parentNode).left - dom.offset(translateNode).left; 
+
         let maxBeyondY = translateNode.offsetHeight - translateNode.parentNode.parentNode.offsetHeight;
         let maxBeyondX = translateNode.offsetWidth - translateNode.parentNode.parentNode.offsetWidth;
-        if(beyondY > maxBeyondY && axis === "y"){
-            let translateY = window.px2rem ? window.px2rem(maxBeyondY) + "rem": `${maxBeyondY}px`;
-            transform = `translate3D(0,-${translateY},0)`;
-        }else if(beyondX > maxBeyondX && axis === "x"){
-            let translateX = window.px2rem ? window.px2rem(maxBeyondX) + "rem": `${maxBeyondX}px`;
-            transform = `translate3D(-${translateX},0,0)`;
+
+        console.log('translateY',translateY,"maxBeyondY",maxBeyondY)
+        if(maxBeyondY <= (- this.translateY) && axis === "y"){
+            this.translateY = - maxBeyondY
+            return true
+        }else if(maxBeyondX <= (- this.translateX) && axis === "x"){
+            this.translateX = - maxBeyondX
+            return true
         }
-        if(transform !== null){
-            this.setState({
-                transformStyle:{
-                    transform,
-                    transitionDuration:".3s"
-                }
-            })
-        }
+        return false
     }
-    transitionTouch(moveX,moveY){
+    transitionTouch(){
         const {axis} = this.props;
-        let child = React.Children.only(this.props.children);
-        const count = child.props.children.length;
+        let {translateY,translateX} = this
         var transform = null;
-        if(axis === "y" && moveY !== 0){
-            let offsetY = this.offsetY === undefined ? 0: this.offsetY; 
-            // console.log('moveY',moveY,'offsetY',offsetY)
-            if((offsetY - moveY) > 0){
-                // return
-            }
-            let translateY = offsetY - moveY;
+        if(axis === "y" && translateY !== 0){
             translateY = window.px2rem ? window.px2rem(translateY) + "rem": `${translateY}px`;
             transform = `translate3D(0,${translateY},0)`;
-        }else if(axis === "x" && moveX !== 0){
-            let offsetX = this.offsetX === undefined ? 0: this.offsetX;
-            let translateX = offsetX - moveX
+        }else if(axis === "x" && translateX !== 0){
             translateX = window.px2rem ? window.px2rem(translateX) + "rem" : `${translateX}px`;
             transform = `translate3D(${translateX},0,0)`;
         }
         if(transform !==null){
-            this.setState({
-                transformStyle:{
-                    transform,
-                    transitionDuration:".3s"
-                }
-            })
+            let translateNode = ReactDOM.findDOMNode(this);
+            // _.delay(()=>{
+            translateNode.style.transitionDuration =".3s"
+            translateNode.style.transform = transform;
+            // },60)
         }
     }
     render(){
@@ -111,7 +106,6 @@ class Slidable extends Component{
             onTouchStart:this.handleTouchStart.bind(this),
             onTouchMove:this.handleTouchMove.bind(this),
             onTouchEnd:this.handleTouchEnd.bind(this),
-            style:this.state.transformStyle
         }))
     }
 }
