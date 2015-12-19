@@ -38,7 +38,7 @@ class Slidable extends Component{
             if(this.lastY !== this.startTouchY && step !== this.state.activeIndex){
                 this.setState({
                     activeIndex:step
-                },()=>this.props.touchEnd())
+                },()=>this.props.touchEnd(step))
             }
         }else if(axis === "x"){
             let itemWidth = itemNode.offsetWidth;
@@ -46,7 +46,7 @@ class Slidable extends Component{
             if(this.lastX !== this.startTouchX && step !== this.state.activeIndex){
                 this.setState({
                     activeIndex:step
-                },()=>this.props.touchEnd())
+                },()=>this.props.touchEnd(step))
             }
         }
         // this.endTouchY = clientY;
