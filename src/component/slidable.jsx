@@ -120,6 +120,7 @@ class Slidable extends Component{
             onTouchStart:this.handleTouchStart.bind(this),
             onTouchMove:this.handleTouchMove.bind(this),
             onTouchEnd:this.handleTouchEnd.bind(this),
+            active:this.state.activeIndex
         }))
     }
 }
