@@ -17,6 +17,18 @@ export class SlideTabs extends Component{
             activeIndex
         },()=>this.props.onSelect())
     }
+    componentDidMount(){
+        this.initialize()
+    }
+    initialize(){
+        let contentNode = ReactDOM.findDOMNode(this.refs["content"])
+        // let navbarNode = ReactDOM.findDOMNode(this.refs["navbar"])
+        let contentNodeWidth = contentNode.offsetWidth * contentNode.children.length
+        // let navbarNodeWidth = navbarNode.offsetWidth * navbarNode.children.length / 3
+        contentNode.style.width = `${contentNodeWidth}px`
+        // navbarNode.style.width = `${navbarNodeWidth}px`
+        // console.log('itemWidth',itemWidth,"navWidth",navWidth)
+    }
     renderNavbar(){
         let navigators = [];
         React.Children.forEach(this.props.children,(child,i)=>{
@@ -29,7 +41,7 @@ export class SlideTabs extends Component{
             )
         })
         return (
-            <Slidable axis="x">
+            <Slidable axis="x" ref="navbar">
                 <div className="slide-tabs-navbar">{navigators}</div>
             </Slidable>
         )
@@ -44,7 +56,7 @@ export class SlideTabs extends Component{
         return (
             <div className="slide-tabs">
             <Slidable axis="x">
-            <div className="slide-tabs-content">{React.Children.map(this.props.children,this.renderTabsItem.bind(this))}</div>
+            <div className="slide-tabs-content" ref="content">{React.Children.map(this.props.children,this.renderTabsItem.bind(this))}</div>
             </Slidable>
             {this.renderNavbar()}
             </div>
