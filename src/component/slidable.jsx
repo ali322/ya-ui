@@ -30,14 +30,29 @@ class Slidable extends Component{
         if(!inTouchableRegion){
             // return;
         }
-        this.props.touchEnd();
-        this.endTouchY = clientY;
-        this.endTouchX = clientX;
-        this.offsetY = this.endTouchY - this.startTouchY;
-        this.offsetX = this.endTouchX - this.startTouchX;
-        // console.log('touchEnd')
-        this.lastY = null
-        this.lastX = null
+        const {axis} = this.props;
+        let itemNode = ReactDOM.findDOMNode(this).firstChild
+        if(axis === "y"){
+            let itemHeight = itemNode.offsetHeight;
+            let step = Math.abs(this.translateY) / itemHeight > 0.5 ? 1:0
+            if(this.lastY !== this.startTouchY && step !== this.state.activeIndex){
+                this.setState({
+                    activeIndex:step
+                },()=>this.props.touchEnd())
+            }
+        }else if(axis === "x"){
+            let itemWidth = itemNode.offsetWidth;
+            let step = Math.abs(this.translateX) / itemWidth > 0.5 ? 1:0
+            if(this.lastX !== this.startTouchX && step !== this.state.activeIndex){
+                this.setState({
+                    activeIndex:step
+                },()=>this.props.touchEnd())
+            }
+        }
+        // this.endTouchY = clientY;
+        // this.endTouchX = clientX;
+        // console.log('offsetY',this.offsetY,this.translateY,"offsetX",this.offsetX)
+
     }
     handleTouchMove(e){
         e && e.preventDefault();
@@ -49,17 +64,16 @@ class Slidable extends Component{
         this.translateY += (clientY - this.lastY)
         this.translateX += (clientX - this.lastX)
 
-        const {axis} = this.props;
         this.translateY = this.translateY >= 0 ? 0 : this.translateY;
         this.translateX = this.translateX >= 0 ? 0 : this.translateX;
         if(this.edgeChecked() === false){
             // _.delay(()=>{
             rAF(this.transitionTouch.bind(this))
+            this.lastY = clientY;
+            this.lastX = clientX;
             // },10)
         }
         // console.log("translateY",this.translateY,"lastY",this.lastY,"clientY",clientY)
-        this.lastY = clientY;
-        this.lastX = clientX;
     }
     edgeChecked(){
         const {axis} = this.props;
@@ -67,11 +81,10 @@ class Slidable extends Component{
         let translateNode = ReactDOM.findDOMNode(this);
         // let beyondY = dom.offset(translateNode.parentNode).top - dom.offset(translateNode).top; 
         // let beyondX = dom.offset(translateNode.parentNode).left - dom.offset(translateNode).left; 
-
         let maxBeyondY = translateNode.offsetHeight - translateNode.parentNode.parentNode.offsetHeight;
         let maxBeyondX = translateNode.offsetWidth - translateNode.parentNode.parentNode.offsetWidth;
 
-        console.log('translateY',translateY,"maxBeyondY",maxBeyondY)
+        // console.log('translateY',translateY,"maxBeyondY",maxBeyondY)
         if(maxBeyondY <= (- this.translateY) && axis === "y"){
             this.translateY = - maxBeyondY
             return true
@@ -102,6 +115,7 @@ class Slidable extends Component{
     }
     render(){
         let child = React.Children.only(this.props.children);
+        console.log('activeIndex',this.state.activeIndex)
         return React.cloneElement(child,Object.assign({},child.props,{
             onTouchStart:this.handleTouchStart.bind(this),
             onTouchMove:this.handleTouchMove.bind(this),

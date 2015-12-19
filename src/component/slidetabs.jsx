@@ -43,7 +43,9 @@ export class SlideTabs extends Component{
     render(){
         return (
             <div className="slide-tabs">
+            <Slidable>
             <div className="slide-tabs-content">{React.Children.map(this.props.children,this.renderTabsItem.bind(this))}</div>
+            </Slidable>
             {this.renderNavbar()}
             </div>
         )

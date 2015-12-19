@@ -16,7 +16,7 @@ class SlideTabsExample extends Component{
             )
             tabsItems.push(
                 <SlideTabsItem navigator={()=>navigator} key={i}>
-                <h5>A</h5>
+                <h5>{i}</h5>
                 <ul>
                     <li>ayilian</li>
                     <li>baitu</li>
