@@ -16,14 +16,19 @@
     flex-direction:column;
     .slidetabs-example-inner{
         flex:1;
-        height:100%;
+        // height:100%;
         overflow:hidden;
+        position:relative;
         // padding:0 px2rem(10);
         .slide-tabs{
-            flex-direction:row-reverse;
+            position:absolute;
+            flex-direction:column-reverse;
         }
         .slide-tabs-item{
-            border-bottom:px2rem(1) solid #DDD;
+            // border-bottom:px2rem(1) solid #DDD;
+            &:nth-of-child(odd){
+                background:#FF3300;
+            }
             h5{
                 margin:0;
                 padding:px2rem(10) px2rem(8);
