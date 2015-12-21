@@ -20,6 +20,7 @@ export class SlideTabs extends Component{
         return false
     }
     handleSelect(i,e){
+        e && e.preventDefault()
         // console.log('handleSelect')
         this.setState({
             activeIndex:i,

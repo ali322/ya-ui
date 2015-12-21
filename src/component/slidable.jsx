@@ -161,7 +161,6 @@ class Slidable extends Component{
 }
 
 Slidable.defaultProps = {
-    name:'',
     activeIndex:0,
     onlyInside:false,
     axis:"y",
