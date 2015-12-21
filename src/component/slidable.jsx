@@ -46,6 +46,8 @@ class Slidable extends Component{
     handleTouchEnd(e){
         e && e.stopPropagation();
         const {clientY,clientX} = e.changedTouches[0];
+        this.endTouchY = clientY;
+        this.endTouchX = clientX;
         const inTouchableRegion = dom.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(this.props.onlyInside && !inTouchableRegion){
             return;
@@ -80,12 +82,12 @@ class Slidable extends Component{
             - (nextIndex * itemNode.offsetWidth) :0;
         }
         this.checkEdge()
-        if(nextIndex !== this.state.activeIndex){
-            // console.log(this.props.name,"touch end")
+        if(this.startTouchX !== this.endTouchX || this.startTouchY !== this.endTouchY){
             rAF(this.transitionTouch.bind(this))
         }
-        // this.endTouchY = clientY;
-        // this.endTouchX = clientX;
+        // if(nextIndex !== this.state.activeIndex){
+            // console.log(this.props.name,"touch end")
+        // }
         // console.log('offsetY',this.offsetY,this.translateY,"offsetX",this.offsetX)
     }
     handleTouchMove(e){

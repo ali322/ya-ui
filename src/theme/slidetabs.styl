@@ -4,6 +4,7 @@
     display:flex;
     justify-content:center;
     align-items:flex-start;
+    flex-direction:column-reverse;
     overflow:hidden;
     box-sizing:border-box;
     height:100%;
@@ -38,6 +39,37 @@
             display:table-cell;
             width:100%;
             flex:1;
+        }
+    }
+    
+    &.slide-tabs-vertical{
+        flex-direction:row-reverse;
+        width:100%;
+        .slide-tabs-navbar{
+            width:px2rem(60);
+            display:flex;
+            height:120%;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+            .slide-tabs-navbar-item{
+                width:100%;
+                flex:1;
+                // height:30%;
+                line-height:inherit;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                border-right:px2rem(1) solid #E0E0E0;
+                border-bottom:px2rem(1) solid #E0E0E0;
+            }
+        }
+        .slide-tabs-content{
+            width:auto;
+            flex-direction:column;
+            .slide-tabs-item{
+                display:block;
+            }
         }
     }
 }

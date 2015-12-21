@@ -37,12 +37,13 @@ export class SlideTabs extends Component{
     }
     initialize(){
         let contentNode = ReactDOM.findDOMNode(this.refs["content"])
-        // let navbarNode = ReactDOM.findDOMNode(this.refs["navbar"])
-        let contentNodeWidth = contentNode.offsetWidth * contentNode.children.length
-        // let navbarNodeWidth = navbarNode.offsetWidth * navbarNode.children.length / 3
-        contentNode.style.width = `${contentNodeWidth}px`
-        // navbarNode.style.width = `${navbarNodeWidth}px`
-        // console.log('itemWidth',itemWidth,"navWidth",navWidth)
+        if(this.props.axis === "x"){
+            let contentNodeWidth = contentNode.offsetWidth * contentNode.children.length
+            contentNode.style.width = `${contentNodeWidth}px`
+        }else{
+            let contentNodeHeight = contentNode.offsetHeight * contentNode.children.length
+            contentNode.style.height = `${contentNodeHeight}px`
+        }
     }
     renderNavbar(){
         let navigators = [];
@@ -57,7 +58,7 @@ export class SlideTabs extends Component{
         })
         // console.log('navbarSlidable',this.state.navbarSlidable)
         return (
-            <Slidable axis="x" ref="navbar" name="navbar" handleActiveChange={this.state.navbarSlidable}
+            <Slidable axis={this.props.axis} ref="navbar" name="navbar" handleActiveChange={this.state.navbarSlidable}
             activeIndex={this.state.activeIndex}>
                 <div className="slide-tabs-navbar">{navigators}</div>
             </Slidable>
@@ -70,9 +71,12 @@ export class SlideTabs extends Component{
         }))
     }
     render(){
+        const classes = classNames("slide-tabs",{
+            "slide-tabs-vertical":this.props.axis === "y"
+        })
         return (
-            <div className="slide-tabs">
-            <Slidable axis="x" handleActiveChange={this.handleActiveChange.bind(this)} 
+            <div className={classes}>
+            <Slidable axis={this.props.axis} handleActiveChange={this.handleActiveChange.bind(this)} 
             activeIndex={this.state.activeIndex}>
             <div className="slide-tabs-content" ref="content">{React.Children.map(this.props.children,this.renderTabsItem.bind(this))}</div>
             </Slidable>
@@ -84,6 +88,7 @@ export class SlideTabs extends Component{
 
 SlideTabs.defaultProps = {
     activeIndex:0,
+    axis:"x",
     onSelect:()=>{}
 }
 
