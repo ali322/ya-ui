@@ -9,7 +9,8 @@ export class SlideTabs extends Component{
     constructor(props){
         super(props);
         this.state = {
-            activeIndex:props.activeIndex
+            activeIndex:props.activeIndex,
+            navbarSlidable:false
         }
     }
     shouldComponentUpdate(nextProps,nextState){
@@ -19,9 +20,17 @@ export class SlideTabs extends Component{
         return false
     }
     handleSelect(i,e){
+        // console.log('handleSelect')
         this.setState({
-            activeIndex:i
+            activeIndex:i,
+            navbarSlidable:false
         },()=>this.props.onSelect())
+    }
+    handleActiveChange(i,e){
+        this.setState({
+            activeIndex:i,
+            navbarSlidable:true,
+        })
     }
     componentDidMount(){
         this.initialize()
@@ -43,11 +52,13 @@ export class SlideTabs extends Component{
                 active:(i === this.state.activeIndex)
             })
             navigators.push(
-                <div className={classes} key={i}>{navigator()}</div>
+                <div className={classes} key={i} onClick={this.handleSelect.bind(this,i)}>{navigator()}</div>
             )
         })
+        // console.log('navbarSlidable',this.state.navbarSlidable)
         return (
-            <Slidable axis="x" ref="navbar" activeIndex={this.state.activeIndex} name="navbar">
+            <Slidable axis="x" ref="navbar" name="navbar" handleActiveChange={this.state.navbarSlidable}
+            activeIndex={this.state.activeIndex}>
                 <div className="slide-tabs-navbar">{navigators}</div>
             </Slidable>
         )
@@ -61,7 +72,8 @@ export class SlideTabs extends Component{
     render(){
         return (
             <div className="slide-tabs">
-            <Slidable axis="x" touchEnd={this.handleSelect.bind(this)}>
+            <Slidable axis="x" handleActiveChange={this.handleActiveChange.bind(this)} 
+            activeIndex={this.state.activeIndex}>
             <div className="slide-tabs-content" ref="content">{React.Children.map(this.props.children,this.renderTabsItem.bind(this))}</div>
             </Slidable>
             {this.renderNavbar()}

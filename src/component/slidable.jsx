@@ -18,6 +18,10 @@ class Slidable extends Component{
     componentDidUpdate(prevProps,prevState){
         // console.log(nextProps,this.props)
         if(prevProps.activeIndex !== this.props.activeIndex){
+            if(this.props.handleActiveChange === false){
+                return;
+            }
+            // console.log(this.props.name,'transitionTouch')
             const {activeIndex,axis} = this.props;
             let itemNode = ReactDOM.findDOMNode(this).firstChild
             if(axis === "y"){
@@ -32,7 +36,7 @@ class Slidable extends Component{
         }
     }
     handleTouchStart(e){
-        e && e.preventDefault();
+        e && e.stopPropagation();
         const {clientY,clientX} = e.changedTouches[0];
         this.startTouchX = clientX;
         this.startTouchY = clientY;
@@ -40,13 +44,13 @@ class Slidable extends Component{
         this.lastX = this.startTouchX;
     }
     handleTouchEnd(e){
-        e && e.preventDefault();
+        e && e.stopPropagation();
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = dom.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(this.props.onlyInside && !inTouchableRegion){
             return;
         }
-        if(this.props.touchEnd === false){
+        if(this.props.handleActiveChange === false){
             return;
         }
         let nextIndex = this.state.activeIndex;
@@ -59,7 +63,7 @@ class Slidable extends Component{
                 nextIndex = step;
                 this.setState({
                     activeIndex:step
-                },()=>this.props.touchEnd(step))
+                },()=>this.props.handleActiveChange(step))
             }
             this.translateY = (nextIndex * itemNode.offsetHeight) > 0 ?
             - (nextIndex * itemNode.offsetHeight) :0;
@@ -70,13 +74,16 @@ class Slidable extends Component{
                 nextIndex = step;
                 this.setState({
                     activeIndex:step
-                },()=>this.props.touchEnd(step))
+                },()=>this.props.handleActiveChange(step))
             }
             this.translateX = (nextIndex * itemNode.offsetWidth) > 0 ?
             - (nextIndex * itemNode.offsetWidth) :0;
         }
         this.checkEdge()
-        rAF(this.transitionTouch.bind(this))
+        if(nextIndex !== this.state.activeIndex){
+            // console.log(this.props.name,"touch end")
+            rAF(this.transitionTouch.bind(this))
+        }
         // this.endTouchY = clientY;
         // this.endTouchX = clientX;
         // console.log('offsetY',this.offsetY,this.translateY,"offsetX",this.offsetX)
@@ -152,11 +159,11 @@ class Slidable extends Component{
 }
 
 Slidable.defaultProps = {
-    name:"",
+    name:'',
     activeIndex:0,
     onlyInside:false,
     axis:"y",
-    touchEnd:false
+    handleActiveChange:false
 }
 
 export default Slidable;
