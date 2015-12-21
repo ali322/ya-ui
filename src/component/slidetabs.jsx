@@ -12,9 +12,16 @@ export class SlideTabs extends Component{
             activeIndex:props.activeIndex
         }
     }
+    shouldComponentUpdate(nextProps,nextState){
+        if(nextState.activeIndex !== this.state.activeIndex){
+            return true
+        }
+        return false
+    }
     handleSelect(i,e){
+        console.log('handleSelect')
         this.setState({
-            activeIndex
+            activeIndex:i
         },()=>this.props.onSelect())
     }
     componentDidMount(){
@@ -41,7 +48,7 @@ export class SlideTabs extends Component{
             )
         })
         return (
-            <Slidable axis="x" ref="navbar">
+            <Slidable axis="x" ref="navbar" activeIndex={this.state.activeIndex} name="navbar">
                 <div className="slide-tabs-navbar">{navigators}</div>
             </Slidable>
         )
@@ -55,7 +62,7 @@ export class SlideTabs extends Component{
     render(){
         return (
             <div className="slide-tabs">
-            <Slidable axis="x">
+            <Slidable axis="x" touchEnd={this.handleSelect.bind(this)}>
             <div className="slide-tabs-content" ref="content">{React.Children.map(this.props.children,this.renderTabsItem.bind(this))}</div>
             </Slidable>
             {this.renderNavbar()}
