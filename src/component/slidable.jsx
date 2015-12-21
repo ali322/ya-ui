@@ -15,12 +15,6 @@ class Slidable extends Component{
         this.translateX = 0;
         this.translateY = 0;
     }
-    shouldComponentUpdate(nextProps,nextState){
-        if(nextProps.activeIndex !== this.props.activeIndex){
-            return true
-        }
-        return false
-    }
     componentDidUpdate(prevProps,prevState){
         // console.log(nextProps,this.props)
         if(prevProps.activeIndex !== this.props.activeIndex){
@@ -49,58 +43,64 @@ class Slidable extends Component{
         e && e.preventDefault();
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = dom.inTouchableRegion(clientX,clientY,e.currentTarget);
-        if(!inTouchableRegion){
-            // return;
+        if(this.props.onlyInside && !inTouchableRegion){
+            return;
         }
+        if(this.props.touchEnd === false){
+            return;
+        }
+        let nextIndex = this.state.activeIndex;
         const {axis} = this.props;
         let itemNode = ReactDOM.findDOMNode(this).firstChild
         if(axis === "y"){
             let itemHeight = itemNode.offsetHeight;
             let step = Math.round(Math.abs(this.translateY) / itemHeight)
-            // let step = Math.abs(this.translateY) / itemHeight > 0.5 ? 1:0
             if(this.lastY !== this.startTouchY && step !== this.state.activeIndex){
+                nextIndex = step;
                 this.setState({
                     activeIndex:step
                 },()=>this.props.touchEnd(step))
             }
+            this.translateY = (nextIndex * itemNode.offsetHeight) > 0 ?
+            - (nextIndex * itemNode.offsetHeight) :0;
         }else if(axis === "x"){
             let itemWidth = itemNode.offsetWidth;
             let step = Math.round(Math.abs(this.translateX) / itemWidth)
-            // let step = Math.abs(this.translateX) / itemWidth > 0.5 ? 1:0
-            // console.log(this.props.touchEnd)
             if(this.lastX !== this.startTouchX && step !== this.state.activeIndex){
+                nextIndex = step;
                 this.setState({
                     activeIndex:step
                 },()=>this.props.touchEnd(step))
             }
+            this.translateX = (nextIndex * itemNode.offsetWidth) > 0 ?
+            - (nextIndex * itemNode.offsetWidth) :0;
         }
+        this.checkEdge()
+        rAF(this.transitionTouch.bind(this))
         // this.endTouchY = clientY;
         // this.endTouchX = clientX;
         // console.log('offsetY',this.offsetY,this.translateY,"offsetX",this.offsetX)
-
     }
     handleTouchMove(e){
         e && e.preventDefault();
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = dom.inTouchableRegion(clientX,clientY,e.currentTarget);
-        if(!inTouchableRegion){
-            // return;
+        if(this.props.onlyInside && !inTouchableRegion){
+            return;
         }
         this.translateY += (clientY - this.lastY)
         this.translateX += (clientX - this.lastX)
 
         this.translateY = this.translateY >= 0 ? 0 : this.translateY;
         this.translateX = this.translateX >= 0 ? 0 : this.translateX;
-        if(this.checkEdge() === false){
-            // _.delay(()=>{
+        this.checkEdge(()=>{
             this.lastY = clientY;
             this.lastX = clientX;
-            // },10)
-        }
+        })
         rAF(this.transitionTouch.bind(this))
         // console.log("translateY",this.translateY,"lastY",this.lastY,"clientY",clientY)
     }
-    checkEdge(){
+    checkEdge(onEdge = ()=>{}){
         const {axis} = this.props;
         let {translateY,translateX} = this
         let translateNode = ReactDOM.findDOMNode(this);
@@ -108,15 +108,13 @@ class Slidable extends Component{
         // let beyondX = dom.offset(translateNode.parentNode).left - dom.offset(translateNode).left; 
         let maxBeyondY = translateNode.offsetHeight - translateNode.parentNode.parentNode.offsetHeight;
         let maxBeyondX = translateNode.offsetWidth - translateNode.parentNode.parentNode.offsetWidth;
-
         if(maxBeyondY <= (- this.translateY) && axis === "y"){
             this.translateY = - maxBeyondY
-            return true
         }else if(maxBeyondX <= (- this.translateX) && axis === "x"){
             this.translateX = - maxBeyondX
-            return true
+        }else{
+            onEdge()
         }
-        return false
     }
     transitionTouch(){
         const {axis} = this.props;
@@ -156,8 +154,9 @@ class Slidable extends Component{
 Slidable.defaultProps = {
     name:"",
     activeIndex:0,
+    onlyInside:false,
     axis:"y",
-    touchEnd:()=>{}
+    touchEnd:false
 }
 
 export default Slidable;

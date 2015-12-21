@@ -19,7 +19,6 @@ export class SlideTabs extends Component{
         return false
     }
     handleSelect(i,e){
-        console.log('handleSelect')
         this.setState({
             activeIndex:i
         },()=>this.props.onSelect())
