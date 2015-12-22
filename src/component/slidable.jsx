@@ -28,21 +28,21 @@ class Slidable extends Component{
         const {activeIndex,axis,pinMode} = this.props;
         let itemNode = ReactDOM.findDOMNode(this).firstChild
         if(axis === "y"){
-            this.translateY = (activeIndex * itemNode.offsetHeight) > 0 ?
+            let translateY = (activeIndex * itemNode.offsetHeight) > 0 ?
             - (activeIndex * itemNode.offsetHeight) :0;
             if(!pinMode){
                 const itemNodeHeight = itemNode.offsetHeight;
                 const translateNodeHeight = ReactDOM.findDOMNode(this).parentNode.parentNode.offsetHeight
                 if(this.translateY < translateY 
-                && this.translateY > (translateY - itemNodeHeight)){
+                /*&& this.translateY > (translateY - itemNodeHeight)*/){
                     // console.log('left edge')
                     this.translateY = translateY
                 }
-                if(translateNodeHeight > (this.translateY - translateY) 
-                    && translateNodeHeight < (this.translateY - translateY + itemNodeHeight)){
+                if(/*translateNodeHeight > (this.translateY - translateY) &&*/
+                    translateNodeHeight < (this.translateY - translateY + itemNodeHeight)){
                     // console.log('right edge')
                     this.translateY = this.translateY - (this.translateY - translateY + itemNodeHeight - translateNodeHeight)
-                    console.log(this.translateY)
+                    // console.log(this.translateY)
                 }
             }
         }else{
@@ -51,17 +51,16 @@ class Slidable extends Component{
             if(!pinMode){
                 const itemNodeWidth = itemNode.offsetWidth;
                 const translateNodeWidth = ReactDOM.findDOMNode(this).parentNode.parentNode.offsetWidth
-                if(this.translateX < translateX 
-                && this.translateX > (translateX - itemNodeWidth)){
+                if(this.translateX < translateX
+                /*&& this.translateX > (translateX - itemNodeWidth)*/){
                     // console.log('left edge')
                     this.translateX = translateX
-                }else if(translateNodeWidth > (this.translateX - translateX) 
-                    && translateNodeWidth < (this.translateX - translateX + itemNodeWidth)){
+                }
+                if(/*translateNodeWidth > (this.translateX - translateX) && */
+                    translateNodeWidth < (this.translateX - translateX + itemNodeWidth)){
                     // console.log('right edge')
                     this.translateX = this.translateX - (this.translateX - translateX + itemNodeWidth - translateNodeWidth)
-                    console.log(this.translateX)
-                }else{
-                    // this.translateX = translateX
+                    // console.log(this.translateX)
                 }
             }
         }
