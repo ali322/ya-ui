@@ -10,7 +10,7 @@ export class SlideTabs extends Component{
         super(props);
         this.state = {
             activeIndex:props.activeIndex,
-            navbarSlidable:false
+            // navbarSlidable:false
         }
     }
     shouldComponentUpdate(nextProps,nextState){
@@ -24,13 +24,13 @@ export class SlideTabs extends Component{
         // console.log('handleSelect')
         this.setState({
             activeIndex:i,
-            navbarSlidable:false
+            // navbarSlidable:false
         },()=>this.props.onSelect())
     }
     handleActiveChange(i,e){
         this.setState({
             activeIndex:i,
-            navbarSlidable:true,
+            // navbarSlidable:true,
         })
     }
     componentDidMount(){
@@ -59,7 +59,7 @@ export class SlideTabs extends Component{
         })
         // console.log('navbarSlidable',this.state.navbarSlidable)
         return (
-            <Slidable axis={this.props.axis} ref="navbar" name="navbar" handleActiveChange={this.state.navbarSlidable}
+            <Slidable axis={this.props.axis} ref="navbar" name="navbar" 
             activeIndex={this.state.activeIndex}>
                 <div className="slide-tabs-navbar">{navigators}</div>
             </Slidable>

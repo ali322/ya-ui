@@ -18,22 +18,55 @@ class Slidable extends Component{
     componentDidUpdate(prevProps,prevState){
         // console.log(nextProps,this.props)
         if(prevProps.activeIndex !== this.props.activeIndex){
-            if(this.props.handleActiveChange === false){
+            if(this.props.handleActiveChange === true){
                 return;
             }
-            // console.log(this.props.name,'transitionTouch')
-            const {activeIndex,axis} = this.props;
-            let itemNode = ReactDOM.findDOMNode(this).firstChild
-            if(axis === "y"){
-                this.translateY = (activeIndex * itemNode.offsetHeight) > 0 ?
-                - (activeIndex * itemNode.offsetHeight) :0;
-            }else{
-                this.translateX = (activeIndex * itemNode.offsetWidth) > 0 ?
-                - (activeIndex * itemNode.offsetWidth) :0;
-            }
-            this.checkEdge()
-            rAF(this.transitionTouch.bind(this))
+            this.transitionInView();
         }
+    }
+    transitionInView(){
+        const {activeIndex,axis,pinMode} = this.props;
+        let itemNode = ReactDOM.findDOMNode(this).firstChild
+        if(axis === "y"){
+            this.translateY = (activeIndex * itemNode.offsetHeight) > 0 ?
+            - (activeIndex * itemNode.offsetHeight) :0;
+            if(!pinMode){
+                const itemNodeHeight = itemNode.offsetHeight;
+                const translateNodeHeight = ReactDOM.findDOMNode(this).parentNode.parentNode.offsetHeight
+                if(this.translateY < translateY 
+                && this.translateY > (translateY - itemNodeHeight)){
+                    // console.log('left edge')
+                    this.translateY = translateY
+                }
+                if(translateNodeHeight > (this.translateY - translateY) 
+                    && translateNodeHeight < (this.translateY - translateY + itemNodeHeight)){
+                    // console.log('right edge')
+                    this.translateY = this.translateY - (this.translateY - translateY + itemNodeHeight - translateNodeHeight)
+                    console.log(this.translateY)
+                }
+            }
+        }else{
+            let translateX = (activeIndex * itemNode.offsetWidth) > 0 ?
+            - (activeIndex * itemNode.offsetWidth) :0;
+            if(!pinMode){
+                const itemNodeWidth = itemNode.offsetWidth;
+                const translateNodeWidth = ReactDOM.findDOMNode(this).parentNode.parentNode.offsetWidth
+                if(this.translateX < translateX 
+                && this.translateX > (translateX - itemNodeWidth)){
+                    // console.log('left edge')
+                    this.translateX = translateX
+                }else if(translateNodeWidth > (this.translateX - translateX) 
+                    && translateNodeWidth < (this.translateX - translateX + itemNodeWidth)){
+                    // console.log('right edge')
+                    this.translateX = this.translateX - (this.translateX - translateX + itemNodeWidth - translateNodeWidth)
+                    console.log(this.translateX)
+                }else{
+                    // this.translateX = translateX
+                }
+            }
+        }
+        this.checkEdge()
+        rAF(this.transitionTouch.bind(this))
     }
     handleTouchStart(e){
         e && e.stopPropagation();
@@ -163,6 +196,7 @@ class Slidable extends Component{
 Slidable.defaultProps = {
     activeIndex:0,
     onlyInside:false,
+    pinMode:false,
     axis:"y",
     handleActiveChange:false
 }
