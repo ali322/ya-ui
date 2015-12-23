@@ -26,29 +26,27 @@ import Slidable from "./component/slidable.jsx";
 require("./theme/index.styl");
 
 const yaui = {
-    "component":{
-        Alert,
-        Accordion,
-        GoTop,
-        Selected,
-        SelectedSlide,
-        Dropdown,
-        Sticky,
-        Popup,
-        Popover,
-        Refresher,
-        Image,
-        Slider,
-        Slide,
-        ScrollSpy,
-        DatetimePicker,
-        DatetimeInput,
-        NumberPicker,
-        PullHook,
-        Checkbox,
-        SlideTabs,SlideTabsItem,
-        ScrollNav,
-        Slidable
-    }
+    Alert,
+    Accordion,
+    GoTop,
+    Selected,
+    SelectedSlide,
+    Dropdown,
+    Sticky,
+    Popup,
+    Popover,
+    Refresher,
+    Image,
+    Slider,
+    Slide,
+    ScrollSpy,
+    DatetimePicker,
+    DatetimeInput,
+    NumberPicker,
+    PullHook,
+    Checkbox,
+    SlideTabs,SlideTabsItem,
+    ScrollNav,
+    Slidable
 };
 export default yaui;
