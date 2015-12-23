@@ -149,30 +149,28 @@
 	__webpack_require__(284);
 
 	var yaui = {
-	    "component": {
-	        Alert: _componentAlertJsx2["default"],
-	        Accordion: _componentAccordionJsx2["default"],
-	        GoTop: _componentGotopJsx2["default"],
-	        Selected: _componentSelectedSelectedJsx2["default"],
-	        SelectedSlide: _componentSelectedSelectedslideJsx2["default"],
-	        Dropdown: _componentDropdownJsx2["default"],
-	        Sticky: _componentStickyJsx2["default"],
-	        Popup: _componentPopupJsx2["default"],
-	        Popover: _componentPopoverJsx2["default"],
-	        Refresher: _componentRefresherJsx2["default"],
-	        Image: _componentImageJsx2["default"],
-	        Slider: _componentSliderSliderJsx2["default"],
-	        Slide: _componentSliderSlideJsx2["default"],
-	        ScrollSpy: _componentScrollspyJsx2["default"],
-	        DatetimePicker: _componentDatetimepickerDatetimepickerJsx2["default"],
-	        DatetimeInput: _componentDatetimepickerDatetimeinputJsx2["default"],
-	        NumberPicker: _componentNumberpickerJsx2["default"],
-	        PullHook: _componentPullhookJsx2["default"],
-	        Checkbox: _componentFormCheckboxJsx2["default"],
-	        SlideTabs: _componentSlidetabsJsx.SlideTabs, SlideTabsItem: _componentSlidetabsJsx.SlideTabsItem,
-	        ScrollNav: _componentScrollnavJsx2["default"],
-	        Slidable: _componentSlidableJsx2["default"]
-	    }
+	    Alert: _componentAlertJsx2["default"],
+	    Accordion: _componentAccordionJsx2["default"],
+	    GoTop: _componentGotopJsx2["default"],
+	    Selected: _componentSelectedSelectedJsx2["default"],
+	    SelectedSlide: _componentSelectedSelectedslideJsx2["default"],
+	    Dropdown: _componentDropdownJsx2["default"],
+	    Sticky: _componentStickyJsx2["default"],
+	    Popup: _componentPopupJsx2["default"],
+	    Popover: _componentPopoverJsx2["default"],
+	    Refresher: _componentRefresherJsx2["default"],
+	    Image: _componentImageJsx2["default"],
+	    Slider: _componentSliderSliderJsx2["default"],
+	    Slide: _componentSliderSlideJsx2["default"],
+	    ScrollSpy: _componentScrollspyJsx2["default"],
+	    DatetimePicker: _componentDatetimepickerDatetimepickerJsx2["default"],
+	    DatetimeInput: _componentDatetimepickerDatetimeinputJsx2["default"],
+	    NumberPicker: _componentNumberpickerJsx2["default"],
+	    PullHook: _componentPullhookJsx2["default"],
+	    Checkbox: _componentFormCheckboxJsx2["default"],
+	    SlideTabs: _componentSlidetabsJsx.SlideTabs, SlideTabsItem: _componentSlidetabsJsx.SlideTabsItem,
+	    ScrollNav: _componentScrollnavJsx2["default"],
+	    Slidable: _componentSlidableJsx2["default"]
 	};
 	exports["default"] = yaui;
 	module.exports = exports["default"];
