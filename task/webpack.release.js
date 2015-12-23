@@ -40,7 +40,7 @@ module.exports = {
     },
     output: {
         path: "./dist/minified",
-        libraryTarget: "commonjs",
+        libraryTarget: "commonjs2",
         filename: "[name]-[hash].js",
         chunkFilename: "[id]-[hash].chunk.js",
     },

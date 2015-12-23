@@ -8,6 +8,7 @@
     overflow:hidden;
     box-sizing:border-box;
     height:100%;
+    width:100%;
     .slide-tabs-navbar{
         // width:200%;
         background-color:#f3f4f6;
@@ -27,6 +28,14 @@
             }
             a{
                 text-decoration:none;
+            }
+        }
+        &.slide-tabs-navbar-fixed{
+            display:flex;
+            width:100%;
+            .slide-tabs-navbar-item{
+                width:auto;
+                flex:1
             }
         }
     }

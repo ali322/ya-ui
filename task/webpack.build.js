@@ -59,7 +59,7 @@ module.exports = {
     },
     output: {
         path: "./dist",
-        libraryTarget: "commonjs",
+        libraryTarget: "commonjs2",
         filename: "[name].js",
         chunkFilename: "[id].chunk.js",
     },

@@ -2868,6 +2868,7 @@ dd {
   overflow: hidden;
   box-sizing: border-box;
   height: 100%;
+  width: 100%;
 }
 .slide-tabs .slide-tabs-navbar {
   background-color: #f3f4f6;
@@ -2886,6 +2887,20 @@ dd {
 }
 .slide-tabs .slide-tabs-navbar .slide-tabs-navbar-item a {
   text-decoration: none;
+}
+.slide-tabs .slide-tabs-navbar.slide-tabs-navbar-fixed {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.slide-tabs .slide-tabs-navbar.slide-tabs-navbar-fixed .slide-tabs-navbar-item {
+  width: auto;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 .slide-tabs .slide-tabs-content {
   -webkit-box-flex: 1;

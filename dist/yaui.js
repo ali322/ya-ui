@@ -1,4 +1,5 @@
-(function(e, a) { for(var i in a) e[i] = a[i]; }(exports, /******/ (function(modules) { // webpackBootstrap
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -48745,7 +48746,7 @@
 	            }
 	            return _react2["default"].createElement(
 	                "div",
-	                { className: "slide-tabs-navbar" },
+	                { className: "slide-tabs-navbar slide-tabs-navbar-fixed" },
 	                navigators
 	            );
 	        }
@@ -49284,4 +49285,4 @@
 	// removed by extract-text-webpack-plugin
 
 /***/ }
-/******/ ])));
+/******/ ]);
