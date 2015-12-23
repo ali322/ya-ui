@@ -19,6 +19,9 @@ import Checkbox from "./component/form/checkbox.jsx";
 import Refresher from "./component/refresher.jsx";
 import ScrollSpy from "./component/scrollspy.jsx";
 import {Tabs,TabsItem} from "./component/tabs.jsx"; 
+import {SlideTabs,SlideTabsItem} from "./component/slidetabs.jsx";
+import ScrollNav from "./component/scrollnav.jsx";
+import Slidable from "./component/slidable.jsx";
 
 const yaui = {
     "component":{
@@ -40,7 +43,10 @@ const yaui = {
         DatetimeInput,
         NumberPicker,
         PullHook,
-        Checkbox
+        Checkbox,
+        SlideTabs,SlideTabsItem,
+        ScrollNav,
+        Slidable
     }
 };
 export default yaui;
