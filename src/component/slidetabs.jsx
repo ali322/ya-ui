@@ -57,13 +57,15 @@ export class SlideTabs extends Component{
                 <div className={classes} key={i} onClick={this.handleSelect.bind(this,i)}>{navigator()}</div>
             )
         })
-        // console.log('navbarSlidable',this.state.navbarSlidable)
-        return (
-            <Slidable axis={this.props.axis} ref="navbar" name="navbar" 
-            activeIndex={this.state.activeIndex}>
-                <div className="slide-tabs-navbar">{navigators}</div>
-            </Slidable>
-        )
+        if(this.props.navbarSlidable === true){
+            return (
+                <Slidable axis={this.props.axis} ref="navbar" name="navbar" 
+                activeIndex={this.state.activeIndex}>
+                    <div className="slide-tabs-navbar">{navigators}</div>
+                </Slidable>
+            )
+        }
+        return <div className="slide-tabs-navbar">{navigators}</div>
     }
     renderTabsItem(child,index){
         return React.cloneElement(child,Object.assign({},child.props,{
@@ -90,6 +92,7 @@ export class SlideTabs extends Component{
 SlideTabs.defaultProps = {
     activeIndex:0,
     axis:"x",
+    navbarSlidable:true,
     onSelect:()=>{}
 }
 
