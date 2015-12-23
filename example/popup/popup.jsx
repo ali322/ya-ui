@@ -2,8 +2,7 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
-import {component} from "../../src/index.es6";
-let {Popup} = component;
+import Popup from "../../src/component/popup.jsx";
 
 class PopupExample extends Component{
     constructor(props){

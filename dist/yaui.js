@@ -44,8 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-	module.exports = __webpack_require__(284);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
@@ -146,6 +145,8 @@
 	var _componentSlidableJsx = __webpack_require__(282);
 
 	var _componentSlidableJsx2 = _interopRequireDefault(_componentSlidableJsx);
+
+	__webpack_require__(284);
 
 	var yaui = {
 	    "component": {
@@ -20335,8 +20336,6 @@
 	    return Accordion;
 	})(_react.Component);
 
-	exports.Accordion = Accordion;
-
 	Accordion.defaultProps = {
 	    onSelect: function onSelect() {}
 	};
@@ -20457,6 +20456,7 @@
 	})(_react.Component);
 
 	exports.AccordionItem = AccordionItem;
+	exports["default"] = Accordion;
 
 /***/ },
 /* 164 */

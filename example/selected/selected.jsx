@@ -2,8 +2,8 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
-import {component} from "../../src/index.es6";
-let {Selected,SelectedSlide} = component;
+import Selected from "../../src/component/selected/selected.jsx";
+import SelectedSlide from "../../src/component/selected/selectedslide.jsx";
 
 let SelectedForm = React.createClass({
     render(){

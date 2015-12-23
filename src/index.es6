@@ -23,6 +23,8 @@ import {SlideTabs,SlideTabsItem} from "./component/slidetabs.jsx";
 import ScrollNav from "./component/scrollnav.jsx";
 import Slidable from "./component/slidable.jsx";
 
+require("./theme/index.styl");
+
 const yaui = {
     "component":{
         Alert,

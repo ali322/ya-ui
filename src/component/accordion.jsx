@@ -5,7 +5,7 @@ import classNames from "classnames";
 import rAF from "../lib/dom/requestAnimationFrame";
 import Icon from "./icon.jsx";
 
-export class Accordion extends Component{
+class Accordion extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -136,3 +136,5 @@ export class AccordionItem extends Component{
         )
     }
 }
+
+export default Accordion;

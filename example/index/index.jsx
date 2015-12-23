@@ -8,6 +8,7 @@ class IndexExample extends Component{
         super(props);
     }
     render(){
+        console.log(require("../../dist/yaui"))
         return (
             <div className="index-example">
                 <Header title="Ya-UI"/>

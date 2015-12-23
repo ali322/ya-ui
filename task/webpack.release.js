@@ -7,8 +7,7 @@ var node_modules_dir = path.resolve(__dirname, '../node_modules');
 
 module.exports = {
     entry: {
-        'yaui': ['./src/index.es6', './src/theme/index.styl'],
-        // 'vendor': ['react', 'react/addons', 'reflux', 'lodash']
+        'yaui': ['./src/index.es6']
     },
     module: {
         loaders: [{
