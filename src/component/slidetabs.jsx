@@ -65,7 +65,7 @@ export class SlideTabs extends Component{
                 </Slidable>
             )
         }
-        return <div className="slide-tabs-navbar slide-tabs-navbar-fixed">{navigators}</div>
+        return <div className="slide-tabs-navbar">{navigators}</div>
     }
     renderTabsItem(child,index){
         return React.cloneElement(child,Object.assign({},child.props,{
@@ -75,6 +75,7 @@ export class SlideTabs extends Component{
     }
     render(){
         const classes = classNames("slide-tabs",{
+            "slide-tabs-fixed":this.props.navbarSlidable === false,
             "slide-tabs-vertical":this.props.axis === "y"
         })
         return (

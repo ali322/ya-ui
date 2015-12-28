@@ -29,7 +29,7 @@ class SlideTabsExample extends Component{
             <div className="slidetabs-example">
                 <Header title="SlideTabs" backButton={true} />
                 <div className="slidetabs-example-inner">
-                <SlideTabs axis="x" navbarSlidable={false}>
+                <SlideTabs axis="x" navbarSlidable={true}>
                 {tabsItems}
                 </SlideTabs>
                 </div>
