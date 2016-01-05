@@ -24,10 +24,10 @@ class Slider extends Component{
         this.initialize();
         this.props.autoPlay && this.slideToNext();
     }
-    componentDidUnmount(){
-        clearTimeout(this.timeout);
+    componentWillUnmount(){
+        clearTimeout(this.timeout)
     }
-    initialize(){
+    initialize(rect = null){
         const {oriention} = this.props;
         var {activeIndex} = this.state;
         if(this.props.defaultActiveIndex !== undefined){
@@ -35,8 +35,12 @@ class Slider extends Component{
         }
         // const slideNode = React.findDOMNode(this).querySelector(".slides").firstChild;
         const slideNode = ReactDOM.findDOMNode(this);
-        const slideNodeWidth = slideNode.offsetWidth;
-        const slideNodeHeight = slideNode.querySelector(".slides").firstChild.offsetHeight
+        let slideNodeWidth = slideNode.offsetWidth;
+        let slideNodeHeight = slideNode.querySelector(".slides").firstChild.offsetHeight
+        if(rect !== null){
+            slideNodeWidth = rect.width ? rect.width:slideNodeWidth
+            slideNodeHeight = rect.height ? rect.height:slideNodeHeight
+        }
         const slidesWidth = slideNodeWidth * this.slides.length;
         const slidesHeight = slideNodeHeight * this.slides.length;
         // console.log('slidesHeight',slideNode.querySelector(".slides").offsetHeight)
@@ -55,7 +59,7 @@ class Slider extends Component{
             slidesStyle = Object.assign({},slidesStyle,{
                 transitionProperty:"transform",
                 transitionTimingFunction:"ease-in-out",
-                transform
+                WebkitTransform:transform
             })
         }
         // console.log('currentStyle',slideNodeHeight)
@@ -116,6 +120,9 @@ class Slider extends Component{
         if(this.animateSlide() === true){
             return;
         }
+        if(this.touchEnabled === false){
+            return
+        }
         const {clientY,clientX} = e.changedTouches[0];
         this.startTouchX = clientX;
         this.startTouchY = clientY;
@@ -126,6 +133,10 @@ class Slider extends Component{
         if(this.animateSlide() === true){
             return;
         }
+        if(this.touchEnabled === false){
+            return
+        }
+
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = this.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(!inTouchableRegion){
@@ -141,14 +152,14 @@ class Slider extends Component{
             const absOfOffsetY = Math.abs(offsetY);
             if(absOfOffsetY >= offsetHeight / 2){
                 if(offsetY < 0){
-                    console.log('next Y')
+                    // console.log('next Y')
                     setTimeout(this.next.bind(this),100);
                 }else if(offsetY > 0){
-                    console.log('prev Y')
+                    // console.log('prev Y')
                     setTimeout(this.prev.bind(this),100);
                 }
             }else{
-                console.log('restorePosition');
+                // console.log('restorePosition');
                 absOfOffsetY > 0 && this.restorePosition();
             }
         }
@@ -174,6 +185,10 @@ class Slider extends Component{
         if(this.animateSlide() === true){
             return;
         }
+        if(this.touchEnabled === false){
+            return
+        }
+
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = this.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(!inTouchableRegion){
@@ -205,7 +220,7 @@ class Slider extends Component{
         }
         const slidesNode = ReactDOM.findDOMNode(this.refs.slides);
         if(transform !== null){
-            slidesNode.style.transform = transform;
+            slidesNode.style.WebkitTransform = transform;
             slidesNode.style.transitionDuration = ".3s";
         }
     }
@@ -236,7 +251,7 @@ class Slider extends Component{
         }
         const slidesNode = ReactDOM.findDOMNode(this.refs.slides);
         if(transform !==null){
-            slidesNode.style.transform = transform;
+            slidesNode.style.WebkitTransform = transform;
             slidesNode.style.transitionDuration = ".3s";
         }
     }
@@ -361,7 +376,7 @@ class Slider extends Component{
                 }
                 // console.log('transform',transform)
                 slidesStyle = Object.assign({},slidesStyle,{
-                    transform,
+                    WebkitTransform:transform,
                     transitionDuration:speed+"s"
                 })
             }
@@ -521,12 +536,15 @@ Slider.defaultProps = {
     effect:"roll",
     infinity:true,
     direction:"next",
+    touchEnabled:true,
     reverse:false,
     oriention:"horizontal", //vertical
     autoPlay:false,
     loop:true,
     speed:300,
     delay:5000,
+    rect:null,
+    height:null,
     pauseOnHover:true,
     onChange:function(){}
 }
