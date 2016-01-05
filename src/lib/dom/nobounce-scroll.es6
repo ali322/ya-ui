@@ -28,7 +28,7 @@ let handleTouchmove = (e)=>{
     }
     el = el.parentNode
   }
-  e.preventDefault()
+  // e.preventDefault()
 }
 
 let handleTouchstart = function(e) {
