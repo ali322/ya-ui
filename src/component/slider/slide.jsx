@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 class Slide extends Component{
     render(){
-        const {active,prev,next,pseudo,key,style,animateSlide,animateSpeed} = this.props;
+        const {active,prev,next,pseudo,identify,style,animateSlide,animateSpeed} = this.props;
         const classes = classNames(this.props.className,{
             "slide":true,
             "active":active,
@@ -37,7 +37,7 @@ class Slide extends Component{
             slideStyle.height = "100%";
         }
         return (
-            <div className={classes} style={slideStyle} key={"slide-"+key}>{this.props.children}</div>
+            <div className={classes} style={slideStyle} key={identify}>{this.props.children}</div>
         );
     }
 }
