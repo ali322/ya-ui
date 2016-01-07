@@ -4,6 +4,9 @@ import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
 import DatetimeInput from "../../src/component/datetimepicker/datetimeinput.jsx";
 
+import "babel-polyfill";
+Object.assign = Object.assign || require('object-assign')
+
 class DatetimepickerExample extends Component{
     render(){
         return (

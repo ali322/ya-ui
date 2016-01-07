@@ -1,11 +1,12 @@
 'use strict';
 
 import React,{Component} from "react";
+import ReactDOM from "react-dom";
 import classNames from "classnames";
 import rAF from "../lib/dom/requestAnimationFrame";
 import Icon from "./icon.jsx";
 
-class Accordion extends Component{
+export class Accordion extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -63,7 +64,7 @@ export class AccordionItem extends Component{
     componentDidUpdate(prevProps){
         const {active} = this.props;
         const self = this;
-        const element = React.findDOMNode(this.refs.accordionContent);
+        const element = ReactDOM.findDOMNode(this.refs.accordionContent);
         var initialHeight,targetHeight,lastHeight;
         if(active === true && prevProps.active === false){
             targetHeight = element.offsetHeight;

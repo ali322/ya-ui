@@ -60,6 +60,10 @@ class IndexExample extends Component{
                         <td><a href="./tabs/tabs.html">example</a></td>
                     </tr>
                     <tr>
+                        <td>SlideTabs</td>
+                        <td><a href="./slidetabs/slidetabs.html">example</a></td>
+                    </tr>
+                    <tr>
                         <td>More</td>
                         <td><a href="./more/more.html">example</a></td>
                     </tr>

@@ -5,6 +5,8 @@ import ReactDOM from "react-dom";
 import Header from "../common/header.jsx";
 import {SlideTabs,SlideTabsItem} from "../../src/component/slidetabs.jsx";
 
+Object.assign = Object.assign || require('object-assign')
+
 class SlideTabsExample extends Component{
     render(){
         let tabsItems = [];
