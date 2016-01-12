@@ -12,7 +12,6 @@ export class SlideTabs extends Component{
         super(props);
         this.state = {
             activeIndex:props.activeIndex,
-            // navbarSlidable:false
         }
     }
     componentDidMount(){
