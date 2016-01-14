@@ -13,7 +13,7 @@ let dom = {
       },
       unbindEvent(el,event,listener){
         if(el.removeEventListener){
-            el.removeEventListener(event,listener);
+            el.removeEventListener(event,listener,false);
         }else if(el.detachEvent){
             el.detachEvent("on${event}",listener);
         }
@@ -80,7 +80,7 @@ let dom = {
         let scrollNode = element;
         while(scrollNode !== window){
           scrollNode = scrollNode.parentNode;
-          if(scrollNode.scrollTop > 0){
+          if(scrollNode && scrollNode.scrollHeight > scrollNode.clientHeight){
             break;
           }
         }
