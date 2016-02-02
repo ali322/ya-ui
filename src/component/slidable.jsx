@@ -196,7 +196,6 @@ class Slidable extends Component{
             return
         }
         this.moveDirection = moveDirection
-        // console.log('moveDirection',this.moveDirection,touchAngle)
         if(this.moveDirection === axis){
             dom.addClass(ReactDOM.findDOMNode(this),"sliding")
             // e && e.preventDefault()
