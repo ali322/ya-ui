@@ -26,13 +26,13 @@ module.exports = {
         }, {
             test: /\.styl/,
             exclude: [node_modules_dir],
-            // loader: 'style!css!stylus!autoprefixer'
-            loader: ExtractTextPlugin.extract('style', 'css!autoprefixer!stylus')
+            loader: 'style!css!stylus!autoprefixer'
+            // loader: ExtractTextPlugin.extract('style', 'css!autoprefixer!stylus')
         }, {
             test: /\.css/,
             // exclude: [node_modules_dir],
             loader: 'style!css'
-                // loader: ExtractTextPlugin.extract('style', 'css')
+            // loader: ExtractTextPlugin.extract('style', 'css')
         }, {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
             loader: "url?limit=8192&mimetype=application/font-woff"
@@ -64,6 +64,6 @@ module.exports = {
         chunkFilename: "[id].chunk.js",
     },
     plugins: [
-        new ExtractTextPlugin("[name].css")
+        // new ExtractTextPlugin("[name].css")
     ]
 }

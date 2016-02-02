@@ -31,8 +31,8 @@ module.exports = {
         }, {
             test: /\.css/,
             // exclude: [node_modules_dir],
-            loader: 'style!css'
-                // loader: ExtractTextPlugin.extract('style', 'css')
+            // loader: 'style!css'
+            loader: ExtractTextPlugin.extract('style', 'css')
         }]
     },
     resolve: {
