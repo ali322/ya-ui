@@ -546,7 +546,6 @@ class Slider extends Component{
             this.slides.push(pseudoFirstNode);
             this.slides.unshift(pseudoLastNode);
         }
-        // console.log('processSlides',this.props.children.length,this.slides.length)
     }
     componentWillMount(){
         this.processSlides();
