@@ -13,6 +13,13 @@ class Dropdown extends Component{
             open:false
         }
     }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.open !== this.props.open){
+            this.setState({
+                open:nextProps.open
+            })
+        }
+    }
     componentDidMount(){
         this.bindOuterEvent();
     }
