@@ -39,6 +39,7 @@ class Refresher extends React.Component{
 
 Refresher.defaultProps = {
     threshold:10,
+    isInnerScroll:true,
     handleRefresh:()=>{}
 }
 
