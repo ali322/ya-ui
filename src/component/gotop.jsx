@@ -16,43 +16,52 @@ class GoTop extends Component{
     }
     toggleVisble(){
         const {relative} = this.props;
-        const scrollTop = relative?dom.scrollTop(dom.scrollNode(ReactDOM.findDOMNode(this)))
-        :dom.scrollTop();
+        const scrollTop = relative?dom.scrollTop(this.scrollNode):dom.scrollTop(window);
         if(scrollTop > 50){
-            this.setState({active:true});
+            this.setState({active:true})
         }else{
             this.setState({active:false});
         }
     }
     componentDidMount(){
         const {relative} = this.props;
-        this.relativeElement = relative?dom.scrollNode(ReactDOM.findDOMNode(this)):window;
-        dom.bindEvent(this.relativeElement,'scroll',_.debounce(this.toggleVisble.bind(this),100))
+        this.scrollNode = relative?ReactDOM.findDOMNode(this):window;
+        dom.bindEvent(this.scrollNode,'scroll',_.debounce(this.toggleVisble.bind(this),10))
     }
     componentWillUnmount(){
-        dom.unbindEvent(this.relativeElement,'scroll',_.debounce(this.toggleVisble.bind(this),100))
+        dom.unbindEvent(this.scrollNode,'scroll',_.debounce(this.toggleVisble.bind(this),10))
     }
     backToTop(){
-        smoothScroll(this.relativeElement);
+        smoothScroll(this.scrollNode);
     }
-    render(){
+    renderButton(){
         const classes = classNames({
             "back-to-top":true,
             "active":this.state.active
         });
-
         return (
             <div className={classes}>
                 <a href={null} onClick={this.backToTop.bind(this)}>
                 <Icon icon="up"/>
                 </a>
             </div>
-        )
+        )        
+    }
+    render(){
+        if(this.props.relative){
+            return (
+                <div className="back-to-top-container">
+                {this.renderButton()}
+                {this.props.children}
+                </div>
+            )
+        }
+        return this.renderButton()
     }
 }
 
 GoTop.defaultProps = {
-    relative:false
+    relative:false,
 }
 
 export default GoTop;

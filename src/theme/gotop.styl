@@ -1,6 +1,5 @@
 @import "./common/common";
 @import "./common/util";
-@import "./common/iconfont";
 .back-to-top {
     position: fixed;
     bottom: px2rem(40);
@@ -12,8 +11,10 @@
     z-index: 100;
     text-align: center;
     opacity:0;
+    display: none;
     transition:opacity .3s ease-in;
     &.active{
+        display: block;
         opacity:1;
         transition:opacity .3s ease-in;
     }
@@ -24,8 +25,17 @@
         justify-content:center;
         align-items:center;
         span {
-            px2px("font-size",18);
+            font-size:px2rem(18);
             color: #FFF;
         }
+    }
+}
+
+.back-to-top-container{
+    height:100%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    .back-to-top{
+        position:absolute;
     }
 }
