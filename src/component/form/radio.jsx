@@ -9,13 +9,16 @@ class Radio extends Component{
         const checkedIcon = this.props.checkedIcon || "dot-circled";
         const uncheckIcon = this.props.uncheckIcon || "circle-empty";
         const {checked,name,onChange} = this.props;
-        const classes = classNames("radio",this.props.className)
+        const classes = classNames("radio",this.props.className,{
+            checked
+        })
         return (
-            <div className={classes}>
-            <input type="radio" name={name} onChange={onChange} defaultChecked={checked} 
-            ref="checkInput"/>
+            <div className={classes} onChange={onChange}>
+            {checked?(
             <Icon icon={checkedIcon} className="checked"/>
+            ):(
             <Icon icon={uncheckIcon} className="unchecked"/>
+            )}
             </div>
         )
     }

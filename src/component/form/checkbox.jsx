@@ -12,24 +12,21 @@ class Checkbox extends Component{
             checked:props.checked
         }
     }
-    componentDidUpdate(prevProps,prevState){
-        if(this.state.checked === false && prevState.checked === true){
-            ReactDOM.findDOMNode(this.refs.checkInput).checked = false; 
-        }
-        if(this.state.checked === true && prevState.checked === false){
-            ReactDOM.findDOMNode(this.refs.checkInput).checked = true; 
-        }
-    }
     componentWillReceiveProps(nextProps){
         if(nextProps.checked !== this.props.checked){
-            this.setState({
-                checked:nextProps.checked
-            });
+            if(!nextProps.disabled){
+                this.setState({
+                    checked:nextProps.checked
+                });
+            }
         }
     }
     handleChange(e){
         // e && e.preventDefault();
-        const {onChange}= this.props;
+        const {onChange,disabled}= this.props;
+        if(disabled){
+            return false
+        }
         this.setState({
             checked:!this.state.checked
         },()=>{
@@ -37,20 +34,22 @@ class Checkbox extends Component{
         })
     }
     render(){
-        const {type,name} = this.props;
+        const {type,name,disabled} = this.props;
         const {checked} = this.state;
         var checkedIcon = "check",uncheckIcon = "check-empty";
-        var checkInput = (
-            <input type="checkbox" onChange={this.handleChange.bind(this)} ref="checkInput" defaultChecked={checked}/>
-        );
         checkedIcon = this.props.checkedIcon ? this.props.checkedIcon:checkedIcon;
         uncheckIcon = this.props.uncheckIcon ? this.props.uncheckIcon:uncheckIcon;
-        const classes = classNames("checkbox",this.props.className);
+        const classes = classNames("checkbox",this.props.className,{
+            checked,
+            disabled,
+        });
         return (
-            <div className={classes}>
-            {checkInput}
+            <div className={classes} onClick={this.handleChange.bind(this)}>
+            {this.state.checked?(
             <Icon icon={checkedIcon} className="checked"/>
+            ):(
             <Icon icon={uncheckIcon} className="unchecked"/>
+            )}
             </div>
         )
     }
@@ -58,6 +57,7 @@ class Checkbox extends Component{
 
 Checkbox.defaultProps = {
     checked:false,
+    disabled:false,
     onChange:function(){}
 }
 

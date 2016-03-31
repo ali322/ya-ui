@@ -299,7 +299,76 @@ let dom = {
             return true;
         }
         return false;
-    }
+      },
+      prefixedStyle(name){
+        var _elementStyle = document.createElement('div').style;
+        var _vendor = (function () {
+          var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
+            transform;
+
+          for ( var i =0; i < vendors.length; i++ ) {
+            transform = vendors[i] + 'ransform';
+            if ( transform in _elementStyle ) return vendors[i].substr(0, vendors[i].length-1);
+          }
+
+          return false;
+        })();
+
+        function _prefixStyle (style) {
+          if ( _vendor === false ) return false;
+          if ( _vendor === '' ) return style;
+          return _vendor + style.charAt(0).toUpperCase() + style.substr(1);
+        }
+        return _prefixStyle(name)
+      },
+      tap(e, eventName) {
+        var ev = document.createEvent('Event');
+        ev.initEvent(eventName, true, true);
+        ev.pageX = e.changedTouches[0].pageX;
+        ev.pageY = e.changedTouches[0].pageY;
+        e.target.dispatchEvent(ev);
+      },
+      click(e) {
+        var target = e.target,
+          ev;
+
+        if ( !(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName) ) {
+          ev = document.createEvent('MouseEvents');
+          ev.initMouseEvent('click', true, true, e.view, 1,
+            target.screenX, target.screenY, target.clientX, target.clientY,
+            e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
+            0, null);
+
+          ev._constructed = true;
+          target.dispatchEvent(ev);
+        }
+      },
+      momentum(current, start, time, lowerMargin, wrapperSize, deceleration){
+        var distance = current - start,
+          speed = Math.abs(distance) / time,
+          destination,
+          duration;
+
+        deceleration = deceleration === undefined ? 0.0006 : deceleration;
+
+        destination = current + ( speed * speed ) / ( 2 * deceleration ) * ( distance < 0 ? -1 : 1 );
+        duration = speed / deceleration;
+
+        if ( destination < lowerMargin ) {
+          destination = wrapperSize ? lowerMargin - ( wrapperSize / 2.5 * ( speed / 8 ) ) : lowerMargin;
+          distance = Math.abs(destination - current);
+          duration = distance / speed;
+        } else if ( destination > 0 ) {
+          destination = wrapperSize ? wrapperSize / 2.5 * ( speed / 8 ) : 0;
+          distance = Math.abs(current) + destination;
+          duration = distance / speed;
+        }
+
+        return {
+          destination: Math.round(destination),
+          duration: duration
+        };
+      }
 }
 
 export default dom;

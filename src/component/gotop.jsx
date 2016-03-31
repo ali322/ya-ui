@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 import _ from "lodash";
 import classNames from "classnames";
 import dom from "../lib/dom.es6";
-import {smoothScroll} from "../lib/dom.es6";
 import Icon from "./icon.jsx";
+import SmoothScroll from "../lib/dom/smoothscroll.es6";
 
 class GoTop extends Component{
     constructor(props){
@@ -13,7 +13,7 @@ class GoTop extends Component{
         this.state = {
             active:false
         };
-        this.scrollNode = window
+        this.smoothScroll = null
     }
     toggleVisble(scrollTop){
         if(scrollTop > 50){
@@ -23,21 +23,48 @@ class GoTop extends Component{
         }
     }
     handleScroll(){
-        const scrollTop = dom.scrollTop(this.scrollNode)
+        let scrollTop = dom.scrollTop(this.scrollNode)
+        if(this.props.smooth){
+            scrollTop = -(this.smoothScroll.getComputedPosition().y)
+        }
         this.toggleVisble(scrollTop)
-        this.props.onScroll(this.scrollNode)
+        this.props.onScroll(this.scrollNode,scrollTop)
+        this.smoothScroll.refresh()
     }
     componentDidMount(){
+        this.scrollNode = window
         if(this.props.relative){
             this.scrollNode = ReactDOM.findDOMNode(this.refs["scrollNode"])
         }
-        dom.bindEvent(this.scrollNode,'scroll',_.debounce(this.handleScroll.bind(this),10))
+        if(this.props.smooth){
+            this.smoothScroll = new SmoothScroll(this.scrollNode,{
+                click:true
+            })
+            this.smoothScroll.on("scroll",this.handleScroll.bind(this))
+            this.smoothScroll.on("scrollEnd",()=>{
+                const scrollTop = -(this.smoothScroll.getComputedPosition().y)
+                if(scrollTop <= 50){
+                    this.setState({active:false})
+                }
+            })
+        }else{
+            dom.bindEvent(this.scrollNode,'scroll',_.debounce(this.handleScroll.bind(this),10))
+        }
     }
     componentWillUnmount(){
-        dom.unbindEvent(this.scrollNode,'scroll',_.debounce(this.handleScroll.bind(this),10))
+        if(this.props.smooth){
+            this.smoothScroll.destory()
+        }else{
+            dom.unbindEvent(this.scrollNode,'scroll',_.debounce(this.handleScroll.bind(this),10))
+        }
     }
     backToTop(){
-        smoothScroll(this.scrollNode);
+        if(this.props.smooth){
+            this.smoothScroll.scrollTo(0,0,300)
+        }else{
+            dom.scrollTop(this.scrollNode,0)
+        }
+        // smoothScroll(this.scrollNode);
     }
     renderButton(){
         const classes = classNames({
@@ -54,10 +81,16 @@ class GoTop extends Component{
     }
     render(){
         if(this.props.relative){
+            const {renderFixed} = this.props
+            const classes = classNames("back-to-top-inner",{
+                scrollable:this.props.scrollable,
+                smooth:this.props.smooth
+            })
             return (
                 <div className="back-to-top-container">
                 {this.renderButton()}
-                <div className="back-to-top-inner" ref="scrollNode">
+                {renderFixed()}
+                <div className={classes} ref="scrollNode">
                 {this.props.children}
                 </div>
                 </div>
@@ -68,7 +101,10 @@ class GoTop extends Component{
 }
 
 GoTop.defaultProps = {
+    scrollable:true,
+    smooth:false,
     relative:false,
+    renderFixed:()=>{},
     onScroll:()=>{}
 }
 

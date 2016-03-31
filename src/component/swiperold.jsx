@@ -29,25 +29,10 @@ export class Swiper extends Component{
                     activeIndex:nextProps.activeIndex
                 })
                 if(this.props.contentSliding){
-                    this.transitionWithContent(this.props.activeIndex,nextProps.activeIndex,false)
+                    this.transitionWithContent(this.props.activeIndex,nextProps.activeIndex,
+                        nextProps.activeIndex > this.props.activeIndex)
                 }
             }
-    }
-    componentDidMount(){
-        if(this.props.contentSliding){
-            let contentNode = ReactDOM.findDOMNode(this.refs["slidingContent"])
-            const contentWidth = contentNode.offsetWidth
-            const count = React.Children.count(this.props.children)
-            contentNode.style.width = `${contentWidth * count}px`
-            for(var i = 0;i< count;i++){
-                let child = contentNode.children[i]
-                child.style.display = "block"
-                child.style.width = `${contentWidth}px`
-            }
-            dom.bindEvent(contentNode,"touchstart",this.handleTouchStart.bind(this))
-            dom.bindEvent(contentNode,"touchmove",this.handleTouchMove.bind(this))
-            dom.bindEvent(contentNode,"touchend",this.handleTouchEnd.bind(this))
-        }
     }
     handleTouchStart(e){
         if(!this.props.contentSliding){
@@ -65,7 +50,7 @@ export class Swiper extends Component{
         if(!this.props.contentSliding){
             return
         }
-        e && e.stopPropagation();
+        // e && e.stopPropagation();
         const {clientY,clientX} = e.changedTouches[0];
         const inTouchableRegion = dom.inTouchableRegion(clientX,clientY,e.currentTarget);
         if(!inTouchableRegion){
@@ -73,9 +58,7 @@ export class Swiper extends Component{
         }
         this.lastY = clientY;
         this.lastX = clientX;
-        const moveDirection = this.moveDirectionInTouch(this.lastY,this.lastX)
-        // console.log("moveDirection",moveDirection)
-        // alert("moveDirection"+moveDirection)
+        const moveDirection = this.moveDirectionInTouch(this.lastY,this.lastY)
         if(browserVersion().android && !browserVersion().weixin 
             && moveDirection === "x"){
             e && e.preventDefault()
@@ -85,11 +68,8 @@ export class Swiper extends Component{
         if(!this.props.contentSliding){
             return
         }
-        e && e.stopPropagation();
+        // e && e.stopPropagation();
         const {clientY,clientX} = e.changedTouches[0];
-
-        // alert(`moveY:${moveY},moveX:${moveX}`)
-
         if(this.startTouchX !== clientX || this.startTouchY !== clientY){
             const {axis,animateDuration,thresholdOfChange} = this.props;
             this.endTouchY = clientY;
@@ -127,39 +107,39 @@ export class Swiper extends Component{
                     this.setState({
                         activeIndex
                     })
-                    this.transitionWithContent(prevIndex,activeIndex)
+                    this.transitionWithContent(prevIndex,activeIndex,step < 0)
                     // console.log('activeIndex',nextIndex,activeIndex)
                 }
             }
 
         }
     }
-    transitionWithContent(activeIndex,nextIndex,animate = true){
+    transitionWithContent(activeIndex,nextIndex){
         const {axis} = this.props
         let contentNode = ReactDOM.findDOMNode(this.refs["slidingContent"])
         let slideInNode = contentNode.children[nextIndex]
+        let slideOutNode = contentNode.children[activeIndex]
+        slideInNode.style.display = "block";
+        slideOutNode.style.display = "block";
         let orientation = nextIndex > activeIndex ? "forward":"backward"
+        // console.log('transitionMoving',this.transitionMoving)
         // if(this.transitionMoving){
         //     return
         // }
         this.transitionMoving = true
+        slideInNode.style.transitionDuration = "0.5s"
+        slideOutNode.style.transitionDuration = "0.5s"
         let timerDelay = 600
-        let transitionDuration = "0.5s"
         if(browserVersion().ios){
-            transitionDuration = "0.4s"
+            slideInNode.style.transitionDuration = "0.4s"
+            slideOutNode.style.transitionDuration = "0.4s"
             timerDelay = 500
-        }
-        let translateX = (nextIndex * slideInNode.offsetWidth)
-        // console.log('translateX',translateX,nextIndex)
-        contentNode.style.WebkitTransform = `translate3D(-${translateX}px,0,0)`
-        contentNode.style.transitionDuration = animate ? transitionDuration : "0s"
-        if(orientation === "forward"){
-            contentNode.style.transitionDelay = "0s"
-        }else{
-            contentNode.style.transitionDelay = "0.1s"
         }
 
         const processTimer = setTimeout(()=>{
+            slideInNode.style.transitionDuration = "0s"
+            slideOutNode.style.transitionDuration = "0s"
+            // slideOutNode.style.display = "none"
             this.transitionMoving = false
             clearTimeout(processTimer)
         },timerDelay)
@@ -175,10 +155,8 @@ export class Swiper extends Component{
         }
         let touchAngle = Math.atan2(moveY,moveX) * 180 / Math.PI
         // console.log('touchAngle',touchAngle,moveY,moveX)
-        // alert(`moveY:${moveY},moveX:${moveX}`)
         let moveDirection = touchAngle < 30 ?"x":"y"
-        // let moveDirection =  moveX > (moveY + 5) ?"x":"y"
-        // alert(`moveDirection:${moveDirection}`)
+        // let moveDirection =  moveY > moveX ?"y":"x"
         return moveDirection
     }
     handleClick(index,e){
@@ -193,7 +171,7 @@ export class Swiper extends Component{
             prevIndex
         })
         if(this.props.contentSliding){
-            this.transitionWithContent(prevIndex,index,false)
+            this.transitionWithContent(prevIndex,index,index > prevIndex)
         }
     }
     renderControl(){
@@ -221,7 +199,14 @@ export class Swiper extends Component{
     }
     renderContent(child,index){
         const {activeIndex} = this.state
+        let classes = ""
+        if(index < activeIndex){
+            classes = "prev"
+        }else if(index > activeIndex){
+            classes = "next"
+        }
         return React.cloneElement(child,{
+            className:classes,
             active:index === this.state.activeIndex,
             key:child.key ? child.key:index
         });
@@ -229,6 +214,9 @@ export class Swiper extends Component{
     renderSlidingContent(){
         let contentItems = React.Children.map(this.props.children,this.renderContent.bind(this))
         return <div className="swiper-sliding-content" ref="slidingContent"
+        onTouchStart={this.handleTouchStart.bind(this)} 
+        onTouchMove={this.handleTouchMove.bind(this)} 
+        onTouchEnd={this.handleTouchEnd.bind(this)} 
         >{contentItems}</div>
     }
     render(){
@@ -258,7 +246,7 @@ Swiper.defaultProps = {
     effect:"fade",
     axis:"x",
     controlSliding:false,
-    contentSliding:false,
+    contentSliding:true,
     animateDuration:0.15,
     thresholdOfChange:0.05,
     onSelect:function(){}
