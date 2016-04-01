@@ -29,7 +29,9 @@ class GoTop extends Component{
         }
         this.toggleVisble(scrollTop)
         this.props.onScroll(this.scrollNode,scrollTop)
-        this.smoothScroll.refresh()
+        if(this.props.smooth){
+            this.smoothScroll.refresh()
+        }
     }
     componentDidMount(){
         this.scrollNode = window
@@ -38,7 +40,7 @@ class GoTop extends Component{
         }
         if(this.props.smooth){
             this.smoothScroll = new SmoothScroll(this.scrollNode,{
-                click:true
+                click:true,
             })
             this.smoothScroll.on("scroll",this.handleScroll.bind(this))
             this.smoothScroll.on("scrollEnd",()=>{
