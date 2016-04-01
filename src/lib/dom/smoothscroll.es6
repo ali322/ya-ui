@@ -147,7 +147,7 @@ SmoothScroll.prototype = {
         }
         this.moved = true
         this._translate(newX,newY)
-        // this.directionLocked = 0
+        this.directionLocked = 0
         if(timestamp - this.startTime > 300){
             this.startTime = timestamp
             this.startX = this.x
