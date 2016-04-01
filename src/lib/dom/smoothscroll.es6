@@ -47,6 +47,7 @@ function SmoothScroll(el,options){
         bounceTime: 600,
         preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/ },
         probeType:2,
+        HWCompositing:true,
     }
     this.style = {
         transform:prefixedStyle("transform"),
@@ -56,6 +57,7 @@ function SmoothScroll(el,options){
         transformOrigin:prefixedStyle("transformOrigin")
     }
     this.options = Object.assign({},this.options,options)
+    this.translateZ = this.options.HWCompositing?' translateZ(0)':""
     if (this.options.probeType == 3) {
         this.options.useTransition = false; 
     }
@@ -72,14 +74,9 @@ function SmoothScroll(el,options){
 
 SmoothScroll.prototype = {
     _init(){
-        this.refresh()
         this.toggleEvents()
-        if(this.options.snap){
-            this._initSnap()
-        }
     },
     _transitionEnd(e){
-        // console.log('transitionend')
         if(e.target !== this.scroller){
             return
         }
@@ -90,13 +87,10 @@ SmoothScroll.prototype = {
         }
     },
     _move(e){
-        if(!this.enable){
+        if(!this.enable || eventType[e.type] !== this.initiated){
             return
         }
         e.preventDefault()
-        // if(eventType[e.type] != this.initiated){
-        //     return
-        // }
         const point = e.touches?e.touches[0]:e.pos
         let deltaX = point.pageX - this.pointX
         let deltaY = point.pageY - this.pointY
@@ -107,7 +101,7 @@ SmoothScroll.prototype = {
         const absDistX = Math.abs(this.distX)
         const absDistY = Math.abs(this.distY)
         const timestamp = Date.now()
-        if(timestamp - this.endTime > 100 && (absDistY < 5 && absDistX < 5)){
+        if(timestamp - this.endTime > 300 && (absDistY < 10 && absDistX < 10)){
             return
         }
         if(this.directionLocked == 0){
@@ -119,7 +113,6 @@ SmoothScroll.prototype = {
                 this.directionLocked = "n"
             }
         }
-        // console.log(absDistX,absDistY)
         // console.log('directionLocked',this.directionLocked)
         if(this.directionLocked == "h"){
             if(this.options.hasHorizontalScroll){
@@ -152,9 +145,9 @@ SmoothScroll.prototype = {
         if(!this.moved){
             this._triggerEvent("scrollStart")
         }
-        this._translate(newX,newY)
         this.moved = true
-        this.directionLocked = 0
+        this._translate(newX,newY)
+        // this.directionLocked = 0
         if(timestamp - this.startTime > 300){
             this.startTime = timestamp
             this.startX = this.x
@@ -168,26 +161,19 @@ SmoothScroll.prototype = {
         }
     },
     _start(e){
-        if(!this.enable){
+        if(!this.enable || (this.initiated && eventType[e.type] !== this.initiated)){
             return
         }
-        if(!isAndroid() && isPreventDefaultException(e.target,this.options.preventDefaultException)){
+        if(!isAndroid() && !isPreventDefaultException(e.target,this.options.preventDefaultException)){
             e.preventDefault()
         }
-        // if(this.initiated && eventType[e.type] != this.initiated){
-        //     return
-        // }
-        const point = e.touches?e.touches[0]:e.pos
+        const point = e.touches?e.touches[0]:e
+        this.initiated = eventType[e.type]
+        this.moved = false
         this.distX = 0;
         this.distY = 0;
-        this.pointX = point.pageX
-        this.pointY = point.pageY
-        this.startX = this.x
-        this.startY = this.y
-        this.startTime = Date.now()
         this.directionLocked = 0
-        this.moved = false
-        this.initiated = eventType[e.type]
+        this.startTime = Date.now()
         if(this.isInTransition && this.options.useTransition){
             this._transitionTime()
             this.isInTransition = false
@@ -198,25 +184,26 @@ SmoothScroll.prototype = {
             this.isAnimating = false
             this._triggerEvent("scrollEnd")
         }
+        this.pointX = point.pageX
+        this.pointY = point.pageY
+        this.startX = this.x
+        this.startY = this.y
         this._triggerEvent("beforeScrollStart")
     },
     _end(e){
-        if(!this.enable){
+        if(!this.enable || eventType[e.type] !== this.initiated){
             return
         }
-        // if(eventType[e.type] != this.initiated){
-        //     return
-        // }
 
         if(!isPreventDefaultException(e.target,this.options.preventDefaultException)){
             e.preventDefault()
         }
-        const point = e.touches?e.touches[0]:e.pos
+        const point = e.touches?e.touches[0]:e
         let newX = Math.round(this.x)
         let newY = Math.round(this.y)
-        this.endTime = Date.now()
         this.isInTransition = 0
-        // this.initiated = 0
+        this.initiated = 0
+        this.endTime = Date.now()
         if(this.resetPosition(this.options.bounceTime)){
             return
         }
@@ -241,7 +228,11 @@ SmoothScroll.prototype = {
             this.isInTransition = 1
         }
         if(newX != this.x || newY != this.y){
-            this.scrollTo(newX,newY,time,timingfunction.quadratic)
+            let easing = ""
+            if ( newX > 0 || newX < this.maxScrollX || newY > 0 || newY < this.maxScrollY ) {
+                easing = timingfunction.quadratic;
+            }
+            this.scrollTo(newX,newY,time,easing)
             return
         }
         this._triggerEvent("scrollEnd")
@@ -270,13 +261,13 @@ SmoothScroll.prototype = {
     disable(){
         this.enable = false
     },
-    scrollTo(x,y,time,easing = timingfunction.circular){
+    scrollTo(x,y,time,easing){
+        easing = easing || timingfunction.circular
         this.isInTransition = this.options.useTransition && time > 0
-        const transitionType = this.options.useTransition && easing.style
-        if(!time){
+        if(!time || this.options.useTransition){
+            const transitionType = this.options.useTransition && easing.style
             if(transitionType){
                 this.scrollerStyle[prefixedStyle("transitionTimingFunction")] = easing.style
-                // this._transitionTimingFunction(easing.style)
                 this._transitionTime(time)
             }
             this._translate(x,y)
@@ -290,12 +281,14 @@ SmoothScroll.prototype = {
         this.scrollTo(x,y,time)
     },
     getComputedPosition(){
-        var matrix = window.getComputedStyle(this.scroller,null);
-        var x,y
-        matrix = matrix[this.style.transform].split(")")[0].split(", ")
+        var matrix = window.getComputedStyle(this.scroller, null),
+            x, y;
+
+        matrix = matrix[prefixedStyle("transform")].split(')')[0].split(', ');
         x = +(matrix[12] || matrix[4]);
         y = +(matrix[13] || matrix[5]);
-        return {x,y}
+
+        return { x: x, y: y };
     },
     _transitionTime(time = 0){
         let transitionDuration = this.style.transitionDuration
@@ -311,7 +304,7 @@ SmoothScroll.prototype = {
         }
     },
     _translate(x,y){
-        this.scrollerStyle[this.style.transform] = `translate3D(${x}px,${y}px,0)`
+        this.scrollerStyle[this.style.transform] = `translate(${x}px,${y}px)${this.translateZ}`
         this.x = x
         this.y = y
     },
@@ -368,7 +361,7 @@ SmoothScroll.prototype = {
         }
         this.endTime = 0
         this._triggerEvent("refresh")
-        this.resetPosition()
+        // this.resetPosition()
     },
     destory(){
         this.toggleEvents(true)
@@ -386,6 +379,12 @@ SmoothScroll.prototype = {
         toggler(this.scroller,"webkitTransitionEnd",this._transitionEnd.bind(this))
         toggler(window,"orientationchange",this._resize.bind(this))
         toggler(window,"resize",this._resize.bind(this))
+        toggler(target,"click",()=>{
+            if ( this.enabled && !e._constructed ) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        })
     },
     on(type,callback){
         if(!this._events[type]){
