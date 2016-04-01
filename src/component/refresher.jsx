@@ -9,15 +9,6 @@ class Refresher extends React.Component{
     constructor(props){
         super(props)
     }
-    componentDidMount(){
-        this.scrollNode = ReactDOM.findDOMNode(this).parentNode
-        dom.bindEvent(this.scrollNode,"scroll",this.handleScroll.bind(this))
-    }
-    componentWillUnmount(){
-        dom.unbindEvent(this.scrollNode,"scroll",(e)=>{
-            this.handleScroll(this.scrollNode)
-        })
-    }
     render(){
         var classes = classNames({
             "refresher":true,
