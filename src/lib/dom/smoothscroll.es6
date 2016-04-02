@@ -45,6 +45,7 @@ function SmoothScroll(el,options){
         momentum:true,
         bounce: true,
         bounceTime: 600,
+        preventDefault:true,
         preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/ },
         probeType:2,
         HWCompositing:true,
@@ -77,7 +78,7 @@ SmoothScroll.prototype = {
         this.toggleEvents()
     },
     _transitionEnd(e){
-        if(e.target !== this.scroller){
+        if(e.target !== this.scroller || !this.isInTransition){
             return
         }
         this._transitionTime()
@@ -90,7 +91,9 @@ SmoothScroll.prototype = {
         if(!this.enable || eventType[e.type] !== this.initiated){
             return
         }
-        e.preventDefault()
+        if(this.options.preventDefault){
+            e.preventDefault()
+        }
         const point = e.touches?e.touches[0]:e.pos
         let deltaX = point.pageX - this.pointX
         let deltaY = point.pageY - this.pointY
@@ -164,7 +167,7 @@ SmoothScroll.prototype = {
         if(!this.enable || (this.initiated && eventType[e.type] !== this.initiated)){
             return
         }
-        if(!isAndroid() && !isPreventDefaultException(e.target,this.options.preventDefaultException)){
+        if(this.options.preventDefault && !isAndroid() && !isPreventDefaultException(e.target,this.options.preventDefaultException)){
             e.preventDefault()
         }
         const point = e.touches?e.touches[0]:e
@@ -195,7 +198,7 @@ SmoothScroll.prototype = {
             return
         }
 
-        if(!isPreventDefaultException(e.target,this.options.preventDefaultException)){
+        if(this.options.preventDefault && !isPreventDefaultException(e.target,this.options.preventDefaultException)){
             e.preventDefault()
         }
         const point = e.touches?e.touches[0]:e

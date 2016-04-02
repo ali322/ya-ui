@@ -86,6 +86,16 @@ let dom = {
         }
         return scrollNode;
       },
+      closet(element,className){
+        let destNode = element
+        while(destNode !== window){
+          destNode = destNode.parentNode
+          if(destNode && dom.hasClass(destNode,className)){
+            break
+          }
+        }
+        return destNode
+      },
       scrollInView(element,container = window,callback = ()=>{},axis = "y"){
         let top = dom.offset(element).top - dom.offset(container.firstChild).top;
         let left = dom.offset(element).left - dom.offset(container.firstChild).left;
