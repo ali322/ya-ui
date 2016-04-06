@@ -13,7 +13,7 @@ class Radio extends Component{
             checked
         })
         return (
-            <div className={classes} onChange={onChange}>
+            <div className={classes} onClick={onChange}>
             {checked?(
             <Icon icon={checkedIcon} className="checked"/>
             ):(
