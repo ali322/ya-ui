@@ -4,7 +4,7 @@
     // position: fixed;
     bottom: px2rem(40);
     right: px2rem(10);
-    background: rgba(0, 0, 0, .75);
+    // background: rgba(0, 0, 0, .75);
     width: px2rem(40);
     height:px2rem(40);
     border-radius: px2rem(40);
@@ -24,7 +24,10 @@
         display:flex;
         justify-content:center;
         align-items:center;
+        background: url(/client/asset/images/toTop.png) center center;
+        background-size: 100% 100%;
         span {
+            display: none;
             font-size:px2rem(18);
             color: #FFF;
         }
@@ -33,14 +36,22 @@
 
 .back-to-top-container{
     height:100%;
+    width:100%;
     overflow:hidden;
     .back-to-top{
         position:absolute;
     }
     .back-to-top-inner{
-        overflow-x:hidden;
-        overflow-y:auto;
         height:100%;
-        -webkit-overflow-scrolling:touch;
+        overflow:hidden;
+        &.scrollable{
+            overflow-x:hidden;
+            overflow-y:auto;
+            -webkit-overflow-scrolling:touch;
+            // position:relative;
+        }
+        &.smooth{
+            overflow:hidden;
+        }
     }
 }

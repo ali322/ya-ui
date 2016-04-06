@@ -1,27 +1,42 @@
 @import "./common/common";
 @import "./common/util";
 
-.lazyload-image {
-    position: relative;
-    width: 100%;
-    &>.image-container{
-        line-height:0;
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
     }
-    &>div {
-        z-index: 2;
-        position: absolute;
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.lazyload-image {
+    width: 100%;
+    &>div.lazyload-image-inner{
+        line-height:0;
+        font-size:0;
+        // z-index: 2;
         img {
             width: 100%;
         }
-    }
-    &>div.loaded {
-        z-index: 1;
+        &>div.placeholder{
+            // line-height:normal;
+            width:100%;
+        }
     }
 }
 
 .lazyload-image {
     &>div.flip-enter.flip-enter-active {
-        animation: flip-enter .3s ease-in-out;
+        animation: flip-enter .5s ease-in-out;
         transform-style: preserve-3d;
         backface-visibility: hidden;
     }
@@ -31,12 +46,14 @@
         backface-visibility: hidden;
     }
     &>div.fade-enter.fade-enter-active{
-        opacity:1;
-        transition:opacity .3s ease-in-out;
+        animation: fadeIn .5s ease-in-out;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
     }
     &>div.fade-leave.fade-leave-active{
-        opacity:0;
-        transition:opacity .5s ease-in-out;
+        animation: fadeOut .5s ease-in-out;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
     }
 }
 
