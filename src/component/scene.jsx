@@ -34,7 +34,6 @@ export class SceneGroup extends Component{
         if(!orientation){
             return
         }
-        const groupNode = ReactDOM.findDOMNode(this.refs["groupNode"])
         const prevNode = ReactDOM.findDOMNode(this.refs["prevNode"])
         const activeNode = ReactDOM.findDOMNode(this.refs["activeNode"])
         activeNode.style.WebkitTransform = "translate3D(100%,0,0)"
@@ -42,22 +41,32 @@ export class SceneGroup extends Component{
         if(orientation === "backward"){
             activeNode.style.WebkitTransform = "translate3D(-100%,0,0)"
         }
-        let timerDelay = 600
-        let transitionDuration = "0.5s"
+        let timerDelay = 500
+        let transitionDuration = "0.4s"
         if(browserVersion().ios){
-            transitionDuration = "0.4s"
-            timerDelay = 500
+            transitionDuration = "0.35s"
+            timerDelay = 450
         }
+        setTimeout(()=>{
+            activeNode.style.WebkitTransform = "translate3D(0,0,0)"
+            prevNode.style.WebkitTransform = "translate3D(-100%,0,0)"
+            if(orientation === "backward"){
+                prevNode.style.WebkitTransform = "translate3D(100%,0,0)"
+            }
+            activeNode.style.transitionDuration = transitionDuration
+            activeNode.style.transitionTimingFunction = "cubic-bezier(0.42, 0, 0.58, 1.0)"
+            prevNode.style.transitionDuration = transitionDuration
+            prevNode.style.transitionTimingFunction = "cubic-bezier(0.42, 0, 0.58, 1.0)"
+        },10)
         let translateX = orientation === "forward"?"-100%":"100%"
-        groupNode.style.WebkitTransform = `translate3D(${translateX},0,0)`
-        groupNode.style.transitionDuration = transitionDuration
-        groupNode.style.transitionTimingFunction = "cubic-bezier(0.42, 0, 0.58, 1.0)"
 
         const processTimer = setTimeout(()=>{
-            groupNode.style.WebkitTransform = ""
-            groupNode.style.transitionDuration = ""
-            groupNode.style.transitionTimingFunction = ""
+            prevNode.style.WebkitTransform = ""
+            prevNode.style.transitionDuration = ""
+            prevNode.style.transitionTimingFunction = ""
             activeNode.style.WebkitTransform = ""
+            activeNode.style.transitionDuration = ""
+            activeNode.style.transitionTimingFunction = ""
             prevNode.style.display = ""
             clearTimeout(processTimer)
         },timerDelay)
@@ -90,14 +99,14 @@ export class SceneGroup extends Component{
         const {currentScene,prevScene} = this.state;
         const leftToRight = (currentScene !== this.props.defaultScene)
         const rightToLeft = ((currentScene === this.props.defaultScene) && prevScene !== null)
-        const classes = classNames("scene-group-inner",{
+        const classes = classNames("scene-group",{
             "animation-disabled":this.state.prevScene === null,
             "left-to-right":leftToRight,
             "right-to-left":rightToLeft
         })
         return (
-            <div className="scene-group">
-            <div className={classes} ref="groupNode">{React.Children.map(this.props.children,this.renderScene.bind(this))}</div>
+            <div className={classes}>
+            {React.Children.map(this.props.children,this.renderScene.bind(this))}
             </div>
         )
     }
