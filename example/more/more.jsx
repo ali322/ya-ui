@@ -8,7 +8,7 @@ import GoTop from "../../src/component/gotop.jsx";
 import Refresher from "../../src/component/refresher.jsx";
 import Alert from "../../src/component/alert.jsx";
 import ScrollSpy from "../../src/component/scrollspy.jsx";
-import Image from "../../src/component/image.jsx";
+import Image from "../../src/component/lazyload/image.jsx";
 import dom from "../../src/lib/dom.es6";
 
 class MoreExample extends Component{
