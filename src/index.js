@@ -6,7 +6,6 @@ import GoTop from "./component/gotop.jsx";
 import Selected from "./component/selected/selected.jsx";
 import SelectedSlide from "./component/selected/selectedslide.jsx";
 import NumberPicker from "./component/numberpicker.jsx";
-import Image from "./component/image.jsx";
 import Sticky from "./component/sticky.jsx";
 import Popup from "./component/popup.jsx";
 import Popover from "./component/popover.jsx";
@@ -22,8 +21,6 @@ import {Tabs,TabsItem} from "./component/tabs.jsx";
 import {SlideTabs,SlideTabsItem} from "./component/slidetabs.jsx";
 import ScrollNav from "./component/scrollnav.jsx";
 import Slidable from "./component/slidable.jsx";
-
-require("./theme/index.styl");
 
 const yaui = {
     Alert,
