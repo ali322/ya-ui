@@ -1,20 +1,37 @@
 let path = require('path')
 let assign = require('object-assign')
 let HtmlPlugin = require('html-webpack-plugin')
+let HtmlWriteHarddiskPlugin = require('html-webpack-harddisk-plugin')
 let buildConfig = require('./example.build')
 
-let devConfig = assign({},buildConfig,{
-    entry: buildConfig.entry.concat([
-        "webpack-hot-middleware/client"
-    ]),
+let hmrPath = '/hmr/'
+
+let devConfig = assign({}, buildConfig, {
     output: {
         path: buildConfig.output.path,
-        publicPath: '/hmr/'
-    }
-    plugins: buildConfig.plugins.slice(0,-2).concat([
+        publicPath: hmrPath
+    },
+    devServer: {
+        publicPath: hmrPath,
+        contentBase: path.join(process.cwd(), 'example', 'dist'),
+        historyApiFallback: true,
+        hot: true,
+        hotOnly: true,
+        noInfo: true,
+        watchOptions: {
+            poll: true,
+            aggregateTimeout: 300
+        },
+        port: 7000
+    },
+    plugins: buildConfig.plugins.slice(0, -2).concat([
         new HtmlPlugin({
-            template: path.join('example','src','index.html'),
-            filename:  path.join('example','dist','index.html')
+            template: path.join('example', 'src', 'index.html'),
+            filename: 'index.html',
+            alwaysWriteToDisk: true
+        }),
+        new HtmlWriteHarddiskPlugin({
+            outputPath: path.join('example', 'dist')
         })
     ])
 })

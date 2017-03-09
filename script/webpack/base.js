@@ -25,7 +25,8 @@ module.exports = (constants) => {
         { loader: 'style-loader' },
         { loader: 'css-loader' },
         { loader: 'postcss-loader', options: postcssOptions },
-        { loader: 'stylus-loader' }
+        { loader: 'resolve-url-loader' },
+        { loader: 'stylus-loader', options: { sourceMap: true } }
     ]
 
     if (!IS_DEV) {
@@ -50,7 +51,7 @@ module.exports = (constants) => {
         },
         {
             test: /\.styl/,
-            loader: stylusLoaders,
+            use: stylusLoaders,
             include: buildDir
         },
         {
@@ -59,6 +60,7 @@ module.exports = (constants) => {
             options: {
                 limit: 2500,
                 outputPath: IMAGE_OUTPUT,
+                publicPath: IMAGE_OUTPUT,
                 hash: 'sha512',
                 digest: 'hex',
                 name: '[hash:8].[ext]'
@@ -71,6 +73,7 @@ module.exports = (constants) => {
                 limit: 10000,
                 mimetype: "application/font-woff",
                 outputPath: FONT_OUTPUT,
+                publicPath: FONT_OUTPUT,
                 hash: 'sha512',
                 digest: 'hex',
                 name: '[hash:8].[ext]'
@@ -81,6 +84,7 @@ module.exports = (constants) => {
             loader: 'file-loader',
             options: {
                 outputPath: FONT_OUTPUT,
+                publicPath: FONT_OUTPUT,
                 hash: 'sha512',
                 digest: 'hex',
                 name: '[hash:8].[ext]'
