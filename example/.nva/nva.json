@@ -1,0 +1,5 @@
+{
+    "type":"frontend",
+    "entryJSExt":".jsx",
+    "entryCSSExt":".styl"
+}

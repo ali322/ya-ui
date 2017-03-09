@@ -1,0 +1,50 @@
+@import "../../common/example";
+@import "../../common/md";
+
+/*prevent chrome's font boosting bug*/
+html *{
+    max-height:999999px;
+}
+#more-example{
+    height:100%
+}
+.more-example{
+    height:100%;
+    px2px("font-size",14);
+    position:relative;
+    &>header{
+        position:absolute;
+        width:100%;
+        z-index:100;
+    }
+    .more-example-inner{
+        padding:px2rem(41) 0 0 0;
+        box-sizing:border-box;
+        height:100%;
+        overflow-y:auto;
+        overflow-x:hidden;
+        .more-example-list{
+            &>li{
+                padding:px2rem(8) px2rem(10);
+                line-height:px2rem(25);
+                border-bottom:px2rem(1) solid #CECECE;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                .example-image{
+                    width:px2rem(100);
+                    & img{
+                        width:100%;
+                    }
+                }
+                .example-desc{
+                    flex:1;
+                    h3{
+                        px2px("font-size",14);
+                        text-align:center;
+                    }
+                }
+            }
+        }
+    }
+}

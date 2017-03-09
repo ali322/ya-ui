@@ -4,8 +4,8 @@ import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import classNames from "classnames";
 import Slidable from "./slidable.jsx";
-import dom from "../lib/dom.es6";
-import {browserVersion} from "../lib/dom/browserDetector.es6";
+import dom from "../lib/dom";
+import {browserVersion} from "../lib/dom/browserDetector";
 
 export class Swiper extends Component{
     constructor(props){

@@ -1,5 +1,9 @@
 @import "./common/common";
 @import "./common/util";
+@import "./common/variable.styl";
+
+$goTopBg = $assetPath + 'image/toTop.png'
+
 .back-to-top {
     // position: fixed;
     bottom: px2rem(40);
@@ -24,7 +28,7 @@
         display:flex;
         justify-content:center;
         align-items:center;
-        background: url(/client/asset/images/toTop.png) center center;
+        // background: url($assetPath/images/toTop.png) center center;
         background-size: 100% 100%;
         span {
             display: none;

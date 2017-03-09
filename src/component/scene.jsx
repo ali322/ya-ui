@@ -2,7 +2,7 @@
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import classNames from "classnames"
-import {browserVersion} from "../../lib/dom/browserDetector.es6";
+import {browserVersion} from "../../lib/dom/browserDetector";
 import rAF from "../../lib/dom/rAF";
 
 export class SceneGroup extends Component{

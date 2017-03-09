@@ -2,8 +2,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import classNames from "classnames";
-import dom from "../lib/dom.es6";
-import SmoothScroll from "../lib/dom/smoothscroll.es6";
+import dom from "../lib/dom";
+import SmoothScroll from "../lib/dom/smoothscroll";
 
 class Refresher extends React.Component{
     constructor(props){

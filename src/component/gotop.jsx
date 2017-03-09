@@ -3,9 +3,9 @@ import React,{Component} from "react";
 import ReactDOM from "react-dom";
 import _ from "lodash";
 import classNames from "classnames";
-import dom from "../lib/dom.es6";
+import dom from "../lib/dom";
 import Icon from "./icon.jsx";
-import SmoothScroll from "../lib/dom/smoothscroll.es6";
+import SmoothScroll from "../lib/dom/smoothscroll";
 
 class GoTop extends Component{
     constructor(props){
