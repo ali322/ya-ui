@@ -1,7 +1,11 @@
 import React from 'react'
-import Accordion from './module/accordion.jsx'
+import * as examples from './module/index.js'
 
 export default (props) => {
     const { name } = props.params
-    return <Accordion />
+    const Example = examples[name]
+    if (!Example) {
+        return null
+    }
+    return <Example />
 }

@@ -5,8 +5,8 @@ let ExtractTextPlugin = require('extract-text-webpack-plugin')
 let entry = [path.join(__dirname, 'src', 'index.js'), path.join(__dirname, 'src', 'index.styl')]
 let dist = path.join(__dirname, 'dist')
 
-let ASSET_FONT_OUTPUT = path.join('.','asset','font',path.sep)
-let ASSET_IMAGE_OUTPUT = path.join('.','asset','image',path.sep)
+let ASSET_FONT_OUTPUT = path.join('.', 'asset', 'font', path.sep)
+let ASSET_IMAGE_OUTPUT = path.join('.', 'asset', 'image', path.sep)
 
 module.exports = {
     entry,
@@ -21,7 +21,11 @@ module.exports = {
             {
                 test: /\.styl/,
                 loader: ExtractTextPlugin.extract({
-                    use: 'css-loader!stylus-loader',
+                    use: [
+                        { loader: 'css-loader' },
+                        { loader: 'resolve-url-loader' },
+                        { loader: 'stylus-loader', options: { sourceMap: true } }
+                    ],
                     fallback: 'style-loader'
                 })
             },

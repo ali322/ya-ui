@@ -4,7 +4,7 @@ import Index from './module/app.jsx'
 import Example from '../example/app.jsx'
 
 const routes = (
-    <Route path="/index">
+    <Route path="/">
         <IndexRoute component={Index} />
         <Route path="/example/:name" component={Example} />
     </Route>

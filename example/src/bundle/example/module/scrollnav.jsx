@@ -1,12 +1,8 @@
-'use strict';
+import React from "react";
+import Header from "../../common/header.jsx";
+import ScrollNav from "@/component/scrollnav.jsx";
 
-import React,{Component} from "react";
-import ReactDOM from "react-dom";
-import Header from "../common/header.jsx";
-import ScrollNav from "../../src/component/scrollnav.jsx";
-
-class ScrollNavExample extends Component{
-    render(){
+export default ()=>{
         const navbarRenderer = ()=>{
             let shortcuts = ["a","b","c","d","e"];
             return shortcuts.map((v)=>{
@@ -17,7 +13,7 @@ class ScrollNavExample extends Component{
         }
         return (
             <div className="scrollnav-example">
-                <Header title="Scrollspy" backButton={true} />
+                <Header title="Scrollspy" backButton />
                 <div className="scrollnav-example-inner">
                 <ScrollNav className="scrollnav-example-list" navbarRenderer={navbarRenderer}>
                     <div className="anchor-point" data-anchor="anchor-a">
@@ -43,7 +39,7 @@ class ScrollNavExample extends Component{
                         <li>baitu</li>
                         <li>AVO</li>
                     </ul>
-                    </div>                    
+                    </div>
                     <div className="anchor-point" data-anchor="anchor-d">
                     <h5>D</h5>
                     <ul>
@@ -64,10 +60,4 @@ class ScrollNavExample extends Component{
                 </div>
             </div>
         )
-    }
 }
-
-document.addEventListener('DOMContentLoaded',()=>{
-    require("../lib/responder");
-    ReactDOM.render(<ScrollNavExample />,document.getElementById('scrollnav-example'));
-})

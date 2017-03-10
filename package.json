@@ -67,6 +67,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-test-renderer": "^15.4.2",
     "regenerator-runtime": "^0.10.3",
+    "resolve-url-loader": "^2.0.2",
     "rimraf": "^2.6.1",
     "style-loader": "^0.13.2",
     "stylus": "^0.54.5",

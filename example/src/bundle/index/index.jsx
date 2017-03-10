@@ -5,6 +5,7 @@ import app from './app.jsx'
 import routes from './routes.jsx'
 
 const App = app()(Router)
+
 if (module.hot) {
   module.hot.accept()
 }

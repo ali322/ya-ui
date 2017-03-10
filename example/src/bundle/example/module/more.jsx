@@ -1,78 +1,80 @@
-'use strict';
-
-import React,{Component} from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react";
+import ReactDOM from 'react-dom'
 import _ from "lodash";
-import Header from "../common/header.jsx";
-import GoTop from "../../src/component/gotop.jsx";
-import Refresher from "../../src/component/refresher.jsx";
-import Alert from "../../src/component/alert.jsx";
-import ScrollSpy from "../../src/component/scrollspy.jsx";
-import Image from "../../src/component/lazyload/image.jsx";
-import dom from "../../src/lib/dom.es6";
+import Header from "../../common/header.jsx";
+import GoTop from "@/component/gotop.jsx";
+import Refresher from "@/component/refresher.jsx";
+import Alert from "@/component/alert.jsx";
+import ScrollSpy from "@/component/scrollspy.jsx";
+import Image from "@/component/lazyload/image.jsx";
+import dom from "@/lib/dom";
 
-class MoreExample extends Component{
-    constructor(props){
+export default class extends Component {
+    constructor(props) {
         super(props);
-        let items = [],pageIndex = 1,pageSize = 5;
-        for(let i = 0;i <= pageIndex * pageSize;i++){
+        let items = [],
+            pageIndex = 1,
+            pageSize = 5;
+        for (let i = 0; i <= pageIndex * pageSize; i++) {
             items.push(i)
         }
         this.state = {
-            pagination:{
-                totalCount:50,
+            pagination: {
+                totalCount: 50,
                 pageIndex,
-                page:items
+                page: items
             },
-            refresherActive:false,
-            alertActive:false,
-            alertContent:''
+            refresherActive: false,
+            alertActive: false,
+            alertContent: ''
         }
+        this.handleScroll = this.handleScroll.bind(this)
     }
-    handleScroll(e){
+    handleScroll(e) {
         const scrollElement = ReactDOM.findDOMNode(e.target)
         let scrollTop = dom.scrollTop(scrollElement);
         if (scrollElement.clientHeight + scrollTop >= scrollElement.scrollHeight) {
-            if(this.state.refresherActive === false){
+            if (this.state.refresherActive === false) {
                 this.setState({
-                    refresherActive:true,
-                    alertActive:true,
-                    alertContent:"loading from api"
-                })   
+                    refresherActive: true,
+                    alertActive: true,
+                    alertContent: "loading from api"
+                })
             }
             this.finishRefresh()
         }
     }
-    finishRefresh(){
-        let {page,pageIndex,totalCount} = this.state.pagination;
+    finishRefresh() {
+        let { page, pageIndex, totalCount } = this.state.pagination;
         let totalPage = Math.floor(totalCount / 5);
-        if(totalPage < pageIndex){
+        if (totalPage < pageIndex) {
             this.setState({
-                refresherActive:false
+                refresherActive: false
             })
             return false;
         }
         let nextPage = pageIndex + 1;
         let nextPageCount = nextPage * 15 > totalCount ? totalCount : nextPage * 5;
         /* simulate asynchronous api request*/
-        setTimeout(()=>{
+        setTimeout(() => {
             let items = [];
-            for(let i = pageIndex * 5;i <= nextPageCount;i++){
+            for (let i = pageIndex * 5; i <= nextPageCount; i++) {
                 items.push(i)
             }
-            page = _.union(page,items);
+            page = _.union(page, items);
             this.setState({
-                pagination:{
-                    page,pageIndex:nextPage,totalCount
+                pagination: {
+                    page,
+                    pageIndex: nextPage,
+                    totalCount
                 },
-                refresherActive:false,
-                alertActive:false
+                refresherActive: false,
+                alertActive: false
             })
-        },3000)
-
+        }, 3000)
     }
-    renderList(){
-        this.list = this.state.pagination.page.map((i)=>{
+    renderList() {
+        this.list = this.state.pagination.page.map((i) => {
             return (
                 <li key={i}>
                 <div className="example-image">
@@ -90,24 +92,17 @@ class MoreExample extends Component{
             <ul className="more-example-list">{this.list}</ul>
         )
     }
-    render(){
+    render() {
         return (
             <div className="more-example">
-                <Header title="More" backButton={true} />
-                <div className="more-example-inner" 
-                onScroll={this.handleScroll.bind(this)} 
-                ref="more-example-inner">
+                <Header title="More" backButton />
+                <div className="more-example-inner" onScroll={this.handleScroll} ref="more-example-inner">
                 {this.renderList()}
-                <GoTop relative={true}/>
-                <Refresher active={this.state.refresherActive}/>
+                <GoTop relative />
+                <Refresher active={this.state.refresherActive} />
                 <Alert active={this.state.alertActive}>{this.state.alertContent}</Alert>
                 </div>
             </div>
         )
     }
 }
-
-document.addEventListener('DOMContentLoaded',()=>{
-    require("../lib/responder");
-    ReactDOM.render(<MoreExample />,document.getElementById('more-example'));
-})

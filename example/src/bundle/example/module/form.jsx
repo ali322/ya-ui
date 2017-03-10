@@ -1,56 +1,53 @@
-'use strict';
+import React, { Component } from "react";
+import Header from "../../common/header.jsx";
+import Checkbox from "@/component/form/checkbox.jsx";
+import Radio from "@/component/form/radio.jsx";
 
-import React,{Component} from "react";
-import ReactDOM from "react-dom";
-import Header from "../common/header.jsx";
-import Checkbox from "../../src/component/form/checkbox.jsx";
-import Radio from "../../src/component/form/radio.jsx";
-
-class FormExample extends Component{
-    constructor(props){
+export default class extends Component {
+    constructor(props) {
         super(props);
         this.state = {
-            sex:"male",
-            habits:[]
+            sex: "male",
+            habits: []
         }
+        this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
+        this.handleRadioChange = this.handleRadioChange.bind(this)
     }
-    handleRadioChange(value,e){
+    handleRadioChange(value, e) {
         this.setState({
-            sex:value,
+            sex: value,
         })
     }
-    handleCheckboxChange(value,checked,e){
-        let {habits} = this.state;
-        if(habits.indexOf(value) === -1){
+    handleCheckboxChange(value, checked, e) {
+        let { habits } = this.state;
+        if (habits.indexOf(value) === -1) {
             habits.push(value)
-        }else{
+        } else {
             habits.splice(habits.indexOf(value))
         }
         this.setState({
             habits
         })
     }
-    render(){
+    render() {
         return (
             <div className="form-example">
-                <Header title="Form" backButton={true} />
+                <Header title="Form" backButton />
                 <div className="form-row">
                     <label>Checkbox</label>
                     <div className="form-row-radio">
-                        <Checkbox 
-                        onChange={this.handleCheckboxChange.bind(this,"Book")}/>
+                        <Checkbox onChange={()=>this.handleCheckboxChange('Book')} />
                         <b>Book</b>
-                        <Checkbox 
-                        onChange={this.handleCheckboxChange.bind(this,"Game")}/>
+                        <Checkbox onChange={()=>this.handleCheckboxChange('Game')} />
                         <b>Game</b>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Radio</label>
                     <div className="form-row-radio">
-                        <Radio name="sex" checked={true} onChange={this.handleRadioChange.bind(this,"male")}/>
+                        <Radio name="sex" checked onChange={()=>this.handleRadioChange('male')} />
                         <b>male</b>
-                        <Radio name="sex" onChange={this.handleRadioChange.bind(this,"female")}/>
+                        <Radio name="sex" onChange={()=>this.handleRadioChange('female')} />
                         <b>female</b>
                     </div>
                 </div>
@@ -63,8 +60,3 @@ class FormExample extends Component{
         )
     }
 }
-
-document.addEventListener('DOMContentLoaded',()=>{
-    require("../lib/responder");
-    ReactDOM.render(<FormExample />,document.getElementById('form-example'));
-})
