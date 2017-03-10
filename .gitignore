@@ -2,5 +2,5 @@
 **/*.swp
 npm-debug.log
 node_modules/
-example/**/build/
-src/__coverage__/
+example/dist/
+dist

@@ -1,7 +1,0 @@
-node_modules/
-task/
-disk/
-example/**/build/
-example/**/dist/
-.git/
-src/__coverage__/

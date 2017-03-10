@@ -2,7 +2,7 @@
 
 import React,{Component} from "react";
 import ReactDOM from "react-dom";
-import dom from "../lib/dom.es6";
+import dom from "../lib/dom";
 import rAF from "../lib/dom/requestAnimationFrame";
 import _ from "lodash"
 

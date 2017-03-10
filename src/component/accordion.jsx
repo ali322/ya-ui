@@ -6,7 +6,7 @@ import classNames from "classnames";
 import rAF from "../lib/dom/requestAnimationFrame";
 import Icon from "./icon.jsx";
 
-export class Accordion extends Component{
+class Accordion extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -54,7 +54,7 @@ Accordion.defaultProps = {
     onSelect:function(){}
 };
 
-export class AccordionItem extends Component{
+class AccordionItem extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -128,7 +128,6 @@ export class AccordionItem extends Component{
         if(active === true){
             icon = (<Icon icon="up-open"/>);
         }
-        // console.log('ddStyle',this.state.ddStyle)
         return (
             <dl className={classes} key={"accordion-item-" + key}>
                 <dt onClick={handleSelect}>{title}{icon}</dt>
@@ -137,5 +136,7 @@ export class AccordionItem extends Component{
         )
     }
 }
+
+Accordion.Item = AccordionItem
 
 export default Accordion;

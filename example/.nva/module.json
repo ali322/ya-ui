@@ -1,0 +1,12 @@
+{
+  "index": {
+    "html": [
+      "index.html"
+    ],
+    "path": "index",
+    "vendor": {
+      "js": "react",
+      "css": "common"
+    }
+  }
+}

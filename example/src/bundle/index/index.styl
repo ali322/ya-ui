@@ -1,0 +1,42 @@
+@import "../common/example";
+@import "../common/md";
+@import "../example/stylesheet/example";
+@import "../../../../src/theme/index.styl"
+.event {
+    padding: .4rem .5rem;
+    border-bottom: 1px solid #CCC;
+    &:last-child {
+        border: 0 none;
+    }
+    &>p {
+        margin: 0;
+        line-height: 1.25rem;
+        &>b {
+            color: #4100FF;
+            font-weight: 400;
+        }
+    }
+    .event-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: .5rem;
+        &>img {
+            width: 2.5rem;
+            border-radius: .2rem;
+        }
+        &>span {
+            flex: 1;
+            padding: 0 .4rem;
+            &>p {
+                margin: 0;
+                line-height: 1.2rem;
+                color: #4100FF;
+                &:last-child {
+                    font-size: 12px;
+                    color: #888;
+                }
+            }
+        }
+    }
+}

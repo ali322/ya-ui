@@ -21,7 +21,6 @@ web components build with React
   |- component/ # web component
   |- lib/ #helper and tool
   |- index.es6 # entry point
-|- task/ #build tasks
 |- package.json
 ```
 
@@ -30,14 +29,13 @@ web components build with React
 1. install via npm
 
     ```shell
-    npm install
+    npm install ya-ui
     ```
-    or directly include yaui.js into page
+    or directly include `dist/ya-ui.js` and `dist/ya-ui.css` into page
 2. require this module in your code
 
     ```javascript
-    var yaui = require("ya-ui");
-    var Selected = yaui.component.Selected
+    import { Selected } from 'ya-ui
     // coding
     ```
 
@@ -45,30 +43,3 @@ web components build with React
   ```shell
   npm run build
   ```
-### Customize release
-  ```shell
-  npm run release
-  ```
-
-### Develop examples
-1. develop with your own example
-  - when start new example,some build and inject work need to be done
-
-    ```shell
-    npm run develop-example
-    ```
-
-  - reqired work finished,start develop server
-
-    ```shell
-    npm start
-    ```
-
-2. release you own example
-  - like develop workflow,build and inject work need to be done
-
-    ```shell
-    npm run deploy-example
-    ```
-
-  - then deploy example directory to your own server
